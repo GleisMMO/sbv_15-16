@@ -14,6 +14,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
+    DefaultListModel listenModell = new DefaultListModel();
+
+    static int i;
     static String momentaneKopie;
     static String schuelerId;
     static int schuelerInKlasse;
@@ -204,12 +207,19 @@ public class Oberflaeche extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         kopieLöschen = new javax.swing.JButton();
         PicEinzelneKopie = new javax.swing.JLabel();
+        kopieClass = new javax.swing.JLabel();
+        einsammelnTab = new javax.swing.JPanel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        einsammelListe = new javax.swing.JList();
+        einsammelnEingabe = new javax.swing.JTextField();
+        einsammelnEintragLoeschen = new javax.swing.JButton();
+        einsammelnAlles = new javax.swing.JButton();
         klassenTab = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         buchKlassenList = new javax.swing.JList();
         jScrollPane7 = new javax.swing.JScrollPane();
         buecherKlassenTbl = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        klassenBearbeitenTab = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         buchKlassenList1 = new javax.swing.JList();
         jScrollPane10 = new javax.swing.JScrollPane();
@@ -844,6 +854,8 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         basePanel.addTab("Einzelnes Buch", einBuchTab);
 
+        einKopieTab.setPreferredSize(new java.awt.Dimension(1373, 672));
+
         eineKopieSuchen.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         eineKopieSuchen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -860,6 +872,8 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         kopieFore.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         kopieFore.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        kopieSur.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jLabel9.setText("Ausgegeben am:");
@@ -885,11 +899,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 kopieEinsammelnMouseClicked(evt);
             }
         });
-        kopieEinsammeln.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kopieEinsammelnActionPerformed(evt);
-            }
-        });
 
         jLabel15.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jLabel15.setText("Nach Kopie suchen");
@@ -902,9 +911,8 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
 
         PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png"))); // NOI18N
-        PicEinzelneKopie.setMaximumSize(new java.awt.Dimension(400, 500));
-        PicEinzelneKopie.setMinimumSize(new java.awt.Dimension(400, 500));
-        PicEinzelneKopie.setPreferredSize(new java.awt.Dimension(400, 500));
+
+        kopieClass.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
 
         javax.swing.GroupLayout einKopieTabLayout = new javax.swing.GroupLayout(einKopieTab);
         einKopieTab.setLayout(einKopieTabLayout);
@@ -918,13 +926,16 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(einKopieTabLayout.createSequentialGroup()
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(33, 33, 33)
-                                    .addComponent(kopieFore, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(kopieFore, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(einKopieTabLayout.createSequentialGroup()
+                                    .addGap(282, 282, 282)
+                                    .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einKopieTabLayout.createSequentialGroup()
                             .addContainerGap()
@@ -946,7 +957,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                         .addComponent(kopieBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(kopiePaid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGap(18, 18, 18)
-                            .addComponent(PicEinzelneKopie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(PicEinzelneKopie)))
                     .addGap(292, 292, 292)))
             .addGroup(einKopieTabLayout.createSequentialGroup()
                 .addContainerGap()
@@ -971,7 +982,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(kopieFore, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
-                        .addGap(30, 30, 30)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(kopieDistributed, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
@@ -986,18 +999,77 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
                         .addComponent(kopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(kopieLöschen)
                         .addGap(138, 138, 138))
                     .addGroup(einKopieTabLayout.createSequentialGroup()
-                        .addComponent(PicEinzelneKopie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PicEinzelneKopie)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
 
+        einsammelListe.setModel(listenModell);
+        einsammelListe.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane12.setViewportView(einsammelListe);
+
+        einsammelnEingabe.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        einsammelnEingabe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                einsammelnEingabeActionPerformed(evt);
+            }
+        });
+
+        einsammelnEintragLoeschen.setLabel("Eintrag löschen");
+        einsammelnEintragLoeschen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                einsammelnEintragLoeschenActionPerformed(evt);
+            }
+        });
+
+        einsammelnAlles.setText("Einsammeln");
+        einsammelnAlles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                einsammelnAllesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout einsammelnTabLayout = new javax.swing.GroupLayout(einsammelnTab);
+        einsammelnTab.setLayout(einsammelnTabLayout);
+        einsammelnTabLayout.setHorizontalGroup(
+            einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
+                .addContainerGap(369, Short.MAX_VALUE)
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(147, 147, 147))
+            .addGroup(einsammelnTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        einsammelnTabLayout.setVerticalGroup(
+            einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(einsammelnTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(117, 117, 117)
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        basePanel.addTab("Einsammeln", einsammelnTab);
+
+        klassenTab.setPreferredSize(new java.awt.Dimension(1373, 672));
         klassenTab.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 klassenTabComponentAdded(evt);
@@ -1057,9 +1129,9 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         basePanel.addTab("Klassen", klassenTab);
 
-        jPanel1.addContainerListener(new java.awt.event.ContainerAdapter() {
+        klassenBearbeitenTab.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
-                jPanel1ComponentAdded(evt);
+                klassenBearbeitenTabComponentAdded(evt);
             }
         });
 
@@ -1097,35 +1169,35 @@ public class Oberflaeche extends javax.swing.JFrame {
         ));
         jScrollPane11.setViewportView(buecherFKlassenTbl);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout klassenBearbeitenTabLayout = new javax.swing.GroupLayout(klassenBearbeitenTab);
+        klassenBearbeitenTab.setLayout(klassenBearbeitenTabLayout);
+        klassenBearbeitenTabLayout.setHorizontalGroup(
+            klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
                     .addComponent(jScrollPane11))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        klassenBearbeitenTabLayout.setVerticalGroup(
+            klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
                         .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(43, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
                         .addComponent(jScrollPane9)
                         .addGap(61, 61, 61))))
         );
 
-        basePanel.addTab("Klassen Bearbeiten", jPanel1);
+        basePanel.addTab("Klassen Bearbeiten", klassenBearbeitenTab);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1142,7 +1214,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schuelerTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_schuelerTabComponentAdded
-        
+
         ArrayList<String> names;
         names = Classes.getClassNameList();
         klassenList.setListData(names.toArray());
@@ -1462,10 +1534,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         UpdateTable(buchKlasse);
     }//GEN-LAST:event_buchKlassenList1MouseClicked
 
-    private void jPanel1ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_jPanel1ComponentAdded
+    private void klassenBearbeitenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenBearbeitenTabComponentAdded
         currentPanel = 6;
         UpdateTable(Books.BookList());
-    }//GEN-LAST:event_jPanel1ComponentAdded
+    }//GEN-LAST:event_klassenBearbeitenTabComponentAdded
 
     private void ausgebenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausgebenActionPerformed
         //Kopie in DB ausgeben
@@ -1531,16 +1603,12 @@ public class Oberflaeche extends javax.swing.JFrame {
         eineKopieSuchen.selectAll();
     }//GEN-LAST:event_kopieLöschenActionPerformed
 
-    private void kopieEinsammelnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieEinsammelnActionPerformed
-
-    }//GEN-LAST:event_kopieEinsammelnActionPerformed
-
     private void kopieEinsammelnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kopieEinsammelnMouseClicked
         Copies.collectCopy(momentaneKopie);
         eineKopieSuchen.requestFocus();
         eineKopieSuchen.setCaretPosition(0);
         eineKopieSuchen.selectAll();
-        
+
         try {
             Robot Robo = new Robot();
             Robo.keyPress(KeyEvent.VK_ENTER);
@@ -1560,16 +1628,46 @@ public class Oberflaeche extends javax.swing.JFrame {
         kopieDistributed.setText(Date.ToNormal(kopie.get(2)));
         kopieBought.setText(kopie.get(4));
         kopiePaid.setText(kopie.get(6));
-        
+
         try {
-            PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture"
-                + kopie.get(9)
-                + ".png")));
+            kopieClass.setText(Students.SingelStudentClasses(kopie.get(1)).get(0));
+        } catch (Exception e) {
+            System.out.println(e + " => Cant show Class of Student of Copy");
+            kopieClass.setText("");
+        }
+
+        try {
+            PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/Buch_"
+                    + kopie.get(9)
+                    + ".jpg")));
         } catch (Exception e) {
             System.out.println(e + " => Cant show BookPic");
             PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
     }//GEN-LAST:event_eineKopieSuchenActionPerformed
+
+    private void einsammelnEingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEingabeActionPerformed
+        listenModell.addElement(einsammelnEingabe.getText());
+        einsammelnEingabe.selectAll();
+    }//GEN-LAST:event_einsammelnEingabeActionPerformed
+
+    private void einsammelnEintragLoeschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEintragLoeschenActionPerformed
+        listenModell.removeElementAt(einsammelListe.getSelectedIndex());
+    }//GEN-LAST:event_einsammelnEintragLoeschenActionPerformed
+
+    private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
+        i = listenModell.size();
+        if (i != 0) {
+            do {
+                Copies.collectCopy((String) listenModell.get(0));
+                listenModell.removeElementAt(0);
+                i--;
+            } while (i > 0);
+        } else {
+            einsammelnAlles.setVisible(false);
+        }
+
+    }//GEN-LAST:event_einsammelnAllesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1634,6 +1732,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JPanel einKopieTab;
     private javax.swing.JPanel einSchuelerTab;
     private javax.swing.JTextField eineKopieSuchen;
+    private javax.swing.JList einsammelListe;
+    private javax.swing.JButton einsammelnAlles;
+    private javax.swing.JTextField einsammelnEingabe;
+    private javax.swing.JButton einsammelnEintragLoeschen;
+    private javax.swing.JPanel einsammelnTab;
     private javax.swing.JLabel freieBuecher;
     private javax.swing.JPanel homeTab;
     private javax.swing.JTextField isbnSuche;
@@ -1656,10 +1759,10 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1670,9 +1773,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JButton klasseExportBtn;
     private javax.swing.JButton klasseExportPreislist;
+    private javax.swing.JPanel klassenBearbeitenTab;
     public static javax.swing.JList klassenList;
     private javax.swing.JPanel klassenTab;
     private javax.swing.JLabel kopieBought;
+    private javax.swing.JLabel kopieClass;
     private javax.swing.JLabel kopieDistributed;
     private javax.swing.JButton kopieEinsammeln;
     private javax.swing.JLabel kopieFore;
