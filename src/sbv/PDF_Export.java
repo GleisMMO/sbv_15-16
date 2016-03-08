@@ -157,7 +157,7 @@ public class PDF_Export {
                         table.addCell("NEIN");
                     }
                     i++;
-                    Paragraph titel4 = new Paragraph(Date.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
+                    Paragraph titel4 = new Paragraph(Other.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
                     table.addCell(titel4);
                     i++;
                     paid = bookArray.get(i);
@@ -251,7 +251,7 @@ public class PDF_Export {
                 table.addCell("NEIN");
             }
             i++;
-            Paragraph titel4 = new Paragraph(Date.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
+            Paragraph titel4 = new Paragraph(Other.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
             table.addCell(titel4);
             i++;
             a = bookArray.get(i);

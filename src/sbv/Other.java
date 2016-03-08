@@ -2,7 +2,7 @@ package sbv;
 
 import java.text.SimpleDateFormat;
 
-public class Date {
+public class Other {
 
     public static String ToNormal(String timestamp) {
         try {
@@ -15,6 +15,22 @@ public class Date {
             System.out.println(e + " => date");
         }
         return timestamp;
+    }
+    
+    public static String addToLength(String in, int length, boolean davor, int spaceBehind) {
+        do {            
+            if (davor) {
+                in = " ".concat(in); //ERROR bei random Barcode
+            } else {
+                in = in.concat(" ");
+            }
+        } while (in.length() < length);
+        
+        for (int i = 0; i < spaceBehind; i++) {
+            in = in.concat(" ");
+        }
+        
+        return in;
     }
 
 }

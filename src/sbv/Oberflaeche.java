@@ -17,6 +17,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     DefaultListModel listenModell = new DefaultListModel();
 
     static int i;
+    static String barcode, label, name, classe, ausgabe, bougth, paid;
     static String momentaneKopie;
     static String schuelerId;
     static int schuelerInKlasse;
@@ -1011,6 +1012,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
 
+        einsammelListe.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
         einsammelListe.setModel(listenModell);
         einsammelListe.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane12.setViewportView(einsammelListe);
@@ -1022,6 +1024,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        einsammelnEintragLoeschen.setEnabled(false);
         einsammelnEintragLoeschen.setLabel("Eintrag löschen");
         einsammelnEintragLoeschen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1030,6 +1033,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
 
         einsammelnAlles.setText("Einsammeln");
+        einsammelnAlles.setEnabled(false);
         einsammelnAlles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 einsammelnAllesActionPerformed(evt);
@@ -1040,29 +1044,30 @@ public class Oberflaeche extends javax.swing.JFrame {
         einsammelnTab.setLayout(einsammelnTabLayout);
         einsammelnTabLayout.setHorizontalGroup(
             einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
-                .addContainerGap(369, Short.MAX_VALUE)
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(147, 147, 147))
             .addGroup(einsammelnTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(einsammelnTabLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(einsammelnTabLayout.createSequentialGroup()
+                            .addGap(83, 83, 83)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         einsammelnTabLayout.setVerticalGroup(
             einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(einsammelnTabLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117)
-                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                .addGap(71, 71, 71)
+                .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1257,7 +1262,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         ArrayList<String> buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Date.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1267,15 +1272,15 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         if (schuelerRow == 0) {
-            schuelerZurueck.setVisible(false);
+            schuelerZurueck.setEnabled(false);
         } else {
-            schuelerZurueck.setVisible(true);
+            schuelerZurueck.setEnabled(true);
         }
 
         if (schuelerRow == schuelerInKlasse - 1) {
-            schuelerWeiter.setVisible(false);
+            schuelerWeiter.setEnabled(false);
         } else {
-            schuelerWeiter.setVisible(true);
+            schuelerWeiter.setEnabled(true);
         }
 
     }//GEN-LAST:event_schuelerTblMouseClicked
@@ -1291,7 +1296,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void schuelerWeiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerWeiterActionPerformed
         if (schuelerRow == 0) {
-            schuelerZurueck.setVisible(true);
+            schuelerZurueck.setEnabled(true);
         }
 
         schuelerRow = schuelerRow + 1;
@@ -1315,19 +1320,19 @@ public class Oberflaeche extends javax.swing.JFrame {
         ArrayList<String> buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Date.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
 
         if (schuelerRow == schuelerInKlasse - 1) {
-            schuelerWeiter.setVisible(false);
+            schuelerWeiter.setEnabled(false);
         }
     }//GEN-LAST:event_schuelerWeiterActionPerformed
 
     private void schuelerZurueckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerZurueckActionPerformed
         if (schuelerRow == schuelerInKlasse - 1) {
-            schuelerWeiter.setVisible(true);
+            schuelerWeiter.setEnabled(true);
         }
 
         schuelerRow = schuelerRow - 1;
@@ -1351,13 +1356,13 @@ public class Oberflaeche extends javax.swing.JFrame {
         ArrayList<String> buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Date.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
 
         if (schuelerRow == 0) {
-            schuelerZurueck.setVisible(false);
+            schuelerZurueck.setEnabled(false);
         }
     }//GEN-LAST:event_schuelerZurueckActionPerformed
 
@@ -1475,14 +1480,14 @@ public class Oberflaeche extends javax.swing.JFrame {
             einBuchKaufFeld.setText("");
             einBuchPreisFeld.setText("");
             buchNeu.setText("Speichern");
-            buchBearbeiten.setVisible(false);
-            buchLöschen.setVisible(false);
+            buchBearbeiten.setEnabled(false);
+            buchLöschen.setEnabled(false);
             speichern = 1;
         } else {
             Books.newBook(einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
             buchNeu.setText("Neues Buch");
-            buchBearbeiten.setVisible(true);
-            buchLöschen.setVisible(true);
+            buchBearbeiten.setEnabled(true);
+            buchLöschen.setEnabled(true);
             speichern = 0;
         }
     }//GEN-LAST:event_buchNeuActionPerformed
@@ -1494,15 +1499,15 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void buchBearbeitenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchBearbeitenActionPerformed
         if (speichern == 0) {
             buchBearbeiten.setText("Speichern");
-            buchNeu.setVisible(false);
-            buchLöschen.setVisible(false);
+            buchNeu.setEnabled(false);
+            buchLöschen.setEnabled(false);
             speichern = 1;
         } else {
 
             Books.editBook(Books.singleBook(einBuchISBNFeld.getText(), 0).get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
             buchBearbeiten.setText("Buch bearbeiten");
-            buchNeu.setVisible(true);
-            buchLöschen.setVisible(true);
+            buchNeu.setEnabled(true);
+            buchLöschen.setEnabled(true);
             speichern = 0;
         }
     }//GEN-LAST:event_buchBearbeitenActionPerformed
@@ -1559,7 +1564,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         ArrayList<String> buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Date.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1625,12 +1630,12 @@ public class Oberflaeche extends javax.swing.JFrame {
         kopieLabel.setText(kopie.get(0));
         kopieFore.setText(kopie.get(7));
         kopieSur.setText(kopie.get(8));
-        kopieDistributed.setText(Date.ToNormal(kopie.get(2)));
+        kopieDistributed.setText(Other.ToNormal(kopie.get(2)));
         kopieBought.setText(kopie.get(4));
         kopiePaid.setText(kopie.get(6));
 
         try {
-            kopieClass.setText(Students.SingelStudentClasses(kopie.get(1)).get(0));
+            kopieClass.setText((Students.SingelStudentClasses(kopie.get(1))).get(0));
         } catch (Exception e) {
             System.out.println(e + " => Cant show Class of Student of Copy");
             kopieClass.setText("");
@@ -1647,12 +1652,49 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_eineKopieSuchenActionPerformed
 
     private void einsammelnEingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEingabeActionPerformed
-        listenModell.addElement(einsammelnEingabe.getText());
+        barcode = einsammelnEingabe.getText();
+        ArrayList<String> kopie = Copies.Singlecopy(barcode);
+        
+        barcode = Other.addToLength(barcode, 4, true, 2);
+        
+        label = Other.addToLength(kopie.get(0), 85, true, 2);
+        
+        /*Oberstufe Religion 7 -  Der Mann aus Nazareth Jesus Christus
+        Mathematik für berufliche Gymnasien Lineare Algebra - Vektorielle Geometrie
+        Arbeitsheft - Mathematik für berufliche Gymnasien - J 1 & 2 - Analysis und Stochastik*/
+
+        name = Other.addToLength(kopie.get(7).concat(" ").concat(kopie.get(8)), 25, false, 2);
+        
+        try {
+            classe = (Students.SingelStudentClasses(kopie.get(1)).get(0));
+        } catch (Exception e) {
+            System.out.println(e + " => Cant show Class of Student of Copy");
+            classe = "none";
+        }
+        classe = Other.addToLength(classe, 13, true, 2);
+        
+        ausgabe = Other.addToLength(Other.ToNormal(kopie.get(2)), 11, true, 2);
+        
+        bougth = Other.addToLength(kopie.get(4), 1, true, 2);
+        
+        paid = Other.addToLength(kopie.get(6), 1, true, 2);
+        
+        listenModell.addElement(label.concat(barcode).concat(name).concat(classe).concat(ausgabe).concat(bougth).concat(paid));
+        
         einsammelnEingabe.selectAll();
+        einsammelnAlles.setEnabled(true);
+        einsammelnEintragLoeschen.setEnabled(true);
     }//GEN-LAST:event_einsammelnEingabeActionPerformed
 
     private void einsammelnEintragLoeschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEintragLoeschenActionPerformed
-        listenModell.removeElementAt(einsammelListe.getSelectedIndex());
+        if (einsammelListe.getSelectedValue() != null) {
+            listenModell.removeElementAt(einsammelListe.getSelectedIndex());
+        }
+
+        if (listenModell.isEmpty()) {
+            einsammelnAlles.setEnabled(false);
+            einsammelnEintragLoeschen.setEnabled(false);
+        }
     }//GEN-LAST:event_einsammelnEintragLoeschenActionPerformed
 
     private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
@@ -1663,9 +1705,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                 listenModell.removeElementAt(0);
                 i--;
             } while (i > 0);
-        } else {
-            einsammelnAlles.setVisible(false);
         }
+        einsammelnAlles.setEnabled(false);
+        einsammelnEintragLoeschen.setEnabled(false);
 
     }//GEN-LAST:event_einsammelnAllesActionPerformed
 
