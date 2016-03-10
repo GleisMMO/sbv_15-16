@@ -20,7 +20,7 @@ public class Other {
     public static String addToLength(String in, int length, boolean davor, int spaceBehind) {
         do {            
             if (davor) {
-                in = " ".concat(in); //ERROR bei random Barcode
+                in = " ".concat(in); //ERROR bei random Barcode (vielleicht zu lang)
             } else {
                 in = in.concat(" ");
             }

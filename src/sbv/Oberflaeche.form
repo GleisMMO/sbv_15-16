@@ -1045,33 +1045,24 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="400" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="400" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel9" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                      <Component id="jLabel12" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                      <Component id="jLabel10" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel5" min="-2" pref="100" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                                          <Component id="kopieFore" min="-2" pref="139" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="kopieSur" min="-2" pref="143" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="282" pref="282" max="-2" attributes="0"/>
-                                          <Component id="kopieClass" min="-2" pref="143" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel9" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="jLabel12" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel5" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                  <Component id="kopieFore" min="-2" pref="139" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="kopieSur" min="-2" pref="143" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="kopieLöschen" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="412" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="282" pref="282" max="-2" attributes="0"/>
+                                  <Component id="kopieClass" min="-2" pref="143" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel13" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="485" max="-2" attributes="0"/>
                       </Group>
@@ -1080,7 +1071,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="kopieLabel" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="kopieEinsammeln" min="-2" pref="400" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
@@ -1089,6 +1080,11 @@
                                               <Component id="kopieBought" max="32767" attributes="0"/>
                                               <Component id="kopiePaid" max="32767" attributes="0"/>
                                           </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="kopieLöschen" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="kopieBarcodeErneut" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -1146,11 +1142,14 @@
                                   </Group>
                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="211" max="32767" attributes="0"/>
+                              <EmptySpace pref="170" max="32767" attributes="0"/>
                               <Component id="kopieEinsammeln" min="-2" pref="30" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="kopieLöschen" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="kopieLöschen" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="kopieBarcodeErneut" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="PicEinzelneKopie" min="-2" max="-2" attributes="0"/>
@@ -1270,12 +1269,12 @@
                 <Property name="text" type="java.lang.String" value="Nach Kopie suchen"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="kopieL&#xf6;schen">
+            <Component class="javax.swing.JButton" name="kopieBarcodeErneut">
               <Properties>
-                <Property name="text" type="java.lang.String" value="L&#xf6;schen"/>
+                <Property name="label" type="java.lang.String" value="Barcode nochmal drucken"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kopieL&#xf6;schenActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kopieBarcodeErneutActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="PicEinzelneKopie">
@@ -1292,6 +1291,14 @@
                 </Property>
               </Properties>
             </Component>
+            <Component class="javax.swing.JButton" name="kopieL&#xf6;schen">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xf6;schen"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kopieL&#xf6;schenActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="einsammelnTab">
@@ -1306,21 +1313,25 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="einsammelnEintragLoeschen" min="-2" pref="200" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="einsammelnEingabe" min="-2" pref="200" max="-2" attributes="0"/>
-                                      <Component id="einsammelnAlles" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Component id="einsammelnEingabe" min="-2" pref="200" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="1000" max="-2" attributes="0"/>
+                                      <Component id="einsammelnEintragLoeschen" min="-2" pref="200" max="-2" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                                   <Component id="jScrollPane12" min="-2" pref="1200" max="-2" attributes="0"/>
                               </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="einsammelnAlles" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="90" max="32767" attributes="0"/>
