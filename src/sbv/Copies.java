@@ -1,7 +1,10 @@
 package sbv;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 
 public class Copies {
     // how many copies peer label 
@@ -200,13 +203,22 @@ public class Copies {
                         + "student_id = " + student_id + ", "
                         + "copy_id = " + copy_id);
             } else {
-                Query.anyUpdate("UPDATE sbm_copieshistory "
-                        + "SET paid = '0', "
-                        + "notice = 0, "
-                        + "distributed = " + longTime + ", "
-                        + "collected = '', "
-                        + "student_id = " + student_id + " "
-                        + "WHERE copy_id LIKE " + copy_id);
+                
+                
+               JDialog meinJDialog = new JDialog();
+                meinJDialog.setTitle("Fehler");
+                //meinJDialog.setForeground(Color.red);          
+                meinJDialog.setBounds(500, 250, 0, 0);
+                meinJDialog.setBackground(Color.red);
+                meinJDialog.setSize(350,100); 
+                meinJDialog.setModal(true);
+                
+                JLabel text = new JLabel("    Dieses Buch ist bereits an einen Schüler ausgegeben!");
+                text.setForeground(Color.red);
+                meinJDialog.add(text);
+                meinJDialog.setVisible(true);
+                
+                
             }
         } catch (Exception e) {
             System.out.println(e + " => distributeCopy");
