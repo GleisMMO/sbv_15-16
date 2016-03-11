@@ -17,20 +17,22 @@ public class Other {
         return timestamp;
     }
     
+    /* unused
+    
     public static String addToLength(String in, int length, boolean davor, int spaceBehind) {
-        do {            
+        do {
             if (davor) {
                 in = " ".concat(in); //ERROR bei random Barcode (vielleicht zu lang)
             } else {
                 in = in.concat(" ");
             }
         } while (in.length() < length);
-        
+
         for (int i = 0; i < spaceBehind; i++) {
             in = in.concat(" ");
         }
-        
+
         return in;
-    }
+    }*/
 
 }

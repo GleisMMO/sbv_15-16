@@ -14,35 +14,55 @@ import javax.swing.table.DefaultTableModel;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
-    DefaultListModel listenModell = new DefaultListModel();
+    private static final String EinsammelnCol[] = {"N", "Label", "Barcode", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
+    DefaultTableModel einsammelTabelleModel = new DefaultTableModel(EinsammelnCol, 0);
 
-    static int j;
-    static String barcode, label, name, classe, ausgabe, bougth, paid;
-    static String momentaneKopie;
-    static int testInteger;
-    static String schuelerId;
-    static int schuelerInKlasse;
-    static int schuelerRow;
-    static String momentaneKlasse = null;
-    static int currentPanel = 1;
-    static int speichern = 0;
-    static int skBearbeiten = 0;
+    private static final String schulerCol[] = {"Nachname", "Vorname", "Geburtsdatum"};
+    DefaultTableModel schuelerModel = new DefaultTableModel(schulerCol, 0);
+
+    private static final String buecherCol[] = {"Label", "ISBN", "Preis", "Kaufbuch"};
+    DefaultTableModel buecherModel = new DefaultTableModel(buecherCol, 0);
+
+    private static final String buecherKlasseCol[] = {"Label", "ISBN"};
+    DefaultTableModel buecherKlasseModel = new DefaultTableModel(buecherKlasseCol, 0);
+
+    private static final String schuelerBuecherCol[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
+    DefaultTableModel schuelerBuecherModel = new DefaultTableModel(schuelerBuecherCol, 0);
+
+    static private ArrayList<String> names;
+    static private int index;
+    static private ArrayList<String> klasse;
+    static private ListModel dlm;
+    static private Object item;
+    static private ArrayList<String> data;
+    static private ArrayList<String> buecher;
+    static private String buecherKlasse;
+    static private ArrayList<String> buchKlasse;
+    static private String buchISBN;
+    static private ArrayList<String> ids;
+    static private int buecherRow;
+    static private String buchLabel;
+    static private int anz;
+    static private int id;
+    static private String barcode, classe;
+    static private String momentaneKopie;
+    static private int testInteger;
+    static private ArrayList<String> kopie;
+    static private String schuelerId;
+    static private int schuelerInKlasse;
+    static private int schuelerRow;
+    static private String momentaneKlasse = null;
+    static private int currentPanel = 1;
+    static private int speichern = 0;
+    static private int skBearbeiten = 0;
+
     Connection conn = null;
 
     private void UpdateTable(ArrayList<String> data) {
 
         if (currentPanel == 2) {
-            String col[] = {"Nachname", "Vorname", "Geburtsdatum"};
-            DefaultTableModel schuelerModel = new DefaultTableModel(col, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            for (int i = 0; i <= data.size() - 4; i = i + 4) {
-                Object[] obj = {data.get(i + 1), data.get(i), data.get(i + 2)};
+            for (int a = 0; a <= data.size() - 4; a = a + 4) {
+                Object[] obj = {data.get(a + 1), data.get(a), data.get(a + 2)};
                 schuelerModel.addRow(obj);
             }
 
@@ -50,68 +70,32 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         if (currentPanel == 3) {
-            String col[] = {"Label", "ISBN", "Preis", "Kaufbuch"};
-            DefaultTableModel buecherModel = new DefaultTableModel(col, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            for (int i = 0; i <= data.size() - 4; i = i + 4) {
-                Object[] obj = {data.get(i), data.get(i + 1), data.get(i + 2), data.get(i + 3)};
+            for (int b = 0; b <= data.size() - 4; b = b + 4) {
+                Object[] obj = {data.get(b), data.get(b + 1), data.get(b + 2), data.get(b + 3)};
                 buecherModel.addRow(obj);
             }
             buecherTbl.setModel(buecherModel);
         }
 
         if (currentPanel == 4) {
-            String col[] = {"Label", "ISBN"};
-            DefaultTableModel buecherKlasseModel = new DefaultTableModel(col, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            for (int i = 0; i <= data.size() - 2; i = i + 2) {
-                Object[] obj = {data.get(i), data.get(i + 1)};
+            for (int c = 0; c <= data.size() - 2; c = c + 2) {
+                Object[] obj = {data.get(c), data.get(c + 1)};
                 buecherKlasseModel.addRow(obj);
             }
             buecherKlassenTbl.setModel(buecherKlasseModel);
         }
 
         if (currentPanel == 5) {
-            String col[] = {"Label", "ISBN"};
-            DefaultTableModel buecherKlasseModel = new DefaultTableModel(col, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            for (int i = 0; i <= data.size() - 2; i = i + 2) {
-                Object[] obj = {data.get(i), data.get(i + 1)};
+            for (int d = 0; d <= data.size() - 2; d = d + 2) {
+                Object[] obj = {data.get(d), data.get(d + 1)};
                 buecherKlasseModel.addRow(obj);
             }
             buecherInKlasseTbl.setModel(buecherKlasseModel);
         }
 
         if (currentPanel == 6) {
-            String col[] = {"Label", "ISBN", "Preis", "Kaufbuch"};
-            DefaultTableModel buecherModel = new DefaultTableModel(col, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    //all cells false
-                    return false;
-                }
-            };
-
-            for (int i = 0; i <= data.size() - 4; i = i + 4) {
-                Object[] obj = {data.get(i), data.get(i + 1), data.get(i + 2), data.get(i + 3)};
+            for (int d = 0; d <= data.size() - 4; d = d + 4) {
+                Object[] obj = {data.get(d), data.get(d + 1), data.get(d + 2), data.get(d + 3)};
                 buecherModel.addRow(obj);
             }
             buecherFKlassenTbl.setModel(buecherModel);
@@ -212,11 +196,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         kopieClass = new javax.swing.JLabel();
         kopieLöschen = new javax.swing.JButton();
         einsammelnTab = new javax.swing.JPanel();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        einsammelListe = new javax.swing.JList();
         einsammelnEingabe = new javax.swing.JTextField();
         einsammelnEintragLoeschen = new javax.swing.JButton();
         einsammelnAlles = new javax.swing.JButton();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        einsammelnTabelle = new javax.swing.JTable();
         klassenTab = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         buchKlassenList = new javax.swing.JList();
@@ -1021,11 +1005,6 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
 
-        einsammelListe.setFont(new java.awt.Font("Courier New", 0, 11)); // NOI18N
-        einsammelListe.setModel(listenModell);
-        einsammelListe.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane12.setViewportView(einsammelListe);
-
         einsammelnEingabe.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         einsammelnEingabe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1049,6 +1028,26 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        einsammelnTabelle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane13.setViewportView(einsammelnTabelle);
+
         javax.swing.GroupLayout einsammelnTabLayout = new javax.swing.GroupLayout(einsammelnTab);
         einsammelnTab.setLayout(einsammelnTabLayout);
         einsammelnTabLayout.setHorizontalGroup(
@@ -1060,11 +1059,11 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
                         .addGap(83, 83, 83)
-                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(einsammelnTabLayout.createSequentialGroup()
                                 .addGap(1000, 1000, 1000)
                                 .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane13)))
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1078,8 +1077,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1231,8 +1230,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schuelerTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_schuelerTabComponentAdded
-
-        ArrayList<String> names;
         names = Classes.getClassNameList();
         klassenList.setListData(names.toArray());
         buchKlassenList1.setListData(names.toArray());
@@ -1242,19 +1239,19 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void klassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_klassenListMouseClicked
         currentPanel = 2;
-        int index = klassenList.locationToIndex(evt.getPoint());
-        ListModel dlm = klassenList.getModel();
-        Object item = dlm.getElementAt(index);
+        index = klassenList.locationToIndex(evt.getPoint());
+        dlm = klassenList.getModel();
+        item = dlm.getElementAt(index);
         momentaneKlasse = item.toString();
         klassenList.ensureIndexIsVisible(index);
-        ArrayList<String> klasse = Classes.classList(momentaneKlasse);
+        klasse = Classes.classList(momentaneKlasse);
         UpdateTable(klasse);
         schuelerInKlasse = klasse.size() / 4;
     }//GEN-LAST:event_klassenListMouseClicked
 
     private void schuelerTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerTblMouseClicked
         schuelerRow = schuelerTbl.getSelectedRow();
-        ArrayList<String> data = Classes.classList(momentaneKlasse);
+        data = Classes.classList(momentaneKlasse);
         schuelerId = data.get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
@@ -1262,16 +1259,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        String col[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
-        DefaultTableModel schuelerBuecherModel = new DefaultTableModel(col, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-        };
-
-        ArrayList<String> buecher = Students.BookList(schuelerId);
+        buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
@@ -1312,7 +1300,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         schuelerRow = schuelerRow + 1;
-        ArrayList<String> data = Classes.classList(momentaneKlasse);
+        data = Classes.classList(momentaneKlasse);
         schuelerId = data.get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
@@ -1320,16 +1308,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());//ERROR
 
-        String col[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
-        DefaultTableModel schuelerBuecherModel = new DefaultTableModel(col, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-        };
-
-        ArrayList<String> buecher = Students.BookList(schuelerId);
+        buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
@@ -1348,7 +1327,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         schuelerRow = schuelerRow - 1;
-        ArrayList<String> data = Classes.classList(momentaneKlasse);
+        data = Classes.classList(momentaneKlasse);
         schuelerId = data.get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
@@ -1356,16 +1335,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        String col[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
-        DefaultTableModel schuelerBuecherModel = new DefaultTableModel(col, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-        };
-
-        ArrayList<String> buecher = Students.BookList(schuelerId);
+        buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
@@ -1385,12 +1355,12 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void buchKlassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenListMouseClicked
         currentPanel = 4;
-        int index = buchKlassenList.locationToIndex(evt.getPoint());
-        ListModel dlm = buchKlassenList.getModel();
-        Object item = dlm.getElementAt(index);
-        String buecherKlasse = item.toString();
+        index = buchKlassenList.locationToIndex(evt.getPoint());
+        dlm = buchKlassenList.getModel();
+        item = dlm.getElementAt(index);
+        buecherKlasse = item.toString();
         buchKlassenList1.ensureIndexIsVisible(index);
-        ArrayList<String> buchKlasse = BookGroups.BooksList(buecherKlasse);
+        buchKlasse = BookGroups.BooksList(buecherKlasse);
         UpdateTable(buchKlasse);
     }//GEN-LAST:event_buchKlassenListMouseClicked
 
@@ -1399,9 +1369,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buecherKlassenTblMouseClicked
 
     private void klassenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenTabComponentAdded
-        ArrayList<String> ids = new ArrayList();
         ids = Classes.getClassIDs();
-        ArrayList<String> names = new ArrayList<>();
+        names = new ArrayList<>();
         for (String s : ids) {
             names.add(Classes.getClassName(s));
         }
@@ -1413,7 +1382,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_klasseExportBtnActionPerformed
 
     private void isbnSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnSucheActionPerformed
-        String buchISBN = isbnSuche.getText();
+        buchISBN = isbnSuche.getText();
         if (Books.singleBook(buchISBN, 0).isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mit dieser ISBN");
             einBuchISBNFeld.setText("");
@@ -1428,9 +1397,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_isbnSucheActionPerformed
 
     private void buecherTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buecherTblMouseClicked
-        int buecherRow = buecherTbl.getSelectedRow();
-        ArrayList<String> data = Books.BookList();
-        String buchISBN = data.get(buecherRow * 4 + 1);
+        buecherRow = buecherTbl.getSelectedRow();
+        data = Books.BookList();
+        buchISBN = data.get(buecherRow * 4 + 1);
         einBuchLabelFeld.setText(Books.singleBook(buchISBN, 0).get(0));
         einBuchISBNFeld.setText(Books.singleBook(buchISBN, 0).get(1));
         einBuchKaufFeld.setText(Books.singleBook(buchISBN, 0).get(3));
@@ -1442,7 +1411,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buecherTblMouseClicked
 
     private void labelSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelSucheActionPerformed
-        String buchLabel = isbnSuche.getText();
+        buchLabel = isbnSuche.getText();
         if (Books.singleBook(buchLabel, 1).isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mir diesem Label");
             einBuchISBNFeld.setText("");
@@ -1457,14 +1426,14 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_labelSucheActionPerformed
 
     private void neuKopieBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_neuKopieBtnMouseClicked
-        int anz = Integer.parseInt(neuKopieAnzahl.getText());
-        int id = Copies.newID();
+        anz = Integer.parseInt(neuKopieAnzahl.getText());
+        id = Copies.newID();
         if (id == 0) {
             neuKopieBtn.setText("Error");
         } else {
             try {
                 PDF_Export.barcodePDF(id, anz);
-            } catch (Exception e) {
+            } catch (IOException | DocumentException e) {
                 System.out.println(e + " => barcodePDF");
             }
             for (int i = 0; i < anz; i++) {
@@ -1478,9 +1447,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_neuKopieAnzahlActionPerformed
 
     private void schuelerKlassenListNeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerKlassenListNeuMouseClicked
-        int index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
-        ListModel dlm = schuelerKlassenListNeu.getModel();
-        Object item = dlm.getElementAt(index);
+        index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
+        dlm = schuelerKlassenListNeu.getModel();
+        item = dlm.getElementAt(index);
         schuelerKlassenListNeu.ensureIndexIsVisible(index);
         Students.addToClass(schuelerId, item.toString());
     }//GEN-LAST:event_schuelerKlassenListNeuMouseClicked
@@ -1542,12 +1511,12 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void buchKlassenList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenList1MouseClicked
         currentPanel = 5;
-        int index = buchKlassenList1.locationToIndex(evt.getPoint());
-        ListModel dlm = buchKlassenList1.getModel();
-        Object item = dlm.getElementAt(index);
-        String buecherKlasse = item.toString();
+        index = buchKlassenList1.locationToIndex(evt.getPoint());
+        dlm = buchKlassenList1.getModel();
+        item = dlm.getElementAt(index);
+        buecherKlasse = item.toString();
         buchKlassenList1.ensureIndexIsVisible(index);
-        ArrayList<String> buchKlasse = BookGroups.BooksList(buecherKlasse);
+        buchKlasse = BookGroups.BooksList(buecherKlasse);
         UpdateTable(buchKlasse);
     }//GEN-LAST:event_buchKlassenList1MouseClicked
 
@@ -1563,17 +1532,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_ausgebenActionPerformed
 
     private void buecherSchuelerTblAktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buecherSchuelerTblAktActionPerformed
-        //Tabelle auf Oberfläche aktualisieren
-        String col[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
-        DefaultTableModel schuelerBuecherModel = new DefaultTableModel(col, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                //all cells false
-                return false;
-            }
-        };
-
-        ArrayList<String> buecher = Students.BookList(schuelerId);
+        buecher = Students.BookList(schuelerId);
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
@@ -1588,11 +1547,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buecherTblAktActionPerformed
 
     private void neuKlasseBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_neuKlasseBtnMouseClicked
-        String klasse = neuKlasseFeld.getText();
-        if (klasse.isEmpty()) {
+        String klasseNew = neuKlasseFeld.getText();
+        if (klasseNew.isEmpty()) {
 
         } else {
-            Classes.newClass(klasse);
+            Classes.newClass(klasseNew);
         }
     }//GEN-LAST:event_neuKlasseBtnMouseClicked
 
@@ -1645,9 +1604,9 @@ public class Oberflaeche extends javax.swing.JFrame {
             System.out.println(" => Input is not a number!");
             return;
         }
-        
+
         momentaneKopie = eineKopieSuchen.getText();
-        ArrayList<String> kopie = Copies.Singlecopy(momentaneKopie);
+        kopie = Copies.Singlecopy(momentaneKopie);
         eineKopieSuchen.selectAll();
 
         kopieLabel.setText(kopie.get(0));
@@ -1676,61 +1635,50 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void einsammelnEingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEingabeActionPerformed
         barcode = einsammelnEingabe.getText();
-        ArrayList<String> kopie = Copies.Singlecopy(barcode);
-        
-        barcode = Other.addToLength(barcode, 4, true, 2);
-        
-        label = Other.addToLength(kopie.get(0), 85, true, 2);
-        
-        /*Oberstufe Religion 7 -  Der Mann aus Nazareth Jesus Christus
-        Mathematik für berufliche Gymnasien Lineare Algebra - Vektorielle Geometrie
-        Arbeitsheft - Mathematik für berufliche Gymnasien - J 1 & 2 - Analysis und Stochastik*/
+        kopie = Copies.Singlecopy(barcode);
 
-        name = Other.addToLength(kopie.get(7).concat(" ").concat(kopie.get(8)), 25, false, 2);
-        
         try {
             classe = (Students.SingelStudentClasses(kopie.get(1)).get(0));
         } catch (Exception e) {
             System.out.println(e + " => Cant show Class of Student of Copy");
             classe = "none";
         }
-        classe = Other.addToLength(classe, 13, true, 2);
-        
-        ausgabe = Other.addToLength(Other.ToNormal(kopie.get(2)), 11, true, 2);
-        
-        bougth = Other.addToLength(kopie.get(4), 1, true, 2);
-        
-        paid = Other.addToLength(kopie.get(6), 1, true, 2);
-        
-        listenModell.addElement(label.concat(barcode).concat(name).concat(classe).concat(ausgabe).concat(bougth).concat(paid));
-        
+
+        //listenModell.addElement(label.concat(barcode).concat(name).concat(classe).concat(ausgabe).concat(bougth).concat(paid));
+        String newRow[] = {String.valueOf(einsammelTabelleModel.getRowCount() + 1), //N
+            kopie.get(0), //Label
+            barcode, //Barcode
+            kopie.get(7).concat(" ").concat(kopie.get(8)), //Name
+            classe, //Class
+            (Other.ToNormal(kopie.get(2))), //Distributed
+            kopie.get(4), //Bought
+            kopie.get(6)};                                                          //Paid
+
+        einsammelTabelleModel.addRow(newRow);
+
+        einsammelnTabelle.setModel(einsammelTabelleModel);
+
         einsammelnEingabe.selectAll();
         einsammelnAlles.setEnabled(true);
-        einsammelnEintragLoeschen.setEnabled(true);
     }//GEN-LAST:event_einsammelnEingabeActionPerformed
 
     private void einsammelnEintragLoeschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEintragLoeschenActionPerformed
-        if (einsammelListe.getSelectedValue() != null) {
-            listenModell.removeElementAt(einsammelListe.getSelectedIndex());
+        int rows[] = einsammelnTabelle.getSelectedRows();
+        if (rows != null) {
+            for (int i = 0; i < rows.length; i++) {
+                einsammelTabelleModel.removeRow(0);
+            }
         }
 
-        if (listenModell.isEmpty()) {
+        if (einsammelTabelleModel.getRowCount() == 0) {
             einsammelnAlles.setEnabled(false);
-            einsammelnEintragLoeschen.setEnabled(false);
         }
+
+        einsammelnEintragLoeschen.setEnabled(false);
     }//GEN-LAST:event_einsammelnEintragLoeschenActionPerformed
 
     private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
-        j = listenModell.size();
-        if (j != 0) {
-            do {
-                Copies.collectCopy((String) listenModell.get(0));
-                listenModell.removeElementAt(0);
-                j--;
-            } while (j > 0);
-        }
-        einsammelnAlles.setEnabled(false);
-        einsammelnEintragLoeschen.setEnabled(false);
+
 
     }//GEN-LAST:event_einsammelnAllesActionPerformed
 
@@ -1757,15 +1705,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Oberflaeche.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Oberflaeche.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Oberflaeche.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Oberflaeche.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
@@ -1805,11 +1750,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JPanel einKopieTab;
     private javax.swing.JPanel einSchuelerTab;
     private javax.swing.JTextField eineKopieSuchen;
-    private javax.swing.JList einsammelListe;
     private javax.swing.JButton einsammelnAlles;
     private javax.swing.JTextField einsammelnEingabe;
     private javax.swing.JButton einsammelnEintragLoeschen;
     private javax.swing.JPanel einsammelnTab;
+    private javax.swing.JTable einsammelnTabelle;
     private javax.swing.JLabel freieBuecher;
     private javax.swing.JPanel homeTab;
     private javax.swing.JTextField isbnSuche;
@@ -1835,7 +1780,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
