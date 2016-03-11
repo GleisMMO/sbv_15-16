@@ -1,10 +1,14 @@
 package sbv;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class Copies {
     // how many copies peer label 
@@ -209,16 +213,16 @@ public class Copies {
                 meinJDialog.setTitle("Fehler");
                 //meinJDialog.setForeground(Color.red);          
                 meinJDialog.setBounds(500, 250, 0, 0);
-                meinJDialog.setBackground(Color.red);
                 meinJDialog.setSize(350,100); 
                 meinJDialog.setModal(true);
-                
                 JLabel text = new JLabel("    Dieses Buch ist bereits an einen Schüler ausgegeben!");
                 text.setForeground(Color.red);
                 meinJDialog.add(text);
+                
+                Container contentpane = meinJDialog.getContentPane();
+                contentpane.setBackground(Color.black);
+              
                 meinJDialog.setVisible(true);
-                
-                
             }
         } catch (Exception e) {
             System.out.println(e + " => distributeCopy");
