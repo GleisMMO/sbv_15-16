@@ -16,20 +16,55 @@ import javax.swing.table.TableColumn;
 public class Oberflaeche extends javax.swing.JFrame {
 
     private static final String einsammelnCol[] = {"N", "Label", "Code", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
-    DefaultTableModel einsammelTabelleModel = new DefaultTableModel(einsammelnCol, 0);
+    DefaultTableModel einsammelTabelleModel = new DefaultTableModel(einsammelnCol, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     static private final int einsammelnColSize[] = {25, 409, 55, 160, 90, 80, 55, 55};
+    static private boolean einsammelnColSizeSet = true;
 
     private static final String schulerCol[] = {"Nachname", "Vorname", "Geburtsdatum"};
-    DefaultTableModel schuelerModel = new DefaultTableModel(schulerCol, 0);
+    DefaultTableModel schuelerModel = new DefaultTableModel(schulerCol, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    static private final int schulerColSize[] = {80, 80, 50};
+    static private boolean schulerColSizeSet = true;
 
     private static final String buecherCol[] = {"Label", "ISBN", "Preis", "Kaufbuch"};
-    DefaultTableModel buecherModel = new DefaultTableModel(buecherCol, 0);
+    DefaultTableModel buecherModel = new DefaultTableModel(buecherCol, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    static private final int buecherColSize[] = {409, 80, 55, 55};
+    static private boolean buecherColSizeSet = true;
+    static private boolean buecherFColSizeSet = true;
 
     private static final String buecherKlasseCol[] = {"Label", "ISBN"};
-    DefaultTableModel buecherKlasseModel = new DefaultTableModel(buecherKlasseCol, 0);
+    DefaultTableModel buecherKlasseModel = new DefaultTableModel(buecherKlasseCol, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    static private final int buecherKlasseColSize[] = {409, 80};
+    static private boolean buecherKlasseColSizeSet = true;
 
     private static final String schuelerBuecherCol[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
-    DefaultTableModel schuelerBuecherModel = new DefaultTableModel(schuelerBuecherCol, 0);
+    DefaultTableModel schuelerBuecherModel = new DefaultTableModel(schuelerBuecherCol, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    static private final int schuelerBuecherColSize[] = {25, 409, 55, 80, 55, 55};
+    static private boolean schuelerBuecherColSizeSet = true;
 
     static private ArrayList<String> names;
     static private int index;
@@ -54,7 +89,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private int schuelerInKlasse;
     static private int schuelerRow;
     static private TableColumn col;
-    static private boolean columnSizeSet = true;
     static private String momentaneKlasse = null;
     static private int currentPanel = 1;
     static private int speichern = 0;
@@ -65,44 +99,109 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void UpdateTable(ArrayList<String> data) {
 
         if (currentPanel == 2) {
+            while (schuelerModel.getRowCount() != 0) {
+                schuelerModel.removeRow(0);
+            }
+
             for (int a = 0; a <= data.size() - 4; a = a + 4) {
                 Object[] obj = {data.get(a + 1), data.get(a), data.get(a + 2)};
                 schuelerModel.addRow(obj);
             }
 
             schuelerTbl.setModel(schuelerModel);
+
+            if (schulerColSizeSet) {
+                schulerColSizeSet = false;
+                for (int i = 0; i < schulerColSize.length; i++) {
+                    col = schuelerTbl.getColumnModel().getColumn(i);
+                    col.setPreferredWidth(schulerColSize[i]);
+                }
+                schuelerTbl.setAutoResizeMode(1);
+            }
         }
 
         if (currentPanel == 3) {
+            while (buecherModel.getRowCount() != 0) {
+                buecherModel.removeRow(0);
+            }
+
             for (int b = 0; b <= data.size() - 4; b = b + 4) {
                 Object[] obj = {data.get(b), data.get(b + 1), data.get(b + 2), data.get(b + 3)};
                 buecherModel.addRow(obj);
             }
             buecherTbl.setModel(buecherModel);
+
+            if (buecherColSizeSet) {
+                buecherColSizeSet = false;
+                for (int i = 0; i < buecherColSize.length; i++) {
+                    col = buecherTbl.getColumnModel().getColumn(i);
+                    col.setPreferredWidth(buecherColSize[i]);
+                }
+                buecherTbl.setAutoResizeMode(1);
+            }
         }
 
         if (currentPanel == 4) {
+            while (buecherKlasseModel.getRowCount() != 0) {
+                buecherKlasseModel.removeRow(0);
+            }
+
             for (int c = 0; c <= data.size() - 2; c = c + 2) {
                 Object[] obj = {data.get(c), data.get(c + 1)};
                 buecherKlasseModel.addRow(obj);
             }
             buecherKlassenTbl.setModel(buecherKlasseModel);
+
+            if (buecherKlasseColSizeSet) {
+                buecherKlasseColSizeSet = false;
+                for (int i = 0; i < buecherKlasseColSize.length; i++) {
+                    col = buecherKlassenTbl.getColumnModel().getColumn(i);
+                    col.setPreferredWidth(buecherKlasseColSize[i]);
+                }
+                buecherKlassenTbl.setAutoResizeMode(1);
+            }
         }
 
         if (currentPanel == 5) {
+            while (buecherKlasseModel.getRowCount() != 0) {
+                buecherKlasseModel.removeRow(0);
+            }
+
             for (int d = 0; d <= data.size() - 2; d = d + 2) {
                 Object[] obj = {data.get(d), data.get(d + 1)};
                 buecherKlasseModel.addRow(obj);
             }
             buecherInKlasseTbl.setModel(buecherKlasseModel);
+
+            if (buecherKlasseColSizeSet) {
+                buecherKlasseColSizeSet = false;
+                for (int i = 0; i < buecherKlasseColSize.length; i++) {
+                    col = buecherKlassenTbl.getColumnModel().getColumn(i);
+                    col.setPreferredWidth(buecherKlasseColSize[i]);
+                }
+                buecherKlassenTbl.setAutoResizeMode(1);
+            }
         }
 
         if (currentPanel == 6) {
+            while (buecherModel.getRowCount() != 0) {
+                buecherModel.removeRow(0);
+            }
+
             for (int d = 0; d <= data.size() - 4; d = d + 4) {
                 Object[] obj = {data.get(d), data.get(d + 1), data.get(d + 2), data.get(d + 3)};
                 buecherModel.addRow(obj);
             }
             buecherFKlassenTbl.setModel(buecherModel);
+
+            if (buecherFColSizeSet) {
+                buecherFColSizeSet = false;
+                for (int i = 0; i < buecherColSize.length; i++) {
+                    col = buecherFKlassenTbl.getColumnModel().getColumn(i);
+                    col.setPreferredWidth(buecherColSize[i]);
+                }
+                buecherFKlassenTbl.setAutoResizeMode(1);
+            }
         }
     }
 
@@ -307,7 +406,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        schuelerTbl.setDragEnabled(true);
         schuelerTbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 schuelerTblMouseClicked(evt);
@@ -1256,11 +1354,25 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         buecher = Students.BookList(schuelerId);
 
+        while (schuelerBuecherModel.getRowCount() != 0) {
+            schuelerBuecherModel.removeRow(0);
+        }
+
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
+
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
+
+        if (schuelerBuecherColSizeSet) {
+            schuelerBuecherColSizeSet = false;
+            for (int i = 0; i < schuelerBuecherColSize.length; i++) {
+                col = schuelerBuecherTbl.getColumnModel().getColumn(i);
+                col.setPreferredWidth(schuelerBuecherColSize[i]);
+            }
+            schuelerBuecherTbl.setAutoResizeMode(1);
+        }
 
         if (evt.getClickCount() == 2) {
             basePanel.setSelectedIndex(2);
@@ -1305,6 +1417,10 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         buecher = Students.BookList(schuelerId);
 
+        while (schuelerBuecherModel.getRowCount() != 0) {
+            schuelerBuecherModel.removeRow(0);
+        }
+
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
@@ -1331,6 +1447,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
         buecher = Students.BookList(schuelerId);
+
+        while (schuelerBuecherModel.getRowCount() != 0) {
+            schuelerBuecherModel.removeRow(0);
+        }
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
@@ -1513,6 +1633,10 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void buecherSchuelerTblAktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buecherSchuelerTblAktActionPerformed
         buecher = Students.BookList(schuelerId);
 
+        while (schuelerBuecherModel.getRowCount() != 0) {
+            schuelerBuecherModel.removeRow(0);
+        }
+
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
             Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
@@ -1636,8 +1760,8 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         einsammelnTabelle.setModel(einsammelTabelleModel);
 
-        if (columnSizeSet) {
-            columnSizeSet = false;
+        if (einsammelnColSizeSet) {
+            einsammelnColSizeSet = false;
             for (int i = 0; i < einsammelnColSize.length; i++) {
                 col = einsammelnTabelle.getColumnModel().getColumn(i);
                 col.setPreferredWidth(einsammelnColSize[i]);
