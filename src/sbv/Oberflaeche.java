@@ -11,11 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
-    private static final String EinsammelnCol[] = {"N", "Label", "Barcode", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
-    DefaultTableModel einsammelTabelleModel = new DefaultTableModel(EinsammelnCol, 0);
+    private static final String einsammelnCol[] = {"N", "Label", "Code", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
+    DefaultTableModel einsammelTabelleModel = new DefaultTableModel(einsammelnCol, 0);
+    static private final int einsammelnColSize[] = {25, 409, 55, 160, 90, 80, 55, 55};
 
     private static final String schulerCol[] = {"Nachname", "Vorname", "Geburtsdatum"};
     DefaultTableModel schuelerModel = new DefaultTableModel(schulerCol, 0);
@@ -51,6 +53,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String schuelerId;
     static private int schuelerInKlasse;
     static private int schuelerRow;
+    static private TableColumn col;
+    static private boolean columnSizeSet = true;
     static private String momentaneKlasse = null;
     static private int currentPanel = 1;
     static private int speichern = 0;
@@ -201,6 +205,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         einsammelnAlles = new javax.swing.JButton();
         jScrollPane13 = new javax.swing.JScrollPane();
         einsammelnTabelle = new javax.swing.JTable();
+        einsammelnPic = new javax.swing.JLabel();
         klassenTab = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         buchKlassenList = new javax.swing.JList();
@@ -709,12 +714,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        neuKopieAnzahl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                neuKopieAnzahlActionPerformed(evt);
-            }
-        });
-
         jLabel18.setText("Anzahl an neuen Kopien");
 
         buchNeu.setText("Neues Buch");
@@ -732,11 +731,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
 
         buchLöschen.setText("Buch löschen");
-        buchLöschen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buchLöschenActionPerformed(evt);
-            }
-        });
 
         einBuchISBNFeld.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         einBuchISBNFeld.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -1005,6 +999,12 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
 
+        einsammelnTab.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                einsammelnTabComponentAdded(evt);
+            }
+        });
+
         einsammelnEingabe.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         einsammelnEingabe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1030,54 +1030,54 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         einsammelnTabelle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "N"
             }
         ));
+        einsammelnTabelle.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        einsammelnTabelle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                einsammelnTabelleMouseClicked(evt);
+            }
+        });
         jScrollPane13.setViewportView(einsammelnTabelle);
+
+        einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png"))); // NOI18N
 
         javax.swing.GroupLayout einsammelnTabLayout = new javax.swing.GroupLayout(einsammelnTab);
         einsammelnTab.setLayout(einsammelnTabLayout);
         einsammelnTabLayout.setHorizontalGroup(
             einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(einsammelnTabLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(einsammelnTabLayout.createSequentialGroup()
-                                .addGap(1000, 1000, 1000)
-                                .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane13)))
-                    .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(einsammelnPic)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         einsammelnTabLayout.setVerticalGroup(
             einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71)
-                .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(einsammelnPic))
                 .addGap(18, 18, 18)
                 .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1113,11 +1113,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         ));
         buecherKlassenTbl.setDragEnabled(true);
-        buecherKlassenTbl.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buecherKlassenTblMouseClicked(evt);
-            }
-        });
         jScrollPane7.setViewportView(buecherKlassenTbl);
 
         javax.swing.GroupLayout klassenTabLayout = new javax.swing.GroupLayout(klassenTab);
@@ -1364,10 +1359,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         UpdateTable(buchKlasse);
     }//GEN-LAST:event_buchKlassenListMouseClicked
 
-    private void buecherKlassenTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buecherKlassenTblMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buecherKlassenTblMouseClicked
-
     private void klassenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenTabComponentAdded
         ids = Classes.getClassIDs();
         names = new ArrayList<>();
@@ -1442,10 +1433,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_neuKopieBtnMouseClicked
 
-    private void neuKopieAnzahlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuKopieAnzahlActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_neuKopieAnzahlActionPerformed
-
     private void schuelerKlassenListNeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerKlassenListNeuMouseClicked
         index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
         dlm = schuelerKlassenListNeu.getModel();
@@ -1472,10 +1459,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             speichern = 0;
         }
     }//GEN-LAST:event_buchNeuActionPerformed
-
-    private void buchLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchLöschenActionPerformed
-
-    }//GEN-LAST:event_buchLöschenActionPerformed
 
     private void buchBearbeitenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchBearbeitenActionPerformed
         if (speichern == 0) {
@@ -1504,10 +1487,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             skBearbeiten = 0;
         }
     }//GEN-LAST:event_schuelerKlassenBearbeitenActionPerformed
-
-    private void ausgebenIDFeldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausgebenIDFeldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ausgebenIDFeldActionPerformed
 
     private void buchKlassenList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenList1MouseClicked
         currentPanel = 5;
@@ -1644,7 +1623,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             classe = "none";
         }
 
-        //listenModell.addElement(label.concat(barcode).concat(name).concat(classe).concat(ausgabe).concat(bougth).concat(paid));
         String newRow[] = {String.valueOf(einsammelTabelleModel.getRowCount() + 1), //N
             kopie.get(0), //Label
             barcode, //Barcode
@@ -1652,22 +1630,42 @@ public class Oberflaeche extends javax.swing.JFrame {
             classe, //Class
             (Other.ToNormal(kopie.get(2))), //Distributed
             kopie.get(4), //Bought
-            kopie.get(6)};                                                          //Paid
+            kopie.get(6)}; //Paid
 
         einsammelTabelleModel.addRow(newRow);
 
         einsammelnTabelle.setModel(einsammelTabelleModel);
+
+        if (columnSizeSet) {
+            columnSizeSet = false;
+            for (int i = 0; i < einsammelnColSize.length; i++) {
+                col = einsammelnTabelle.getColumnModel().getColumn(i);
+                col.setPreferredWidth(einsammelnColSize[i]);
+            }
+            einsammelnTabelle.setAutoResizeMode(1);
+        }
+
+        try {
+            einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/Buch_"
+                    + Books.singleBook(kopie.get(0), 1).get(4)
+                    + ".jpg")));
+        } catch (Exception e) {
+            System.out.println(e + " => Cant show BookPic Einsammeln");
+            einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
+        }
+        einsammelnPic.setVisible(true);
 
         einsammelnEingabe.selectAll();
         einsammelnAlles.setEnabled(true);
     }//GEN-LAST:event_einsammelnEingabeActionPerformed
 
     private void einsammelnEintragLoeschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEintragLoeschenActionPerformed
-        int rows[] = einsammelnTabelle.getSelectedRows();
-        if (rows != null) {
-            for (int i = 0; i < rows.length; i++) {
-                einsammelTabelleModel.removeRow(0);
-            }
+        while (einsammelnTabelle.getSelectedRow() != -1) {
+            einsammelTabelleModel.removeRow(einsammelnTabelle.getSelectedRow());
+        }
+
+        for (int i = 0; i < einsammelTabelleModel.getRowCount(); i++) {
+            einsammelTabelleModel.setValueAt(i + 1, i, 0);
         }
 
         if (einsammelTabelleModel.getRowCount() == 0) {
@@ -1678,8 +1676,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_einsammelnEintragLoeschenActionPerformed
 
     private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
-
-
+        while (einsammelTabelleModel.getRowCount() != 0) {
+            item = einsammelTabelleModel.getValueAt(0, 2);
+            Copies.collectCopy((String) item);
+            einsammelTabelleModel.removeRow(0);
+        }
+        einsammelnAlles.setEnabled(false);
+        einsammelnPic.setVisible(false);
     }//GEN-LAST:event_einsammelnAllesActionPerformed
 
     private void kopieLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieLöschenActionPerformed
@@ -1688,6 +1691,29 @@ public class Oberflaeche extends javax.swing.JFrame {
         eineKopieSuchen.setCaretPosition(0);
         eineKopieSuchen.selectAll();
     }//GEN-LAST:event_kopieLöschenActionPerformed
+
+    private void ausgebenIDFeldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausgebenIDFeldActionPerformed
+        ausgebenActionPerformed(evt);
+    }//GEN-LAST:event_ausgebenIDFeldActionPerformed
+
+    private void einsammelnTabelleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_einsammelnTabelleMouseClicked
+        einsammelnEintragLoeschen.setEnabled(true);
+
+        try {
+            einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/Buch_"
+                    + Books.singleBook((String) einsammelTabelleModel.getValueAt(einsammelnTabelle.getSelectedRow(), 1), 1).get(4)
+                    + ".jpg")));
+        } catch (Exception e) {
+            System.out.println(e + " => Cant show BookPic Einsammeln");
+            einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
+        }
+        einsammelnPic.setVisible(true);
+    }//GEN-LAST:event_einsammelnTabelleMouseClicked
+
+    private void einsammelnTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_einsammelnTabComponentAdded
+        currentPanel = 8;
+        UpdateTable(null);
+    }//GEN-LAST:event_einsammelnTabComponentAdded
 
     /**
      * @param args the command line arguments
@@ -1710,7 +1736,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
 
@@ -1753,6 +1779,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JButton einsammelnAlles;
     private javax.swing.JTextField einsammelnEingabe;
     private javax.swing.JButton einsammelnEintragLoeschen;
+    private javax.swing.JLabel einsammelnPic;
     private javax.swing.JPanel einsammelnTab;
     private javax.swing.JTable einsammelnTabelle;
     private javax.swing.JLabel freieBuecher;

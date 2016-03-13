@@ -39,7 +39,7 @@ public class Books {
             }
         } else {
             try {
-                return Query.anyQuery("SELECT label, isbn, price, buy "
+                return Query.anyQuery("SELECT label, isbn, price, buy, ID "
                         + "FROM sbm_books "
                         + "WHERE label Like '" + sterm + "'");
             } catch (Exception e) {

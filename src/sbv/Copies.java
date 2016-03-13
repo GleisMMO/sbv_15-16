@@ -238,6 +238,7 @@ public class Copies {
             Query.anyUpdate("DELETE FROM sbm_copieshistory "
                     + "WHERE copy_id "
                     + "LIKE " + copy_id);
+            System.out.println("SQL: collected Copy" + copy_id);
         } catch (Exception e) {
             System.out.println(e + " => collectCopy");
         }
