@@ -1,7 +1,5 @@
 package sbv;
 
-import java.util.ArrayList;
-
 public class Home {
 
     //Cureent Students count

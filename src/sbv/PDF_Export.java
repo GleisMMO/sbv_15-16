@@ -54,7 +54,7 @@ public class PDF_Export {
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + class_ID + ".pdf"));
 
-            ArrayList<String> a2 = new ArrayList();
+            ArrayList<String> a2;
             a2 = Classes.studentIDList(class_ID);
             document.addAuthor(System.getProperty("user.name"));
             document.addCreationDate();
@@ -102,7 +102,7 @@ public class PDF_Export {
 
             Chapter chapter1 = PdfChapter(studentID);
 
-            ArrayList<String> bookArray = new ArrayList();
+            ArrayList<String> bookArray;
             bookArray = Students.BookList(studentID);
             PdfPTable table = new PdfPTable(5);
 
@@ -206,7 +206,7 @@ public class PDF_Export {
 
     public static PdfPTable studentPDFTable(String studentID, int maxInd) {
 
-        ArrayList<String> bookArray = new ArrayList();
+        ArrayList<String> bookArray;
         bookArray = Students.BookList(studentID);
 
         PdfPTable table = new PdfPTable(5);//Tabelle mit 5 Spalten erstellen
@@ -332,7 +332,7 @@ public class PDF_Export {
             Chapter chapter1 = new Chapter(titel1, 1);
             chapter1.setNumberDepth(0);
 
-            ArrayList<String> bookIDs = new ArrayList();
+            ArrayList<String> bookIDs;
             bookIDs = Books.BookIDList();
             PdfPTable table = new PdfPTable(5);
             //Tabelle mit 5 Spalten erstellen
@@ -479,7 +479,7 @@ public class PDF_Export {
 
             Chapter chapter1 = PdfChapter(studentID);
 
-            ArrayList<String> bookArray = new ArrayList();
+            ArrayList<String> bookArray;
             bookArray = Copies.copyBill(studentID);
             PdfPTable table = new PdfPTable(2);
 
@@ -522,7 +522,7 @@ public class PDF_Export {
     }
 
     public static PdfPTable billTable(String studentID) {
-        ArrayList<String> bookArray = new ArrayList();
+        ArrayList<String> bookArray;
         bookArray = Copies.copyBill(studentID);
         PdfPTable table = new PdfPTable(2);
 
@@ -570,7 +570,7 @@ public class PDF_Export {
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + class_ID + "-Rechnung.pdf"));
 
-            ArrayList<String> studentArray = new ArrayList();
+            ArrayList<String> studentArray;
             studentArray = Classes.studentIDList(class_ID);
             document.addAuthor(System.getProperty("user.name"));
             document.addCreationDate();
@@ -607,7 +607,7 @@ public class PDF_Export {
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + class_ID + "-Rechnung.pdf"));
 
-            ArrayList<String> studentArray = new ArrayList();
+            ArrayList<String> studentArray;
             studentArray = Classes.studentIDList(class_ID);
             document.addAuthor(System.getProperty("user.name"));
             document.addCreationDate();

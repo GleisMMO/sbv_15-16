@@ -1,14 +1,11 @@
 package sbv;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class Copies {
     // how many copies peer label 

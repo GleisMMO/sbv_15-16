@@ -96,7 +96,7 @@ public class Students {
                 for (int o = 0; o < books.size(); o++) {
                     for (int k = 0; k < studentsBooks.size(); k++) {
                         do {
-                            if (books.get(o) == studentsBooks.get(k)) {
+                            if (books.get(o).equals(studentsBooks.get(k))) {
                                 results[o] = true;
                             } else {
                                 results[o] = false;
