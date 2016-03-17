@@ -8,19 +8,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 public class Copies {
-    // how many copies peer label 
-    /*public static ArrayList<String> CopyCount(String BookID){ //Takes super long
-     try{
-     return  Query.anyQuery("SELECT sbm_books.ID, sbm_books.label, COUNT(sbm_copieshistory.ID) FROM sbm_copieshistory, sbm_books, sbm_copies WHERE sbm_copies.book_id LIKE sbm_books.ID AND sbm_copieshistory.copy_id LIKE sbm_copies.ID GROUP BY sbm_books.label");
-     }catch(Exception e){System.out.println(e+ "CopyCount");}
-     return null;
-     }*/
 
     public static String SingleCopyCountTotal(String BookID) { //Takes super long
         try {
             return Query.getString("SELECT COUNT(ID) "
                     + "FROM sbm_copies "
-                    + "WHERE book_id LIKE " + BookID, 
+                    + "WHERE book_id LIKE " + BookID,
                     "COUNT(ID)");
         } catch (Exception e) {
             System.out.println(e + " => CopyCount");
@@ -35,7 +28,7 @@ public class Copies {
                     + "WHERE buy = 1 "
                     + "AND sbm_copies.book_id LIKE sbm_books.ID"
                     + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
+                    + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copies.ID)");
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
@@ -48,40 +41,16 @@ public class Copies {
             int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM sbm_copieshistory , sbm_copies "
                     + "WHERE copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
+                    + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copieshistory.ID)"));
             int all = Integer.parseInt(SingleCopyCountTotal(book_id));
             int caughthistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM sbm_copieshistory , sbm_copies "
                     + "WHERE collected LIKE '1%' "
                     + "AND copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
+                    + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copieshistory.ID)"));
             int result = caughthistory + (all - history);
-            return Integer.toString(result);
-        } catch (Exception e) {
-            System.out.println(e + " => CauchtCopyCount");
-        }
-        return null;
-    }
-
-    public static String CopiesInStock(String book_id) {
-        try {
-            int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
-                    + "FROM sbm_copieshistory , sbm_copies "
-                    + "WHERE copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
-                    "COUNT(sbm_copieshistory.ID)"));
-            int all = Integer.parseInt(SingleCopyCountTotal(book_id));
-            int catchedhistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
-                    + "FROM sbm_copieshistory , sbm_copies, sbm_books "
-                    + "WHERE buy = 0 "
-                    + "AND collected LIKE '%' "
-                    + "AND sbm_copies.book_id LIKE sbm_books.ID"
-                    + "AND copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
-                    "COUNT(sbm_copieshistory.ID)"));
-            int result = catchedhistory + (all - history);
             return Integer.toString(result);
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
@@ -97,7 +66,7 @@ public class Copies {
                     + "AND collected LIKE '' "
                     + "AND sbm_copies.book_id LIKE sbm_books.ID "
                     + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
-                    + "AND book_id LIKE " + book_id, 
+                    + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copies.ID)");
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
@@ -121,29 +90,13 @@ public class Copies {
                     + "AND paid LIKE 0 "
                     + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
                     + "AND sbm_copies.book_id LIKE sbm_books.ID"
-                    + "AND student_id LIKE '" + student_id + "'", 
+                    + "AND student_id LIKE '" + student_id + "'",
                     "sum(price)"));
             Query.output(bill, Query.TableNames("SELECT sbm_books.label, sbm_books.price "
                     + "FROM"));//todo read
             return bill;
         } catch (Exception e) {
             System.out.println(e + " => CopyCount");
-        }
-        return null;
-    }
-
-    //Buch informationen abhängig vom der copyID und einem index zum durchschalten der einzelnen infos 
-    public static String Singlecopy(String copyId, int index) {
-        try {
-            ArrayList<String> result = Query.anyQuery("SELECT label, sbm_copieshistory.ID, distributed, collected, buy, notice, paid "
-                    + "FROM sbm_copieshistory, sbm_copies, sbm_books, sbm_students "
-                    + "WHERE sbm_books.ID = sbm_copies.book_id "
-                    + "AND sbm_copieshistory.copy_id = sbm_copies.ID  "
-                    + "AND sbm_copieshistory.student_id = sbm_students.ID "
-                    + "AND sbm_copieshistory.copy_id LIKE " + copyId);
-            return result.get(index);
-        } catch (Exception e) {
-            System.out.println(e + " => Singlecopy");
         }
         return null;
     }
@@ -176,11 +129,11 @@ public class Copies {
                 return result;
             } else {
                 /*result = Query.anyQuery("SELECT label, sbm_copieshistory.ID, distributed, collected, buy, notice, paid, forename, surname 
-                FROM sbm_copieshistory, sbm_copies, sbm_books, sbm_students 
-                WHERE sbm_books.ID = sbm_copies.book_id 
-                AND sbm_copieshistory.copy_id = sbm_copies.ID 
-                AND sbm_copieshistory.student_id = sbm_students.ID 
-                AND sbm_copieshistory.copy_id LIKE "+copyId); */
+                 FROM sbm_copieshistory, sbm_copies, sbm_books, sbm_students 
+                 WHERE sbm_books.ID = sbm_copies.book_id 
+                 AND sbm_copieshistory.copy_id = sbm_copies.ID 
+                 AND sbm_copieshistory.student_id = sbm_students.ID 
+                 AND sbm_copieshistory.copy_id LIKE "+copyId); */
                 return result;
             }
         } catch (Exception e) {
@@ -204,21 +157,20 @@ public class Copies {
                         + "student_id = " + student_id + ", "
                         + "copy_id = " + copy_id);
             } else {
-                
-                
-               JDialog meinJDialog = new JDialog();
+
+                JDialog meinJDialog = new JDialog();
                 meinJDialog.setTitle("Fehler");
                 //meinJDialog.setForeground(Color.red);          
                 meinJDialog.setBounds(500, 250, 0, 0);
-                meinJDialog.setSize(350,100); 
+                meinJDialog.setSize(350, 100);
                 meinJDialog.setModal(true);
                 JLabel text = new JLabel("    Dieses Buch ist bereits an einen Schüler ausgegeben!");
                 text.setForeground(Color.red);
                 meinJDialog.add(text);
-                
+
                 Container contentpane = meinJDialog.getContentPane();
                 contentpane.setBackground(Color.black);
-              
+
                 meinJDialog.setVisible(true);
             }
         } catch (Exception e) {
@@ -238,20 +190,6 @@ public class Copies {
             System.out.println("SQL: collected Copy" + copy_id);
         } catch (Exception e) {
             System.out.println(e + " => collectCopy");
-        }
-    }
-
-    //Copy kaufen
-    public static void copyBought(String copy_id) {
-        try {
-            Query.anyUpdate("UPDATE sbm_copieshistory, sbm_copies, sbm_books"
-                    + "SET buy = '1' "
-                    + "WHERE copy_id LIKE "
-                    + "AND sbm_copies.book_id LIKE sbm_books.ID "
-                    + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
-                    + copy_id);
-        } catch (Exception e) {
-            System.out.println(e + " => copyBought");
         }
     }
 
@@ -288,3 +226,68 @@ public class Copies {
         return 0;
     }
 }
+
+
+    //Copy kaufen
+//    public static void copyBought(String copy_id) {
+//        try {
+//            Query.anyUpdate("UPDATE sbm_copieshistory, sbm_copies, sbm_books"
+//                    + "SET buy = '1' "
+//                    + "WHERE copy_id LIKE "
+//                    + "AND sbm_copies.book_id LIKE sbm_books.ID "
+//                    + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
+//                    + copy_id);
+//        } catch (Exception e) {
+//            System.out.println(e + " => copyBought");
+//        }
+//    }
+
+    // how many copies peer label 
+//    public static ArrayList<String> CopyCount(String BookID) { //Takes super long
+//        try {
+//            return Query.anyQuery("SELECT sbm_books.ID, sbm_books.label, COUNT(sbm_copieshistory.ID) FROM sbm_copieshistory, sbm_books, sbm_copies WHERE sbm_copies.book_id LIKE sbm_books.ID AND sbm_copieshistory.copy_id LIKE sbm_copies.ID GROUP BY sbm_books.label");
+//        } catch (Exception e) {
+//            System.out.println(e + "CopyCount");
+//        }
+//        return null;
+//    }
+
+//    public static String CopiesInStock(String book_id) {
+//        try {
+//            int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+//                    + "FROM sbm_copieshistory , sbm_copies "
+//                    + "WHERE copy_id LIKE sbm_copies.ID "
+//                    + "AND book_id LIKE " + book_id,
+//                    "COUNT(sbm_copieshistory.ID)"));
+//            int all = Integer.parseInt(SingleCopyCountTotal(book_id));
+//            int catchedhistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+//                    + "FROM sbm_copieshistory , sbm_copies, sbm_books "
+//                    + "WHERE buy = 0 "
+//                    + "AND collected LIKE '%' "
+//                    + "AND sbm_copies.book_id LIKE sbm_books.ID"
+//                    + "AND copy_id LIKE sbm_copies.ID "
+//                    + "AND book_id LIKE " + book_id,
+//                    "COUNT(sbm_copieshistory.ID)"));
+//            int result = catchedhistory + (all - history);
+//            return Integer.toString(result);
+//        } catch (Exception e) {
+//            System.out.println(e + " => CauchtCopyCount");
+//        }
+//        return null;
+//    }
+
+    //Buch informationen abhängig vom der copyID und einem index zum durchschalten der einzelnen infos 
+//    public static String Singlecopy(String copyId, int index) {
+//        try {
+//            ArrayList<String> result = Query.anyQuery("SELECT label, sbm_copieshistory.ID, distributed, collected, buy, notice, paid "
+//                    + "FROM sbm_copieshistory, sbm_copies, sbm_books, sbm_students "
+//                    + "WHERE sbm_books.ID = sbm_copies.book_id "
+//                    + "AND sbm_copieshistory.copy_id = sbm_copies.ID  "
+//                    + "AND sbm_copieshistory.student_id = sbm_students.ID "
+//                    + "AND sbm_copieshistory.copy_id LIKE " + copyId);
+//            return result.get(index);
+//        } catch (Exception e) {
+//            System.out.println(e + " => Singlecopy");
+//        }
+//        return null;
+//    }

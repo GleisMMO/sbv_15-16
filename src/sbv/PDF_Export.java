@@ -294,167 +294,6 @@ public class PDF_Export {
         Desktop.getDesktop().open(new File(pathName + "/" + pdfName));
     }
 
-    public static java.awt.Image ImageOfBarcode(String bookID) {
-        Barcode128 code128 = new Barcode128();
-        code128.setCodeSet(Barcode128.Barcode128CodeSet.AUTO);
-        code128.setCodeType(Barcode128.CODE128_RAW);
-        code128.setGenerateChecksum(true);
-        code128.setCode(Barcode128.getRawText(bookID, true, Barcode128.Barcode128CodeSet.C));
-        java.awt.Image image = code128.createAwtImage(Color.black, Color.white);
-
-        return image;
-
-    }
-
-    public static void bestandPDF(Oberflaeche ob) {
-
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnVal = chooser.showOpenDialog(ob);
-
-        File savefile = chooser.getSelectedFile();
-        pathName = savefile.getPath();
-
-        pdfName = "Bestand-" + getDateAsString() + ".pdf";
-        try {
-            Document document = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName + "\\" + pdfName));
-            // Attributes
-            document.addAuthor(System.getProperty("user.name"));
-            document.addCreationDate();
-            document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
-            document.addTitle("PDF-Export Buch Bestand ");
-            document.addSubject("PDF-Export Buch Bestand ");
-
-            document.open();
-
-            Paragraph titel1 = new Paragraph("Bücherbestand vom " + getDateAndTimeAsString() + " Uhr", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
-            Chapter chapter1 = new Chapter(titel1, 1);
-            chapter1.setNumberDepth(0);
-
-            ArrayList<String> bookIDs;
-            bookIDs = Books.BookIDList();
-            PdfPTable table = new PdfPTable(5);
-            //Tabelle mit 5 Spalten erstellen
-
-            table.setSpacingBefore(25);
-
-            table.setSpacingAfter(25);
-
-            //5 Spalten benennen
-            PdfPCell c2 = new PdfPCell(new Phrase("Buch Name", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-
-            table.addCell(c2);
-
-            PdfPCell c3 = new PdfPCell(new Phrase("Verliehen", FontFactory.getFont(FontFactory.HELVETICA, 15, Font.BOLD)));
-
-            table.addCell(c3);
-
-            PdfPCell c4 = new PdfPCell(new Phrase("Verkauft", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-
-            table.addCell(c4);
-            PdfPCell c1 = new PdfPCell(new Phrase("Im Lager", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-
-            table.addCell(c1);
-
-            PdfPCell c5 = new PdfPCell(new Phrase("Gesamt", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
-
-            table.addCell(c5);
-
-            //Daten in die tabelle laden
-            for (int i = 0; i < (29); i++) {
-                Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
-                table.addCell(titel);
-                table.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
-                table.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
-                table.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
-                table.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
-
-            }
-            document.add(chapter1); //Dokument Füllen
-            document.add(table);
-            document.newPage();
-            PdfPTable table1 = new PdfPTable(5);
-            //Tabelle mit 5 Spalten erstellen
-
-            table1.setSpacingBefore(25);
-
-            table1.setSpacingAfter(25);
-
-            //5 Spalten benennen
-            table1.addCell(c2);
-
-            table1.addCell(c3);
-
-            table1.addCell(c4);
-
-            table1.addCell(c1);
-
-            table1.addCell(c5);
-
-            for (int i = 29; i < (29 + 30); i++) {
-                Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
-                table1.addCell(titel);
-                table1.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
-                table1.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
-                table1.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
-                table1.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
-
-            }
-
-            document.add(table1);
-            document.newPage();
-            PdfPTable table2 = new PdfPTable(5);
-            //Tabelle mit 5 Spalten erstellen
-
-            table2.setSpacingBefore(25);
-
-            table2.setSpacingAfter(25);
-
-            //5 Spalten benennen
-            table2.addCell(c2);
-
-            table2.addCell(c3);
-
-            table2.addCell(c4);
-
-            table2.addCell(c1);
-
-            table2.addCell(c5);
-
-            for (int i = 59; i < (bookIDs.size()); i++) {
-                Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
-                table2.addCell(titel);
-                table2.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
-                table2.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
-                table2.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
-                table2.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
-
-            }
-
-            document.add(table2);
-            document.close();
-            writer.close();
-
-        } catch (FileNotFoundException | DocumentException e) {
-        }
-
-    }
-
-    public static String getDateAsString() {
-        SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
-        Timestamp zeit = new Timestamp(System.currentTimeMillis());
-        String time = datum.format(zeit);
-        return time;
-    }
-
-    public static String getDateAndTimeAsString() {
-        SimpleDateFormat datum = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-        Timestamp zeit = new Timestamp(System.currentTimeMillis());
-        String time = datum.format(zeit);
-        return time;
-    }
-
     public static void studentBill(String studentID, Oberflaeche ob) {
 
         JFileChooser chooser = new JFileChooser();
@@ -650,7 +489,6 @@ public class PDF_Export {
         bookArray.add("Gesamt");
         bookArray.add("31,84");
 
-                
         PdfPTable table = new PdfPTable(2);
 
         table.setSpacingBefore(25);
@@ -685,3 +523,164 @@ public class PDF_Export {
     }
 
 }
+
+//     public static java.awt.Image ImageOfBarcode(String bookID) {
+//     Barcode128 code128 = new Barcode128();
+//     code128.setCodeSet(Barcode128.Barcode128CodeSet.AUTO);
+//     code128.setCodeType(Barcode128.CODE128_RAW);
+//     code128.setGenerateChecksum(true);
+//     code128.setCode(Barcode128.getRawText(bookID, true, Barcode128.Barcode128CodeSet.C));
+//     java.awt.Image image = code128.createAwtImage(Color.black, Color.white);
+//
+//     return image;
+//
+//     }
+//    
+//     public static void bestandPDF(Oberflaeche ob) {
+//
+//     JFileChooser chooser = new JFileChooser();
+//     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//     int returnVal = chooser.showOpenDialog(ob);
+//
+//     File savefile = chooser.getSelectedFile();
+//     pathName = savefile.getPath();
+//
+//     pdfName = "Bestand-" + getDateAsString() + ".pdf";
+//     try {
+//     Document document = new Document(PageSize.A4);
+//     PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName + "\\" + pdfName));
+//     // Attributes
+//     document.addAuthor(System.getProperty("user.name"));
+//     document.addCreationDate();
+//     document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
+//     document.addTitle("PDF-Export Buch Bestand ");
+//     document.addSubject("PDF-Export Buch Bestand ");
+//
+//     document.open();
+//
+//     Paragraph titel1 = new Paragraph("Bücherbestand vom " + getDateAndTimeAsString() + " Uhr", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
+//     Chapter chapter1 = new Chapter(titel1, 1);
+//     chapter1.setNumberDepth(0);
+//
+//     ArrayList<String> bookIDs;
+//     bookIDs = Books.BookIDList();
+//     PdfPTable table = new PdfPTable(5);
+//     //Tabelle mit 5 Spalten erstellen
+//
+//     table.setSpacingBefore(25);
+//
+//     table.setSpacingAfter(25);
+//
+//     //5 Spalten benennen
+//     PdfPCell c2 = new PdfPCell(new Phrase("Buch Name", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+//
+//     table.addCell(c2);
+//
+//     PdfPCell c3 = new PdfPCell(new Phrase("Verliehen", FontFactory.getFont(FontFactory.HELVETICA, 15, Font.BOLD)));
+//
+//     table.addCell(c3);
+//
+//     PdfPCell c4 = new PdfPCell(new Phrase("Verkauft", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+//
+//     table.addCell(c4);
+//     PdfPCell c1 = new PdfPCell(new Phrase("Im Lager", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+//
+//     table.addCell(c1);
+//
+//     PdfPCell c5 = new PdfPCell(new Phrase("Gesamt", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD)));
+//
+//     table.addCell(c5);
+//
+//     //Daten in die tabelle laden
+//     for (int i = 0; i < (29); i++) {
+//     Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
+//     table.addCell(titel);
+//     table.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
+//     table.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
+//     table.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
+//     table.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
+//
+//     }
+//     document.add(chapter1); //Dokument Füllen
+//     document.add(table);
+//     document.newPage();
+//     PdfPTable table1 = new PdfPTable(5);
+//     //Tabelle mit 5 Spalten erstellen
+//
+//     table1.setSpacingBefore(25);
+//
+//     table1.setSpacingAfter(25);
+//
+//     //5 Spalten benennen
+//     table1.addCell(c2);
+//
+//     table1.addCell(c3);
+//
+//     table1.addCell(c4);
+//
+//     table1.addCell(c1);
+//
+//     table1.addCell(c5);
+//
+//     for (int i = 29; i < (29 + 30); i++) {
+//     Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
+//     table1.addCell(titel);
+//     table1.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
+//     table1.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
+//     table1.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
+//     table1.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
+//
+//     }
+//
+//     document.add(table1);
+//     document.newPage();
+//     PdfPTable table2 = new PdfPTable(5);
+//     //Tabelle mit 5 Spalten erstellen
+//
+//     table2.setSpacingBefore(25);
+//
+//     table2.setSpacingAfter(25);
+//
+//     //5 Spalten benennen
+//     table2.addCell(c2);
+//
+//     table2.addCell(c3);
+//
+//     table2.addCell(c4);
+//
+//     table2.addCell(c1);
+//
+//     table2.addCell(c5);
+//
+//     for (int i = 59; i < (bookIDs.size()); i++) {
+//     Paragraph titel = new Paragraph(Books.singleBookName(bookIDs.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD));
+//     table2.addCell(titel);
+//     table2.addCell(Copies.borrowedCopyCount(bookIDs.get(i)));
+//     table2.addCell(Copies.boughtCopyCount(bookIDs.get(i)));
+//     table2.addCell(Copies.copiesInStockBySammy(bookIDs.get(i)));
+//     table2.addCell(Copies.SingleCopyCountTotal(bookIDs.get(i)));
+//
+//     }
+//
+//     document.add(table2);
+//     document.close();
+//     writer.close();
+//
+//     } catch (FileNotFoundException | DocumentException e) {
+//     }
+//
+//     }
+//
+//     public static String getDateAsString() {
+//     SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
+//     Timestamp zeit = new Timestamp(System.currentTimeMillis());
+//     String time = datum.format(zeit);
+//     return time;
+//     }
+//
+//     public static String getDateAndTimeAsString() {
+//     SimpleDateFormat datum = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+//     Timestamp zeit = new Timestamp(System.currentTimeMillis());
+//     String time = datum.format(zeit);
+//     return time;
+//     }

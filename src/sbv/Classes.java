@@ -4,19 +4,6 @@ import java.util.ArrayList;
 
 public class Classes {
 
-    //arrayList of all classes with student count
-    public static ArrayList<String> classesList() {
-        try {
-            return Query.anyQuery("SELECT name, COUNT(student_ID) "
-                    + "FROM `sbm_classes`, `sbm_students-classes` "
-                    + "WHERE sbm_classes.ID LIKE class_ID "
-                    + "GROUP BY class_ID");
-        } catch (Exception e) {
-            System.out.println(e + " => classesList");
-        }
-        return null;
-    }
-
     public static ArrayList<String> studentIDList(String ID) {
         try {
             return Query.anyQuery("SELECT student_ID "
@@ -90,15 +77,29 @@ public class Classes {
             System.out.println(e + " => newClass");
         }
     }
+}
+
+
+    //arrayList of all classes with student count
+//    public static ArrayList<String> classesList() {
+//        try {
+//            return Query.anyQuery("SELECT name, COUNT(student_ID) "
+//                    + "FROM `sbm_classes`, `sbm_students-classes` "
+//                    + "WHERE sbm_classes.ID LIKE class_ID "
+//                    + "GROUP BY class_ID");
+//        } catch (Exception e) {
+//            System.out.println(e + " => classesList");
+//        }
+//        return null;
+//    }
 
     //edits class
-    public static void editClass(String ID, String name) {
-        try {
-            Query.anyUpdate("UPDATE `sbm_classes` "
-                    + "SET name = " + name + " "
-                    + "WHERE ID LIKE " + ID);
-        } catch (Exception e) {
-            System.out.println(e + " => editClass");
-        }
-    }
-}
+//    public static void editClass(String ID, String name) {
+//        try {
+//            Query.anyUpdate("UPDATE `sbm_classes` "
+//                    + "SET name = " + name + " "
+//                    + "WHERE ID LIKE " + ID);
+//        } catch (Exception e) {
+//            System.out.println(e + " => editClass");
+//        }
+//    }

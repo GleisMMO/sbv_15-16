@@ -62,22 +62,6 @@ public class Query {
         }
     }
 
-    //SQL Console
-    public static void Console() throws Exception {
-        InputStreamReader Input = new InputStreamReader(System.in);
-        BufferedReader DataIn = new BufferedReader(Input);
-        ArrayList<String> result = new ArrayList();
-        //Connection con = DbConnector.getConnection(); //tests Connection
-
-        while (con != null) {
-            System.out.println("Enter SQL Statement");
-            String statement = DataIn.readLine();
-            String[] collums = Query.TableNames(statement);
-            result = Query.anyQuery(statement);
-            Query.output(result, collums);
-        }
-    }
-
     //Input is SQL statement Return is an Array of collum Names
     public static String[] TableNames(String statement) {
 
@@ -126,3 +110,20 @@ public class Query {
 
     }
 }
+
+
+    //SQL Console
+//    public static void Console() throws Exception {
+//        InputStreamReader Input = new InputStreamReader(System.in);
+//        BufferedReader DataIn = new BufferedReader(Input);
+//        ArrayList<String> result = new ArrayList();
+//        //Connection con = DbConnector.getConnection(); //tests Connection
+//
+//        while (con != null) {
+//            System.out.println("Enter SQL Statement");
+//            String statement = DataIn.readLine();
+//            String[] collums = Query.TableNames(statement);
+//            result = Query.anyQuery(statement);
+//            Query.output(result, collums);
+//        }
+//    }

@@ -5,17 +5,6 @@ import java.util.ArrayList;
 
 public class Students {
 
-    //All students
-    public static ArrayList<String> StudentsList() {
-        try {
-            return Query.anyQuery("SELECT forename, surname, birth "
-                    + "FROM sbm_students");
-        } catch (Exception e) {
-            System.out.println(e + " => StudentsList");
-        }
-        return null;
-    }
-
     //Schüler informationen abhängig vom der schülerID und einem index 
     public static String SingelStudent(String StudentId, int index) {
         try {
@@ -83,50 +72,6 @@ public class Students {
         return null;
     }
 
-    //checks if student has a copy of a book
-    public static boolean[] BookGroupListCheck(String class_id, String student_id) {
-        boolean results[] = null;
-        ArrayList<String> books = BookGroups.getBookIds(class_id);
-        ArrayList<String> students = BookGroups.getStudentIds(class_id);
-        boolean stahp = true;
-
-        try {
-            for (int i = 0; i < students.size(); i++) {
-                ArrayList<String> studentsBooks = Students.BookList(students.get(i));
-                for (int o = 0; o < books.size(); o++) {
-                    for (int k = 0; k < studentsBooks.size(); k++) {
-                        do {
-                            if (books.get(o).equals(studentsBooks.get(k))) {
-                                results[o] = true;
-                            } else {
-                                results[o] = false;
-                            }
-                            if (k == studentsBooks.size()) {
-                                stahp = false;
-                            }
-                        } while (results[o] || stahp == false);
-                    }
-                }
-            }
-            return results;
-        } catch (Exception e) {
-            System.out.println(e + " => BookGroupListCheck");
-        }
-        return null;
-    }
-
-    public static void moveToClass(String student_id, String class_id, String new_class_id) {
-        try {
-            Query.anyUpdate("UPDATE `sbm_students-clases` "
-                    + "SET class_id =" + new_class_id + ", "
-                    + "student_id = " + student_id + ""
-                    + "WHERE student_id LIKE " + student_id + ""
-                    + "AND class_id LIKE " + class_id);
-        } catch (Exception e) {
-            System.out.println(e + " => newStudent");
-        }
-    }
-
     public static void addToClass(String student_id, String className) {
         try {
             String class_id = Query.getString("SELECT ID "
@@ -140,31 +85,87 @@ public class Students {
             System.out.println(e + " => newStudent");
         }
     }
+}
+
+
+    //All students
+//    public static ArrayList<String> StudentsList() {
+//        try {
+//            return Query.anyQuery("SELECT forename, surname, birth "
+//                    + "FROM sbm_students");
+//        } catch (Exception e) {
+//            System.out.println(e + " => StudentsList");
+//        }
+//        return null;
+//    }
 
     //edits Student 
-    public static void editStudent(int ID, String forename, String surename, String birth) { //birth might bug needs testing
-        try {
-            Query.anyUpdate("UPDATE `sbm_students` "
-                    + "SET forename =" + forename + ", "
-                    + "surename = " + surename + ", "
-                    + "birth = " + birth + ""
-                    + "WHERE ID LIKE" + ID);
-        } catch (Exception e) {
-            System.out.println(e + " => editStudent");
-        }
-    }
+//    public static void editStudent(int ID, String forename, String surename, String birth) { //birth might bug needs testing
+//        try {
+//            Query.anyUpdate("UPDATE `sbm_students` "
+//                    + "SET forename =" + forename + ", "
+//                    + "surename = " + surename + ", "
+//                    + "birth = " + birth + ""
+//                    + "WHERE ID LIKE" + ID);
+//        } catch (Exception e) {
+//            System.out.println(e + " => editStudent");
+//        }
+//    }
 
     //creates new student
-    public static void newStudent(String forename, String surename, String birth) {
-        try {
-            Query.anyUpdate("INSERT INTO `sbm_students` "
-                    + "SET forename = '" + forename + "', "
-                    + "surname = '" + surename + "', "
-                    + "birth = '" + birth + "', "
-                    + "class = 'nope', "
-                    + "img = 'nope'");
-        } catch (Exception e) {
-            System.out.println(e + " => newStudent");
-        }
-    }
-}
+//    public static void newStudent(String forename, String surename, String birth) {
+//        try {
+//            Query.anyUpdate("INSERT INTO `sbm_students` "
+//                    + "SET forename = '" + forename + "', "
+//                    + "surname = '" + surename + "', "
+//                    + "birth = '" + birth + "', "
+//                    + "class = 'nope', "
+//                    + "img = 'nope'");
+//        } catch (Exception e) {
+//            System.out.println(e + " => newStudent");
+//        }
+//    }
+
+    //checks if student has a copy of a book
+//    public static boolean[] BookGroupListCheck(String class_id, String student_id) {
+//        boolean results[] = null;
+//        ArrayList<String> books = BookGroups.getBookIds(class_id);
+//        ArrayList<String> students = BookGroups.getStudentIds(class_id);
+//        boolean stahp = true;
+//
+//        try {
+//            for (int i = 0; i < students.size(); i++) {
+//                ArrayList<String> studentsBooks = Students.BookList(students.get(i));
+//                for (int o = 0; o < books.size(); o++) {
+//                    for (int k = 0; k < studentsBooks.size(); k++) {
+//                        do {
+//                            if (books.get(o).equals(studentsBooks.get(k))) {
+//                                results[o] = true;
+//                            } else {
+//                                results[o] = false;
+//                            }
+//                            if (k == studentsBooks.size()) {
+//                                stahp = false;
+//                            }
+//                        } while (results[o] || stahp == false);
+//                    }
+//                }
+//            }
+//            return results;
+//        } catch (Exception e) {
+//            System.out.println(e + " => BookGroupListCheck");
+//        }
+//        return null;
+//    }
+
+//    public static void moveToClass(String student_id, String class_id, String new_class_id) {
+//        try {
+//            Query.anyUpdate("UPDATE `sbm_students-clases` "
+//                    + "SET class_id =" + new_class_id + ", "
+//                    + "student_id = " + student_id + ""
+//                    + "WHERE student_id LIKE " + student_id + ""
+//                    + "AND class_id LIKE " + class_id);
+//        } catch (Exception e) {
+//            System.out.println(e + " => newStudent");
+//        }
+//    }
