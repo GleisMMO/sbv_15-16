@@ -149,7 +149,7 @@ public class Copies {
         longTime.intValue();
         ArrayList<String> check = Singlecopy(copy_id);
         try {
-            if ("nicht ausgegeben".equals(check.get(2))) {
+            if ("".equals(check.get(1))) {
                 Query.anyUpdate("INSERT INTO sbm_copieshistory "
                         + "SET paid = '0', notice = '', "
                         + "distributed = " + longTime + ", "
@@ -161,12 +161,13 @@ public class Copies {
                 JDialog meinJDialog = new JDialog();
                 meinJDialog.setTitle("Fehler");
                 //meinJDialog.setForeground(Color.red);          
-                meinJDialog.setBounds(500, 250, 0, 0);
-                meinJDialog.setSize(350, 100);
+                meinJDialog.setBounds(300, 250, 0, 0);
+                meinJDialog.setSize(750, 100);
                 meinJDialog.setModal(true);
-                JLabel text = new JLabel("    Dieses Buch ist bereits an einen Schüler ausgegeben!");
-                text.setForeground(Color.red);
-                meinJDialog.add(text);
+                JLabel textoben = new JLabel("    Das Buch <<" + check.get(0) + ">> ist bereits an den Schüler <<" + check.get(7) + " " + check.get(8) + ">> ausgegeben!", 0);
+                
+                textoben.setForeground(Color.red);
+                meinJDialog.add(textoben);
 
                 Container contentpane = meinJDialog.getContentPane();
                 contentpane.setBackground(Color.black);
@@ -180,14 +181,35 @@ public class Copies {
 
     //buch einsammeln (mit copy id)
     public static void collectCopy(String copy_id) {
+
         Date now = new Date();
         Long longTime = now.getTime() / 1000;
         longTime.intValue();
+
+        ArrayList<String> check = Singlecopy(copy_id);
         try {
-            Query.anyUpdate("DELETE FROM sbm_copieshistory "
-                    + "WHERE copy_id "
-                    + "LIKE " + copy_id);
-            System.out.println("SQL: collected Copy" + copy_id);
+            if ("".equals(check.get(1))) {
+                JDialog meinJDialog = new JDialog();
+                meinJDialog.setTitle("Fehler");
+                //meinJDialog.setForeground(Color.red);          
+                meinJDialog.setBounds(500, 250, 0, 0);
+                meinJDialog.setSize(350, 100);
+                meinJDialog.setModal(true);
+                JLabel text = new JLabel("     Das Buch <<" +check.get(0) +">> mit dem Barcode <<" +copy_id  +">> ist noch nicht ausgeliehen!");
+                text.setForeground(Color.red);
+                meinJDialog.add(text);
+
+                Container contentpane = meinJDialog.getContentPane();
+                contentpane.setBackground(Color.black);
+
+                meinJDialog.setVisible(true);
+            } else {
+                Query.anyUpdate("DELETE FROM sbm_copieshistory "
+                        + "WHERE copy_id "
+                        + "LIKE " + copy_id);
+                System.out.println("SQL: collected Copy" + copy_id);
+            }
+
         } catch (Exception e) {
             System.out.println(e + " => collectCopy");
         }
@@ -227,8 +249,7 @@ public class Copies {
     }
 }
 
-
-    //Copy kaufen
+//Copy kaufen
 //    public static void copyBought(String copy_id) {
 //        try {
 //            Query.anyUpdate("UPDATE sbm_copieshistory, sbm_copies, sbm_books"
@@ -241,8 +262,7 @@ public class Copies {
 //            System.out.println(e + " => copyBought");
 //        }
 //    }
-
-    // how many copies peer label 
+// how many copies peer label 
 //    public static ArrayList<String> CopyCount(String BookID) { //Takes super long
 //        try {
 //            return Query.anyQuery("SELECT sbm_books.ID, sbm_books.label, COUNT(sbm_copieshistory.ID) FROM sbm_copieshistory, sbm_books, sbm_copies WHERE sbm_copies.book_id LIKE sbm_books.ID AND sbm_copieshistory.copy_id LIKE sbm_copies.ID GROUP BY sbm_books.label");
@@ -251,7 +271,6 @@ public class Copies {
 //        }
 //        return null;
 //    }
-
 //    public static String CopiesInStock(String book_id) {
 //        try {
 //            int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
@@ -275,8 +294,7 @@ public class Copies {
 //        }
 //        return null;
 //    }
-
-    //Buch informationen abhängig vom der copyID und einem index zum durchschalten der einzelnen infos 
+//Buch informationen abhängig vom der copyID und einem index zum durchschalten der einzelnen infos 
 //    public static String Singlecopy(String copyId, int index) {
 //        try {
 //            ArrayList<String> result = Query.anyQuery("SELECT label, sbm_copieshistory.ID, distributed, collected, buy, notice, paid "
