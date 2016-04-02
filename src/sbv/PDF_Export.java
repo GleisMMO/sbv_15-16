@@ -6,7 +6,6 @@
 package sbv;
 
 import java.util.*;
-import java.text.*;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
@@ -28,7 +27,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import javax.swing.JFileChooser;
 
 /**
@@ -75,6 +73,7 @@ public class PDF_Export {
             writer.close();
 
         } catch (FileNotFoundException | DocumentException e) {
+            System.out.println(e + " => studentClassPDF");
         }
     }
 
@@ -157,7 +156,7 @@ public class PDF_Export {
                         table.addCell("NEIN");
                     }
                     i++;
-                    Paragraph titel4 = new Paragraph(Other.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
+                    Paragraph titel4 = new Paragraph(Other.dateToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
                     table.addCell(titel4);
                     i++;
                     paid = bookArray.get(i);
@@ -208,6 +207,8 @@ public class PDF_Export {
 
         ArrayList<String> bookArray;
         bookArray = Students.BookList(studentID);
+        
+        System.out.println(bookArray);
 
         PdfPTable table = new PdfPTable(5);//Tabelle mit 5 Spalten erstellen
 
@@ -251,7 +252,7 @@ public class PDF_Export {
                 table.addCell("NEIN");
             }
             i++;
-            Paragraph titel4 = new Paragraph(Other.ToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
+            Paragraph titel4 = new Paragraph(Other.dateToNormal(bookArray.get(i)), FontFactory.getFont(FontFactory.HELVETICA, 11));//just testing date formats
             table.addCell(titel4);
             i++;
             a = bookArray.get(i);

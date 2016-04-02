@@ -1,11 +1,7 @@
 package sbv;
 
-import java.awt.Color;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 
 public class Copies {
 
@@ -157,22 +153,11 @@ public class Copies {
                         + "student_id = " + student_id + ", "
                         + "copy_id = " + copy_id);
             } else {
-
-                JDialog meinJDialog = new JDialog();
-                meinJDialog.setTitle("Fehler");
-                //meinJDialog.setForeground(Color.red);          
-                meinJDialog.setBounds(300, 250, 0, 0);
-                meinJDialog.setSize(750, 100);
-                meinJDialog.setModal(true);
-                JLabel textoben = new JLabel("    Das Buch <<" + check.get(0) + ">> ist bereits an den Schüler <<" + check.get(7) + " " + check.get(8) + ">> ausgegeben!", 0);
-                
-                textoben.setForeground(Color.red);
-                meinJDialog.add(textoben);
-
-                Container contentpane = meinJDialog.getContentPane();
-                contentpane.setBackground(Color.black);
-
-                meinJDialog.setVisible(true);
+                Other.errorWin("Das Buch\n"
+                        + "          " + check.get(0) + "\n"
+                        + "ist bereits an den Schüler\n"
+                        + "          " + check.get(7) + " " + check.get(8) + "\n"
+                        + "ausgegeben!");
             }
         } catch (Exception e) {
             System.out.println(e + " => distributeCopy");
@@ -189,20 +174,11 @@ public class Copies {
         ArrayList<String> check = Singlecopy(copy_id);
         try {
             if ("".equals(check.get(1))) {
-                JDialog meinJDialog = new JDialog();
-                meinJDialog.setTitle("Fehler");
-                //meinJDialog.setForeground(Color.red);          
-                meinJDialog.setBounds(500, 250, 0, 0);
-                meinJDialog.setSize(350, 100);
-                meinJDialog.setModal(true);
-                JLabel text = new JLabel("     Das Buch <<" +check.get(0) +">> mit dem Barcode <<" +copy_id  +">> ist noch nicht ausgeliehen!");
-                text.setForeground(Color.red);
-                meinJDialog.add(text);
-
-                Container contentpane = meinJDialog.getContentPane();
-                contentpane.setBackground(Color.black);
-
-                meinJDialog.setVisible(true);
+                Other.errorWin("Das Buch\n"
+                        + "          " + check.get(0) + "\n"
+                        + "mit dem Barcode\n"
+                        + "          " + copy_id + "\n"
+                        + "ist nicht ausgeliehen!");
             } else {
                 Query.anyUpdate("DELETE FROM sbm_copieshistory "
                         + "WHERE copy_id "

@@ -1,11 +1,11 @@
 //monitorgröße : 1366 * 768
+//fenstergröße : 1382 * 784
 package sbv;
 
-import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.BadElementException;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -13,6 +13,22 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import javax.swing.JFileChooser;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
@@ -67,6 +83,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private final int schuelerBuecherColSize[] = {25, 409, 55, 80, 55, 55};
     static private boolean schuelerBuecherColSizeSet = true;
 
+    DefaultListModel pdfExportAuswahlAllesListModel = new DefaultListModel();
+    DefaultListModel pdfExportAuswahlSelectListModel = new DefaultListModel();
+
+    private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
+    DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
+    DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
+
     static private ArrayList<String> names;
     static private int index;
     static private ArrayList<String> klasse;
@@ -82,7 +105,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String buchLabel;
     static private int anz;
     static private int id;
-    static private String barcode, classe;
+    static private String barcode;
+    static private String classe;
     static private String momentaneKopie;
     static private int testInteger;
     static private ArrayList<String> kopie;
@@ -94,6 +118,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private int currentPanel = 1;
     static private int speichern = 0;
     static private int skBearbeiten = 0;
+    static private Object[] input;
+    static private final ArrayList doppelt = new ArrayList();
+    static private int[] selected;
+    static private String pdfName;
+    static private String pathName;
+    static private PdfPTable table;
+    static private int width, heigth;
 
     Connection conn = null;
 
@@ -207,7 +238,10 @@ public class Oberflaeche extends javax.swing.JFrame {
     }
 
     public Oberflaeche() {
+        //this.pdfExportSchuelerOperationsModel = new DefaultListModel(pdfExportSchuelerOperations, 0);
         initComponents();
+
+        //this.setExtendedState(Frame.MAXIMIZED_BOTH);
         schuelerCount.setText(Home.StudentsCount());
         freieBuecher.setText(Home.CauchtCopyCount());
     }
@@ -216,7 +250,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        pdfExportButtonGroup = new javax.swing.ButtonGroup();
+        exportFilesGroup = new javax.swing.ButtonGroup();
         basePanel = new javax.swing.JTabbedPane();
         homeTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -318,10 +353,34 @@ public class Oberflaeche extends javax.swing.JFrame {
         buecherInKlasseTbl = new javax.swing.JTable();
         jScrollPane11 = new javax.swing.JScrollPane();
         buecherFKlassenTbl = new javax.swing.JTable();
-
-        jLabel1.setText("jLabel1");
+        exportTab = new javax.swing.JPanel();
+        klasseRadioButton = new javax.swing.JRadioButton();
+        schuelerRadioButton = new javax.swing.JRadioButton();
+        buchRadioButton = new javax.swing.JRadioButton();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        pdfExportAuswahlAllesList = new javax.swing.JList();
+        pdfExportAddAllesButton = new javax.swing.JButton();
+        pdfExportAddSelectButton = new javax.swing.JButton();
+        pdfExportDelAllButton = new javax.swing.JButton();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        pdfExportAuswahlSelectList = new javax.swing.JList();
+        pdfExportDelSelectButton = new javax.swing.JButton();
+        superSelectComboBox = new javax.swing.JComboBox();
+        jScrollPane17 = new javax.swing.JScrollPane();
+        pdfExportOpAllesList = new javax.swing.JList();
+        pdfExportOpAddAllesButton = new javax.swing.JButton();
+        pdfExportOpAddSelectButton2 = new javax.swing.JButton();
+        pdfExportOpDelAllButton2 = new javax.swing.JButton();
+        jScrollPane18 = new javax.swing.JScrollPane();
+        pdfExportOpSelectList2 = new javax.swing.JList();
+        pdfExportOpDelSelectButton2 = new javax.swing.JButton();
+        pdfExportPrint = new javax.swing.JButton();
+        soloExport = new javax.swing.JRadioButton();
+        groupExport = new javax.swing.JRadioButton();
+        numCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 30)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -362,7 +421,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addGroup(homeTabLayout.createSequentialGroup()
                         .addGap(453, 453, 453)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         homeTabLayout.setVerticalGroup(
             homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,7 +434,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         basePanel.addTab("Home", homeTab);
@@ -495,7 +554,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addComponent(klasseExportPreislist)
                         .addComponent(klasseExportBtn)
                         .addComponent(jButton2)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         basePanel.addTab("Schüler", schuelerTab);
@@ -623,7 +682,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         einSchuelerTab.setLayout(einSchuelerTabLayout);
         einSchuelerTabLayout.setHorizontalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(einSchuelerTabLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einSchuelerTabLayout.createSequentialGroup()
@@ -657,8 +716,18 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(schuelerID))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 814, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                .addGap(500, 500, 500)
+                .addComponent(schuelerExport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(schuelerExportPreisliste, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ausgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -668,16 +737,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
                         .addComponent(buecherSchuelerTblAkt)
                         .addGap(344, 344, 344))))
-            .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                .addGap(500, 500, 500)
-                .addComponent(schuelerExport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(schuelerExportPreisliste, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                .addComponent(ausgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
         );
         einSchuelerTabLayout.setVerticalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -712,12 +771,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buecherSchuelerTblAkt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(schuelerExport)
-                    .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ausgeben)
-                    .addComponent(schuelerExportPreisliste))
+                    .addComponent(schuelerExportPreisliste)
+                    .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
@@ -760,7 +819,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         buecherTab.setLayout(buecherTabLayout);
         buecherTabLayout.setHorizontalGroup(
             buecherTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1373, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buecherTabLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(buecherTblAkt)
@@ -772,7 +831,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buecherTblAkt)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         basePanel.addTab("Bücher", buecherTab);
@@ -856,7 +915,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(jLabel16)
                             .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17))
-                        .addGap(429, 1163, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, einBuchTabLayout.createSequentialGroup()
@@ -886,13 +945,13 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(einBuchTabLayout.createSequentialGroup()
                                     .addGap(365, 365, 365)
-                                    .addComponent(buchNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(buchBearbeiten))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buchBearbeiten)))
+                                    .addComponent(buchLöschen, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buchLöschen, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(buchNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
         );
         einBuchTabLayout.setVerticalGroup(
@@ -923,7 +982,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addComponent(buchLöschen)
                     .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(neuKopieBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1084,7 +1143,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(kopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1153,17 +1212,16 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(einsammelnPic))
+                    .addGroup(einsammelnTabLayout.createSequentialGroup()
+                        .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(einsammelnTabLayout.createSequentialGroup()
                         .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(einsammelnTabLayout.createSequentialGroup()
-                                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(einsammelnPic)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         einsammelnTabLayout.setVerticalGroup(
@@ -1289,7 +1347,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
-                    .addComponent(jScrollPane11))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE))
                 .addContainerGap())
         );
         klassenBearbeitenTabLayout.setVerticalGroup(
@@ -1301,13 +1359,226 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(43, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
                         .addComponent(jScrollPane9)
                         .addGap(61, 61, 61))))
         );
 
         basePanel.addTab("Klassen Bearbeiten", klassenBearbeitenTab);
+
+        pdfExportButtonGroup.add(klasseRadioButton);
+        klasseRadioButton.setText("Klasse");
+
+        pdfExportButtonGroup.add(schuelerRadioButton);
+        schuelerRadioButton.setText("Schüler");
+        schuelerRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                schuelerRadioButtonActionPerformed(evt);
+            }
+        });
+
+        pdfExportButtonGroup.add(buchRadioButton);
+        buchRadioButton.setText("Buch");
+
+        pdfExportAuswahlAllesList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane12.setViewportView(pdfExportAuswahlAllesList);
+
+        pdfExportAddAllesButton.setText(">>");
+        pdfExportAddAllesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportAddAllesButtonActionPerformed(evt);
+            }
+        });
+
+        pdfExportAddSelectButton.setText(">");
+        pdfExportAddSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportAddSelectButtonActionPerformed(evt);
+            }
+        });
+
+        pdfExportDelAllButton.setText("<<");
+        pdfExportDelAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportDelAllButtonActionPerformed(evt);
+            }
+        });
+
+        pdfExportAuswahlSelectList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane14.setViewportView(pdfExportAuswahlSelectList);
+
+        pdfExportDelSelectButton.setText("<");
+        pdfExportDelSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportDelSelectButtonActionPerformed(evt);
+            }
+        });
+
+        superSelectComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        superSelectComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                superSelectComboBoxActionPerformed(evt);
+            }
+        });
+
+        pdfExportOpAllesList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane17.setViewportView(pdfExportOpAllesList);
+
+        pdfExportOpAddAllesButton.setText(">>");
+        pdfExportOpAddAllesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportOpAddAllesButtonActionPerformed(evt);
+            }
+        });
+
+        pdfExportOpAddSelectButton2.setText(">");
+        pdfExportOpAddSelectButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportOpAddSelectButton2ActionPerformed(evt);
+            }
+        });
+
+        pdfExportOpDelAllButton2.setText("<<");
+        pdfExportOpDelAllButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportOpDelAllButton2ActionPerformed(evt);
+            }
+        });
+
+        pdfExportOpSelectList2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane18.setViewportView(pdfExportOpSelectList2);
+
+        pdfExportOpDelSelectButton2.setText("<");
+        pdfExportOpDelSelectButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportOpDelSelectButton2ActionPerformed(evt);
+            }
+        });
+
+        pdfExportPrint.setText("PDF erstellen");
+        pdfExportPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pdfExportPrintActionPerformed(evt);
+            }
+        });
+
+        soloExport.setText("einzeln");
+
+        groupExport.setText("zusammen");
+
+        numCheckBox.setSelected(true);
+        numCheckBox.setText("Nummerierung");
+
+        javax.swing.GroupLayout exportTabLayout = new javax.swing.GroupLayout(exportTab);
+        exportTab.setLayout(exportTabLayout);
+        exportTabLayout.setHorizontalGroup(
+            exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exportTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(exportTabLayout.createSequentialGroup()
+                        .addComponent(klasseRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(schuelerRadioButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(buchRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(groupExport)
+                        .addGap(18, 18, 18)
+                        .addComponent(soloExport)
+                        .addGap(18, 18, 18)
+                        .addComponent(pdfExportPrint))
+                    .addGroup(exportTabLayout.createSequentialGroup()
+                        .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(exportTabLayout.createSequentialGroup()
+                                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(pdfExportAddAllesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportDelAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportAddSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportDelSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(superSelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48)
+                        .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(exportTabLayout.createSequentialGroup()
+                                .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(pdfExportOpAddAllesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportOpDelAllButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportOpAddSelectButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pdfExportOpDelSelectButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(numCheckBox))
+                        .addGap(0, 383, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        exportTabLayout.setVerticalGroup(
+            exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(exportTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(klasseRadioButton)
+                    .addComponent(schuelerRadioButton)
+                    .addComponent(buchRadioButton)
+                    .addComponent(pdfExportPrint)
+                    .addComponent(soloExport)
+                    .addComponent(groupExport))
+                .addGap(25, 25, 25)
+                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(superSelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numCheckBox))
+                .addGap(18, 18, 18)
+                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(exportTabLayout.createSequentialGroup()
+                            .addComponent(pdfExportAddAllesButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportAddSelectButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportDelSelectButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportDelAllButton)
+                            .addGap(230, 230, 230))
+                        .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                        .addComponent(jScrollPane12))
+                    .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(exportTabLayout.createSequentialGroup()
+                            .addComponent(pdfExportOpAddAllesButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportOpAddSelectButton2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportOpDelSelectButton2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pdfExportOpDelAllButton2)
+                            .addGap(230, 230, 230))
+                        .addComponent(jScrollPane18)
+                        .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        basePanel.addTab("PDF Export", exportTab);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1360,7 +1631,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
 
@@ -1423,7 +1694,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1454,7 +1725,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1639,7 +1910,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.ToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1716,7 +1987,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         kopieLabel.setText(kopie.get(0));
         kopieFore.setText(kopie.get(7));
         kopieSur.setText(kopie.get(8));
-        kopieDistributed.setText(Other.ToNormal(kopie.get(2)));
+        kopieDistributed.setText(Other.dateToNormal(kopie.get(2)));
         kopieBought.setText(kopie.get(4));
         kopiePaid.setText(kopie.get(6));
 
@@ -1753,7 +2024,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             barcode, //Barcode
             kopie.get(7).concat(" ").concat(kopie.get(8)), //Name
             classe, //Class
-            (Other.ToNormal(kopie.get(2))), //Distributed
+            (Other.dateToNormal(kopie.get(2))), //Distributed
             kopie.get(4), //Bought
             kopie.get(6)}; //Paid
 
@@ -1833,12 +2104,269 @@ public class Oberflaeche extends javax.swing.JFrame {
             einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
         einsammelnPic.setVisible(true);
+        System.out.println(this.getSize());//get Size of Window
     }//GEN-LAST:event_einsammelnTabelleMouseClicked
 
     private void einsammelnTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_einsammelnTabComponentAdded
         currentPanel = 8;
         UpdateTable(null);
     }//GEN-LAST:event_einsammelnTabComponentAdded
+
+    private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
+        data = Classes.getClassNameList();
+        input = new Object[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            input[i] = data.get(i);
+        }
+        superSelectComboBox.setModel(new DefaultComboBoxModel(input));
+
+        superSelectComboBox.setMaximumRowCount(input.length);
+
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+
+        for (int i = 0; i < pdfExportSchuelerOpList.length; i++) {
+            pdfExportOpAllesModel.addElement(pdfExportSchuelerOpList[i]);
+        }
+        pdfExportOpAllesList.setModel(pdfExportOpAllesModel);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+    }//GEN-LAST:event_schuelerRadioButtonActionPerformed
+
+    private void superSelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_superSelectComboBoxActionPerformed
+        pdfExportAuswahlAllesListModel.removeAllElements();
+
+        if (schuelerRadioButton.isSelected()) {
+            data = Classes.classList((String) superSelectComboBox.getSelectedItem());
+            for (int i = 0; i < data.size(); i = i + 4) {
+                pdfExportAuswahlAllesListModel.addElement(data.get(i).concat(" ").concat(data.get(i + 1)));
+            }
+        }
+        pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
+    }//GEN-LAST:event_superSelectComboBoxActionPerformed
+
+
+    private void pdfExportAddAllesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportAddAllesButtonActionPerformed
+        for (int i = 0; i < pdfExportAuswahlAllesListModel.getSize(); i++) {
+            pdfExportAuswahlSelectListModel.addElement(pdfExportAuswahlAllesListModel.getElementAt(i));
+        }
+        checkForDoubles();
+    }//GEN-LAST:event_pdfExportAddAllesButtonActionPerformed
+
+    private void pdfExportDelAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportDelAllButtonActionPerformed
+        pdfExportAuswahlSelectListModel.removeAllElements();
+    }//GEN-LAST:event_pdfExportDelAllButtonActionPerformed
+
+    private void pdfExportAddSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportAddSelectButtonActionPerformed
+        selected = pdfExportAuswahlAllesList.getSelectedIndices();
+        id = 0;
+        while (id < selected.length) {
+            pdfExportAuswahlSelectListModel.addElement(pdfExportAuswahlAllesListModel.getElementAt(selected[id]));
+            id++;
+        }
+        checkForDoubles();
+    }//GEN-LAST:event_pdfExportAddSelectButtonActionPerformed
+
+    private void checkForDoubles() {
+        doppelt.clear();
+        for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+            for (int j = i + 1; j < pdfExportAuswahlSelectListModel.size(); j++) {
+                if (pdfExportAuswahlSelectListModel.get(i).equals(pdfExportAuswahlSelectListModel.get(j))) {
+                    doppelt.add(j);
+                }
+            }
+        }
+        id = 0;
+        anz = pdfExportAuswahlSelectListModel.size();
+        for (int i = 0; i < anz; i++) {
+            if (doppelt.contains(i)) {
+                pdfExportAuswahlSelectListModel.remove(id);
+            } else {
+                id++;
+            }
+        }
+
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+    }
+
+
+    private void pdfExportOpAddAllesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpAddAllesButtonActionPerformed
+        for (int i = 0; i < pdfExportOpAllesModel.getSize(); i++) {
+            pdfExportOpSelectModel.addElement(pdfExportOpAllesModel.getElementAt(i));
+        }
+        checkForDoublesOp();
+    }//GEN-LAST:event_pdfExportOpAddAllesButtonActionPerformed
+
+    private void pdfExportOpAddSelectButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpAddSelectButton2ActionPerformed
+        selected = pdfExportOpAllesList.getSelectedIndices();
+        id = 0;
+        while (id < selected.length) {
+            pdfExportOpSelectModel.addElement(pdfExportOpAllesModel.getElementAt(selected[id]));
+            id++;
+        }
+        checkForDoublesOp();
+    }//GEN-LAST:event_pdfExportOpAddSelectButton2ActionPerformed
+
+    private void pdfExportOpDelAllButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpDelAllButton2ActionPerformed
+        pdfExportOpSelectModel.removeAllElements();
+    }//GEN-LAST:event_pdfExportOpDelAllButton2ActionPerformed
+
+    private void pdfExportOpDelSelectButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpDelSelectButton2ActionPerformed
+        while (pdfExportOpSelectList2.getSelectedIndex() != -1) {
+            pdfExportOpSelectModel.remove(pdfExportOpSelectList2.getSelectedIndex());
+        }
+    }//GEN-LAST:event_pdfExportOpDelSelectButton2ActionPerformed
+
+    private void checkForDoublesOp() {
+        doppelt.clear();
+        for (int i = 0; i < pdfExportOpSelectModel.size(); i++) {
+            for (int j = i + 1; j < pdfExportOpSelectModel.size(); j++) {
+                if (pdfExportOpSelectModel.get(i).equals(pdfExportOpSelectModel.get(j))) {
+                    doppelt.add(j);
+                }
+            }
+        }
+        id = 0;
+        anz = pdfExportOpSelectModel.size();
+        for (int i = 0; i < anz; i++) {
+            if (doppelt.contains(i)) {
+                pdfExportOpSelectModel.remove(id);
+            } else {
+                id++;
+            }
+        }
+
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+    }
+
+
+    private void pdfExportDelSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportDelSelectButtonActionPerformed
+        while (pdfExportAuswahlSelectList.getSelectedIndex() != -1) {
+            pdfExportAuswahlSelectListModel.remove(pdfExportAuswahlSelectList.getSelectedIndex());
+        }
+    }//GEN-LAST:event_pdfExportDelSelectButtonActionPerformed
+
+    private void pdfExportPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportPrintActionPerformed
+        if (pdfExportAuswahlSelectListModel.isEmpty()
+                || pdfExportOpSelectModel.isEmpty()
+                || !(schuelerRadioButton.isSelected() || klasseRadioButton.isSelected() || buchRadioButton.isSelected())
+                || !(groupExport.isSelected() || soloExport.isSelected())) {
+            Other.errorWin("Es muss eine Auswahl getroffen werdenasdklfjapghbasdkjfhsadkofhbaksjdghiqwerbtksdjagiasdgjbsadkjgb");
+            return;
+        }
+
+        if (schuelerRadioButton.isSelected()) {
+            if (groupExport.isSelected()) {
+                String pathName2;
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                int returnVal = chooser.showOpenDialog(this);
+
+                File savefile = chooser.getSelectedFile();
+                pathName2 = savefile.getPath();
+                try {
+                    Document document = new Document(PageSize.A4);
+
+                    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\Schueler.pdf"));
+
+                    document.addAuthor(System.getProperty("user.name"));
+                    document.addCreationDate();
+                    document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
+                    document.addTitle("PDF-Export von Schülern");
+
+                    document.open();
+
+                    for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+                        schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                        table = schuelerEx(schuelerId);
+                        Chapter chapter = PDF_Export.PdfChapter(schuelerId);
+                        document.add(chapter);
+                        document.add(table);
+
+                    }
+                    document.close();
+                    writer.close();
+
+                } catch (FileNotFoundException | DocumentException e) {
+                    System.out.println(e + " => schueler-groupExport");
+                }
+            } else if (soloExport.isCursorSet()) {
+
+            }
+
+        }
+    }//GEN-LAST:event_pdfExportPrintActionPerformed
+
+    private PdfPTable schuelerEx(String studentID) {
+        buecher = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
+
+        width = pdfExportOpSelectModel.size();
+        heigth = buecher.size() / pdfExportOpAllesModel.size();
+
+        if (numCheckBox.isSelected()) {
+            table = new PdfPTable(width + 1);
+            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        } else {
+            table = new PdfPTable(width);
+        }
+
+        table.setSpacingBefore(25);
+        table.setSpacingAfter(25);
+
+        //Überschriften
+        for (int i = 0; i < width; i++) {
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        }
+
+        //Inhalt
+        for (int i = 0; i < heigth; i++) {
+            if (numCheckBox.isSelected()) {
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            }
+            for (int j = 0; j < width; j++) {
+                item = pdfExportOpSelectModel.getElementAt(j);
+                if (item.equals(pdfExportSchuelerOpList[0])) {  //label
+                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
+//                    if (buecher.get(i * 5 + 1).equals("1")) {
+//                        try {
+//                            table.addCell(new PdfPCell(Image.getInstance("C:\\Users\\Falko\\Desktop"), true));
+//                            //PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
+//                        } catch (BadElementException | IOException e) {
+//                            System.out.println(e + " => schuelerEx - Pic ok1");
+//                        }
+//                    } else {
+                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+//                    }
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) buecher.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
+                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[4])) {  //code
+                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                
+                Other.errorWin("Fatal Error");
+
+//                for (int k = 0; k < pdfExportOpAllesModel.size(); k++) {
+//                    if (pdfExportOpSelectModel.getElementAt(j).equals(pdfExportSchuelerOpList[k])) {
+//                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + j), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+//                        break;
+//                    }
+//                }
+            }
+        }
+
+        return table;
+    }
 
     /**
      * @param args the command line arguments
@@ -1885,6 +2413,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     public static javax.swing.JList buchKlassenList1;
     private javax.swing.JButton buchLöschen;
     private javax.swing.JButton buchNeu;
+    private javax.swing.JRadioButton buchRadioButton;
     private javax.swing.JTable buecherFKlassenTbl;
     private javax.swing.JTable buecherInKlasseTbl;
     private javax.swing.JTable buecherKlassenTbl;
@@ -1907,11 +2436,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel einsammelnPic;
     private javax.swing.JPanel einsammelnTab;
     private javax.swing.JTable einsammelnTabelle;
+    private javax.swing.ButtonGroup exportFilesGroup;
+    private javax.swing.JPanel exportTab;
     private javax.swing.JLabel freieBuecher;
+    private javax.swing.JRadioButton groupExport;
     private javax.swing.JPanel homeTab;
     private javax.swing.JTextField isbnSuche;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1932,7 +2463,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane17;
+    private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1943,6 +2478,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JButton klasseExportBtn;
     private javax.swing.JButton klasseExportPreislist;
+    private javax.swing.JRadioButton klasseRadioButton;
     private javax.swing.JPanel klassenBearbeitenTab;
     public static javax.swing.JList klassenList;
     private javax.swing.JPanel klassenTab;
@@ -1961,6 +2497,21 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JTextField neuKlasseFeld;
     private javax.swing.JTextField neuKopieAnzahl;
     private javax.swing.JButton neuKopieBtn;
+    private javax.swing.JCheckBox numCheckBox;
+    private javax.swing.JButton pdfExportAddAllesButton;
+    private javax.swing.JButton pdfExportAddSelectButton;
+    private javax.swing.JList pdfExportAuswahlAllesList;
+    private javax.swing.JList pdfExportAuswahlSelectList;
+    private javax.swing.ButtonGroup pdfExportButtonGroup;
+    private javax.swing.JButton pdfExportDelAllButton;
+    private javax.swing.JButton pdfExportDelSelectButton;
+    private javax.swing.JButton pdfExportOpAddAllesButton;
+    private javax.swing.JButton pdfExportOpAddSelectButton2;
+    private javax.swing.JList pdfExportOpAllesList;
+    private javax.swing.JButton pdfExportOpDelAllButton2;
+    private javax.swing.JButton pdfExportOpDelSelectButton2;
+    private javax.swing.JList pdfExportOpSelectList2;
+    private javax.swing.JButton pdfExportPrint;
     private javax.swing.JTable schuelerBuecherTbl;
     private javax.swing.JLabel schuelerCount;
     private javax.swing.JButton schuelerExport;
@@ -1971,11 +2522,14 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JList schuelerKlassenList;
     private javax.swing.JList schuelerKlassenListNeu;
     private javax.swing.JLabel schuelerName;
+    private javax.swing.JRadioButton schuelerRadioButton;
     public javax.swing.JPanel schuelerTab;
     private javax.swing.JTable schuelerTbl;
     private javax.swing.JPanel schuelerTblPanel;
     private javax.swing.JButton schuelerWeiter;
     private javax.swing.JButton schuelerZurueck;
     private javax.swing.JLabel schuelerZurueckAnzahl;
+    private javax.swing.JRadioButton soloExport;
+    private javax.swing.JComboBox superSelectComboBox;
     // End of variables declaration//GEN-END:variables
 }

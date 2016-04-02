@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.*;
 
 public class Query {
 
@@ -83,7 +82,7 @@ public class Query {
 
         String kommaPattern = ",";                                                  //for removing the "," of the SQL statement
 
-        StringBuffer raw = new StringBuffer(" ");                                    // SELECT and FROM gets cut out from Statement Stringbuffer 
+        StringBuilder raw = new StringBuilder(" ");                                    // SELECT and FROM gets cut out from Statement Stringbuffer 
         String tableLong = rawMatcher.group();                                       //and splited to an array of words (the collum names)
         raw.insert(0, tableLong);
         //System.out.println(raw);                                                  //testing purpuse

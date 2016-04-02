@@ -85,6 +85,19 @@ public class Students {
             System.out.println(e + " => newStudent");
         }
     }
+    
+    public static String StudentSearch(String Student) {
+        String names[] = Student.split(" ");
+        try {
+            return Query.anyQuery("SELECT ID "
+                    + "FROM `sbm_students` "
+                    + "WHERE forename LIKE '" + names[0] + "%'"
+                    + "AND surname LIKE '%" + names[names.length-1] + "'").get(0);
+        } catch (Exception e) {
+            System.out.println(e + " => StudentSearch");
+        }
+        return null;
+    }
 }
 
 
