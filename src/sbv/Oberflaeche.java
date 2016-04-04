@@ -2,7 +2,6 @@
 //fenstergröße : 1382 * 784
 package sbv;
 
-import com.itextpdf.text.BadElementException;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -18,7 +17,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -125,6 +123,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String pathName;
     static private PdfPTable table;
     static private int width, heigth;
+    
+    static private String user;
+    static private int lizenz;
 
     Connection conn = null;
 
@@ -244,7 +245,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
         schuelerCount.setText(Home.StudentsCount());
         freieBuecher.setText(Home.CauchtCopyCount());
+    welcome.setText("Willkommen "+user);
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -259,6 +262,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerCount = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         freieBuecher = new javax.swing.JLabel();
+        welcome = new javax.swing.JLabel();
         schuelerTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         klassenList = new javax.swing.JList();
@@ -380,6 +384,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         numCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Schulbuchverwaltung");
         setResizable(false);
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 30)); // NOI18N
@@ -403,6 +408,8 @@ public class Oberflaeche extends javax.swing.JFrame {
         freieBuecher.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         freieBuecher.setText("---");
 
+        welcome.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+
         javax.swing.GroupLayout homeTabLayout = new javax.swing.GroupLayout(homeTab);
         homeTab.setLayout(homeTabLayout);
         homeTabLayout.setHorizontalGroup(
@@ -410,31 +417,36 @@ public class Oberflaeche extends javax.swing.JFrame {
             .addGroup(homeTabLayout.createSequentialGroup()
                 .addGroup(homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homeTabLayout.createSequentialGroup()
-                        .addGap(300, 300, 300)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(250, 250, 250)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(homeTabLayout.createSequentialGroup()
                         .addGap(453, 453, 453)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(homeTabLayout.createSequentialGroup()
+                        .addGap(300, 300, 300)
+                        .addGroup(homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(homeTabLayout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(250, 250, 250)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(361, Short.MAX_VALUE))
         );
         homeTabLayout.setVerticalGroup(
             homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homeTabLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(229, 229, 229)
+                .addGap(48, 48, 48)
+                .addComponent(welcome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(148, 148, 148)
                 .addGroup(homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(323, Short.MAX_VALUE))
         );
 
         basePanel.addTab("Home", homeTab);
@@ -2370,8 +2382,10 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     /**
      * @param args the command line arguments
+     * @param user
+     * @param lizenz
      */
-    public static void main(String args[]) {
+    public static void main(String args[], String user, String lizenz) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -2400,6 +2414,10 @@ public class Oberflaeche extends javax.swing.JFrame {
                 new Oberflaeche().setVisible(true);
             }
         });
+        Oberflaeche.user=user;
+        Oberflaeche.lizenz=Integer.parseInt(lizenz) ;
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2531,5 +2549,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel schuelerZurueckAnzahl;
     private javax.swing.JRadioButton soloExport;
     private javax.swing.JComboBox superSelectComboBox;
+    private javax.swing.JLabel welcome;
     // End of variables declaration//GEN-END:variables
 }
