@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
@@ -123,7 +124,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String pathName;
     static private PdfPTable table;
     static private int width, heigth;
-    
+
     static private String user;
     static private int lizenz;
 
@@ -245,9 +246,41 @@ public class Oberflaeche extends javax.swing.JFrame {
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
         schuelerCount.setText(Home.StudentsCount());
         freieBuecher.setText(Home.CauchtCopyCount());
-    welcome.setText("Willkommen "+user);
+
+        switch (lizenz) {
+            case 3:
+                neuKlasseBtn.setEnabled(false);                 //neue Klasse anlegen
+                neuKlasseBtn.setVisible(false);
+                neuKlasseFeld.setVisible(false);
+                jScrollPane5.setVisible(false);                 //Klassenzugehörigkeit eines Schülers bearbeiten
+                jScrollPane8.setVisible(false);
+                schuelerKlassenBearbeiten.setEnabled(false);
+                schuelerKlassenBearbeiten.setVisible(false);
+                neuKopieBtn.setEnabled(false);                  //neue Kopien eines Buches erstellen
+                neuKopieBtn.setVisible(false);
+                jLabel18.setVisible(false);
+                neuKopieAnzahl.setVisible(false);
+                buchNeu.setEnabled(false);                      //neue Bücher erstellen
+                buchNeu.setVisible(false);
+
+            case 2:
+                buchLöschen.setEnabled(false);                  //Bücher löschen
+                buchLöschen.setVisible(false);
+                buchBearbeiten.setEnabled(false);               //Bücher bearbeiten
+                buchBearbeiten.setVisible(false);
+                kopieLöschen.setEnabled(false);                 //Kopien löschen
+                kopieLöschen.setVisible(false);
+
+            case 1:
+
+                break;
+
+            default:
+
+        }
+
+        welcome.setText("Willkommen " + user);
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -382,6 +415,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         soloExport = new javax.swing.JRadioButton();
         groupExport = new javax.swing.JRadioButton();
         numCheckBox = new javax.swing.JCheckBox();
+        pdfExportProgressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Schulbuchverwaltung");
@@ -409,6 +443,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         freieBuecher.setText("---");
 
         welcome.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        welcome.setText("---");
 
         javax.swing.GroupLayout homeTabLayout = new javax.swing.GroupLayout(homeTab);
         homeTab.setLayout(homeTabLayout);
@@ -1491,12 +1526,18 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        exportFilesGroup.add(soloExport);
         soloExport.setText("einzeln");
 
+        exportFilesGroup.add(groupExport);
         groupExport.setText("zusammen");
 
         numCheckBox.setSelected(true);
         numCheckBox.setText("Nummerierung");
+
+        pdfExportProgressBar.setMaximum(10);
+        pdfExportProgressBar.setToolTipText("");
+        pdfExportProgressBar.setStringPainted(true);
 
         javax.swing.GroupLayout exportTabLayout = new javax.swing.GroupLayout(exportTab);
         exportTab.setLayout(exportTabLayout);
@@ -1532,6 +1573,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(superSelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(48, 48, 48)
                         .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numCheckBox)
                             .addGroup(exportTabLayout.createSequentialGroup()
                                 .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1541,9 +1583,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addComponent(pdfExportOpAddSelectButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(pdfExportOpDelSelectButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(numCheckBox))
-                        .addGap(0, 383, Short.MAX_VALUE)))
+                                .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 237, Short.MAX_VALUE)
+                        .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         exportTabLayout.setVerticalGroup(
@@ -1586,7 +1628,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(pdfExportOpDelAllButton2)
                             .addGap(230, 230, 230))
                         .addComponent(jScrollPane18)
-                        .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2261,7 +2304,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 || pdfExportOpSelectModel.isEmpty()
                 || !(schuelerRadioButton.isSelected() || klasseRadioButton.isSelected() || buchRadioButton.isSelected())
                 || !(groupExport.isSelected() || soloExport.isSelected())) {
-            Other.errorWin("Es muss eine Auswahl getroffen werdenasdklfjapghbasdkjfhsadkofhbaksjdghiqwerbtksdjagiasdgjbsadkjgb");
+            Other.errorWin("Es muss eine Auswahl getroffen werden");
             return;
         }
 
@@ -2288,6 +2331,20 @@ public class Oberflaeche extends javax.swing.JFrame {
                     document.open();
 
                     for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+                        //pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                        
+                        final int n = i;    //http://www.java2s.com/Code/Java/Swing-JFC/AdemonstrationoftheJProgressBarcomponent.htm
+                        try {               //NOT WORK
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pdfExportProgressBar.setValue(n);
+                                }
+                            });
+                            java.lang.Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                        }                   //NOT WORK
+
                         schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                         table = schuelerEx(schuelerId);
                         Chapter chapter = PDF_Export.PdfChapter(schuelerId);
@@ -2295,6 +2352,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                         document.add(table);
 
                     }
+
                     document.close();
                     writer.close();
 
@@ -2349,7 +2407,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                            System.out.println(e + " => schuelerEx - Pic ok1");
 //                        }
 //                    } else {
-                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
 //                    }
                     continue;
                 }
@@ -2365,7 +2423,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
-                
+
                 Other.errorWin("Fatal Error");
 
 //                for (int k = 0; k < pdfExportOpAllesModel.size(); k++) {
@@ -2414,10 +2472,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                 new Oberflaeche().setVisible(true);
             }
         });
-        Oberflaeche.user=user;
-        Oberflaeche.lizenz=Integer.parseInt(lizenz) ;
-        
-        
+        Oberflaeche.user = user;
+        Oberflaeche.lizenz = Integer.parseInt(lizenz);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2530,6 +2587,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JButton pdfExportOpDelSelectButton2;
     private javax.swing.JList pdfExportOpSelectList2;
     private javax.swing.JButton pdfExportPrint;
+    private javax.swing.JProgressBar pdfExportProgressBar;
     private javax.swing.JTable schuelerBuecherTbl;
     private javax.swing.JLabel schuelerCount;
     private javax.swing.JButton schuelerExport;
