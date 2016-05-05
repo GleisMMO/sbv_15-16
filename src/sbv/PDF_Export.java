@@ -64,7 +64,7 @@ public class PDF_Export {
 
             for (int i = 0; i < (a2.size()); i++) {
                 PdfPTable table = studentPDFTable(a2.get(i), (Students.BookList(a2.get(i)).size()));
-                Chapter chapter = PdfChapter(a2.get(i));
+                Chapter chapter = pdfChapterStudent(a2.get(i));
                 document.add(chapter);
                 document.add(table);
 
@@ -99,7 +99,7 @@ public class PDF_Export {
 
             document.open();
 
-            Chapter chapter1 = PdfChapter(studentID);
+            Chapter chapter1 = pdfChapterStudent(studentID);
 
             ArrayList<String> bookArray;
             bookArray = Students.BookList(studentID);
@@ -268,7 +268,7 @@ public class PDF_Export {
 
     }
 
-    public static Chapter PdfChapter(String studentID) {
+    public static Chapter pdfChapterStudent(String studentID) {
 
         Paragraph titel1 = new Paragraph("Schüler: " + Students.SingelStudent(studentID, 1) + " " + Students.SingelStudent(studentID, 2),
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
@@ -280,6 +280,29 @@ public class PDF_Export {
         String classes = "";
 
         for (String s : Students.SingelStudentClasses(studentID)) {
+            classes += s + ", ";
+        }
+        Paragraph titel5 = new Paragraph("Klassen: " + classes,
+                FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
+        Chapter chapter1 = new Chapter(titel1, 1);
+        chapter1.setNumberDepth(0);
+        chapter1.add(titel2);
+        chapter1.add(titel5);
+        return chapter1;
+    }
+
+    public static Chapter pdfChapterClass(String classID) {
+
+        Paragraph titel1 = new Paragraph("Schüler: " + Students.SingelStudent(classID, 1) + " " + Students.SingelStudent(classID, 2),
+                FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
+        Paragraph titel2 = new Paragraph("Geburtsdatum: " + Students.SingelStudent(classID, 3),
+                FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
+
+        ArrayList<String> a0 = new ArrayList();
+        a0 = Students.SingelStudentClasses(classID);
+        String classes = "";
+
+        for (String s : Students.SingelStudentClasses(classID)) {
             classes += s + ", ";
         }
         Paragraph titel5 = new Paragraph("Klassen: " + classes,
@@ -317,7 +340,7 @@ public class PDF_Export {
 
             document.open();
 
-            Chapter chapter1 = PdfChapter(studentID);
+            Chapter chapter1 = pdfChapterStudent(studentID);
 
             ArrayList<String> bookArray;
             bookArray = Copies.copyBill(studentID);
@@ -422,7 +445,7 @@ public class PDF_Export {
 
             for (int i = 0; i < (studentArray.size()); i++) {
                 PdfPTable table = billTable(studentArray.get(i));
-                Chapter chapter = PdfChapter(studentArray.get(i));
+                Chapter chapter = pdfChapterStudent(studentArray.get(i));
                 document.add(chapter);
                 document.add(table);
 
@@ -459,7 +482,7 @@ public class PDF_Export {
 
             for (int i = 0; i < (studentArray.size()); i++) {
                 PdfPTable table = billTableFake(studentArray.get(i));
-                Chapter chapter = PdfChapter(studentArray.get(i));
+                Chapter chapter = pdfChapterStudent(studentArray.get(i));
                 document.add(chapter);
                 document.add(table);
 

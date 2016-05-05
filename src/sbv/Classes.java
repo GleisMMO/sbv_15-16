@@ -92,6 +92,17 @@ public class Classes {
             System.out.println(e + " => newClass");
         }
     }
+    
+    public static String classSearch(String classe) {
+        try {
+            return Query.anyQuery("SELECT ID "
+                    + "FROM `sbm_classes` "
+                    + "WHERE name LIKE '" + classe + "'").get(0);
+        } catch (Exception e) {
+            System.out.println(e + " => classSearch");
+        }
+        return null;
+    }
 }
 
 

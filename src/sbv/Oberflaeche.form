@@ -1778,6 +1778,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Klasse"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="klasseRadioButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="schuelerRadioButton">
               <Properties>

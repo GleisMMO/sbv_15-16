@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
@@ -86,6 +85,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     DefaultListModel pdfExportAuswahlSelectListModel = new DefaultListModel();
 
     private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
+    private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID"}; //forename, surname, birth, student_ID
     DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
     DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
 
@@ -95,7 +95,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private ListModel dlm;
     static private Object item;
     static private ArrayList<String> data;
-    static private ArrayList<String> buecher;
+    static private ArrayList<String> names1;
     static private String buecherKlasse;
     static private ArrayList<String> buchKlasse;
     static private String buchISBN;
@@ -129,6 +129,185 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private int lizenz;
 
     Connection conn = null;
+
+    private Thread exp;
+    Runnable ex = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                /**
+                 * *************************************************
+                 */
+                if (groupExport.isSelected()) {
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+                    int returnVal = chooser.showSaveDialog(basePanel);
+
+                    File savefile = chooser.getSelectedFile();
+                    String pathName2 = savefile.getPath();
+                    if (!pathName2.contains(".pdf")) {
+                        pathName2 = pathName2.concat(".pdf");
+                    }
+
+                    final Document document = new Document(PageSize.A4);
+
+                    final PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2));
+
+                    document.addAuthor(System.getProperty("user.name"));
+                    document.addCreationDate();
+                    document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
+                    document.addTitle("PDF-Export");
+
+                    document.open();
+                    for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+
+                        pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
+                        pdfExportProgressBar.setValue(i);
+//*****                    
+                        if (schuelerRadioButton.isSelected()) {
+                            schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                            table = schuelerEx(schuelerId);
+                            final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
+                            document.add(chapter);
+//*****                        
+                        } else if (klasseRadioButton.isSelected()) {
+                            table = classEx((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+//*****
+                        } else if (buchRadioButton.isSelected()) {
+//*****
+                        } else {
+                            Other.errorWin("Fatal Error");
+                            return;
+                        }
+
+                        document.add(table);
+                    }
+                    document.close();
+                    writer.close();
+                    /**
+                     * *************************************************
+                     */
+                } else if (soloExport.isSelected()) {
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                    int returnVal = chooser.showOpenDialog(basePanel);
+
+                    File savefile = chooser.getSelectedFile();
+                    final String pathName2 = savefile.getPath();
+
+                    PdfWriter writer;
+
+                    for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+
+                        pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
+                        pdfExportProgressBar.setValue(i);
+
+                        final Document document = new Document(PageSize.A4);
+
+                        System.out.println(pdfExportAuswahlSelectListModel.getElementAt(i));
+                        System.out.println(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i).toString().replace(" ", "-") + ".pdf");
+
+                        writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i).toString().replace(" ", "-") + ".pdf"));
+
+                        document.addAuthor(System.getProperty("user.name"));
+                        document.addCreationDate();
+                        document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
+                        document.addTitle("PDF-Export von " + pdfExportAuswahlSelectListModel.getElementAt(i));
+
+                        document.open();
+
+                        if (schuelerRadioButton.isSelected()) {
+                            schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                            table = schuelerEx(schuelerId);
+                            final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
+                            document.add(chapter);
+
+                        } else if (klasseRadioButton.isSelected()) {
+
+                        } else if (buchRadioButton.isSelected()) {
+
+                        } else {
+                            Other.errorWin("Fatal Error");
+                            return;
+                        }
+                        document.add(table);
+
+                        document.close();
+                        writer.close();
+                    }
+
+                    pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
+                    pdfExportProgressBar.setString("Fertig");//?
+                    pdfExportPrint.setEnabled(true);
+
+                    /**
+                     * *************************************************
+                     */
+                } else {
+                    Other.errorWin("Fatal Error");
+                    return;
+                }
+
+                pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
+                pdfExportProgressBar.setString("Fertig");//?
+                pdfExportPrint.setEnabled(true);
+
+            } catch (DocumentException | FileNotFoundException e) {
+                System.out.println(e + " => GroupExport");
+                pdfExportPrint.setEnabled(true);
+            }
+        }
+    };
+    Runnable exSoloSchueler = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                int returnVal = chooser.showOpenDialog(basePanel);
+
+                File savefile = chooser.getSelectedFile();
+                final String pathName2 = savefile.getPath();
+
+                for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+
+                    pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
+                    pdfExportProgressBar.setValue(i);
+
+                    final Document document = new Document(PageSize.A4);
+
+                    final PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i) + ".pdf"));
+
+                    document.addAuthor(System.getProperty("user.name"));
+                    document.addCreationDate();
+                    document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
+                    document.addTitle("PDF-Export von " + pdfExportAuswahlSelectListModel.getElementAt(i));
+
+                    document.open();
+
+                    schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                    table = schuelerEx(schuelerId);
+                    final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
+                    document.add(chapter);
+                    document.add(table);
+
+                    document.close();
+                    writer.close();
+                }
+
+                pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
+                pdfExportProgressBar.setString("Fertig");//?
+                pdfExportPrint.setEnabled(true);
+
+            } catch (DocumentException | FileNotFoundException e) {
+                System.out.println(e + " => GroupExport");
+                pdfExportPrint.setEnabled(true);
+            }
+        }
+    };
 
     private void UpdateTable(ArrayList<String> data) {
 
@@ -1416,6 +1595,11 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         pdfExportButtonGroup.add(klasseRadioButton);
         klasseRadioButton.setText("Klasse");
+        klasseRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                klasseRadioButtonActionPerformed(evt);
+            }
+        });
 
         pdfExportButtonGroup.add(schuelerRadioButton);
         schuelerRadioButton.setText("Schüler");
@@ -1679,14 +1863,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        buecher = Students.BookList(schuelerId);
+        names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
         }
 
-        for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+        for (int i = 0; i <= names.size() - 5; i = i + 5) {
+            Object[] obj = {i / 5 + 1, names.get(i), names.get(i + 1), Other.dateToNormal(names.get(i + 2)), names.get(i + 3), names.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
 
@@ -1742,14 +1926,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());//ERROR
 
-        buecher = Students.BookList(schuelerId);
+        names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
         }
 
-        for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+        for (int i = 0; i <= names.size() - 5; i = i + 5) {
+            Object[] obj = {i / 5 + 1, names.get(i), names.get(i + 1), Other.dateToNormal(names.get(i + 2)), names.get(i + 3), names.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1773,14 +1957,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        buecher = Students.BookList(schuelerId);
+        names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
         }
 
-        for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+        for (int i = 0; i <= names.size() - 5; i = i + 5) {
+            Object[] obj = {i / 5 + 1, names.get(i), names.get(i + 1), Other.dateToNormal(names.get(i + 2)), names.get(i + 3), names.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -1958,14 +2142,14 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_ausgebenActionPerformed
 
     private void buecherSchuelerTblAktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buecherSchuelerTblAktActionPerformed
-        buecher = Students.BookList(schuelerId);
+        names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
         }
 
-        for (int i = 0; i <= buecher.size() - 5; i = i + 5) {
-            Object[] obj = {i / 5 + 1, buecher.get(i), buecher.get(i + 1), Other.dateToNormal(buecher.get(i + 2)), buecher.get(i + 3), buecher.get(i + 4)};
+        for (int i = 0; i <= names.size() - 5; i = i + 5) {
+            Object[] obj = {i / 5 + 1, names.get(i), names.get(i + 1), Other.dateToNormal(names.get(i + 2)), names.get(i + 3), names.get(i + 4)};
             schuelerBuecherModel.addRow(obj);
         }
         schuelerBuecherTbl.setModel(schuelerBuecherModel);
@@ -2168,6 +2352,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_einsammelnTabComponentAdded
 
     private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
+        pdfExportAuswahlSelectListModel.clear();
+        pdfExportAuswahlAllesListModel.clear();
         data = Classes.getClassNameList();
         input = new Object[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -2179,6 +2365,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
 
+        pdfExportOpAllesModel.clear();
         for (int i = 0; i < pdfExportSchuelerOpList.length; i++) {
             pdfExportOpAllesModel.addElement(pdfExportSchuelerOpList[i]);
         }
@@ -2192,9 +2379,27 @@ public class Oberflaeche extends javax.swing.JFrame {
         if (schuelerRadioButton.isSelected()) {
             data = Classes.classList((String) superSelectComboBox.getSelectedItem());
             for (int i = 0; i < data.size(); i = i + 4) {
-                pdfExportAuswahlAllesListModel.addElement(data.get(i).concat(" ").concat(data.get(i + 1)));
+                String n1 = data.get(i);
+                String n2 = data.get(i + 1);
+                pdfExportAuswahlAllesListModel.addElement(new StringBuilder(n1).append(" ").append(n2).toString());
+//                System.out.println(data.get(i));
+//                System.out.println(n2);
+//                System.out.println(data.get(i + 1));
+//                System.out.println(n1);
+//                System.out.println(n2 + n1);
+//                System.out.println(n2.concat(n1));
+//                System.out.println(new StringBuilder(n2).append(n1));
+//                System.out.println(new StringBuilder(n2).append(n1));
+//                System.out.println(pdfExportAuswahlAllesListModel.get(pdfExportAuswahlAllesListModel.getSize() - 1));
+//                System.out.println("-----");
             }
+
+        } else if (klasseRadioButton.isSelected()) {
+
+        } else if (buchRadioButton.isSelected()) {
+
         }
+
         pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
     }//GEN-LAST:event_superSelectComboBoxActionPerformed
 
@@ -2308,69 +2513,43 @@ public class Oberflaeche extends javax.swing.JFrame {
             return;
         }
 
-        if (schuelerRadioButton.isSelected()) {
-            if (groupExport.isSelected()) {
-                String pathName2;
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        pdfExportProgressBar.setValue(0);
+        pdfExportProgressBar.setString("0%");
+        pdfExportProgressBar.setMaximum(pdfExportAuswahlSelectListModel.size());
+        pdfExportPrint.setEnabled(false);
 
-                int returnVal = chooser.showOpenDialog(this);
-
-                File savefile = chooser.getSelectedFile();
-                pathName2 = savefile.getPath();
-                try {
-                    Document document = new Document(PageSize.A4);
-
-                    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\Schueler.pdf"));
-
-                    document.addAuthor(System.getProperty("user.name"));
-                    document.addCreationDate();
-                    document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
-                    document.addTitle("PDF-Export von Schülern");
-
-                    document.open();
-
-                    for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
-                        //pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                        
-                        final int n = i;    //http://www.java2s.com/Code/Java/Swing-JFC/AdemonstrationoftheJProgressBarcomponent.htm
-                        try {               //NOT WORK
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pdfExportProgressBar.setValue(n);
-                                }
-                            });
-                            java.lang.Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                        }                   //NOT WORK
-
-                        schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                        table = schuelerEx(schuelerId);
-                        Chapter chapter = PDF_Export.PdfChapter(schuelerId);
-                        document.add(chapter);
-                        document.add(table);
-
-                    }
-
-                    document.close();
-                    writer.close();
-
-                } catch (FileNotFoundException | DocumentException e) {
-                    System.out.println(e + " => schueler-groupExport");
-                }
-            } else if (soloExport.isCursorSet()) {
-
-            }
-
-        }
+        exp = new Thread(ex);
+        exp.start();
     }//GEN-LAST:event_pdfExportPrintActionPerformed
 
+    private void klasseRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseRadioButtonActionPerformed
+        pdfExportAuswahlSelectListModel.clear();
+        pdfExportAuswahlAllesListModel.clear();
+        data = Classes.getClassNameList();
+        for (int i = 0; i < data.size(); i++) {
+            pdfExportAuswahlAllesListModel.addElement(data.get(i));
+        }
+        pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
+        
+        superSelectComboBox.setModel(new DefaultComboBoxModel());
+
+        superSelectComboBox.setMaximumRowCount(0);
+
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+
+        pdfExportOpAllesModel.clear();
+        for (int i = 0; i < pdfExportClassOpList.length; i++) {
+            pdfExportOpAllesModel.addElement(pdfExportClassOpList[i]);
+        }
+        pdfExportOpAllesList.setModel(pdfExportOpAllesModel);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+    }//GEN-LAST:event_klasseRadioButtonActionPerformed
+
     private PdfPTable schuelerEx(String studentID) {
-        buecher = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
+        names = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
 
         width = pdfExportOpSelectModel.size();
-        heigth = buecher.size() / pdfExportOpAllesModel.size();
+        heigth = names.size() / pdfExportOpAllesModel.size();
 
         if (numCheckBox.isSelected()) {
             table = new PdfPTable(width + 1);
@@ -2395,7 +2574,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int j = 0; j < width; j++) {
                 item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportSchuelerOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
@@ -2407,20 +2586,20 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                            System.out.println(e + " => schuelerEx - Pic ok1");
 //                        }
 //                    } else {
-                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
 //                    }
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) buecher.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
-                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[4])) {  //code
-                    table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
@@ -2432,6 +2611,59 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                        break;
 //                    }
 //                }
+            }
+        }
+
+        return table;
+    }
+
+    private PdfPTable classEx(String classID) {
+        names = Classes.classList(classID); //forename, surname, birth, student_ID
+        System.out.println(names);
+        
+        width = pdfExportOpSelectModel.size();
+        heigth = names.size() / pdfExportOpAllesModel.size();
+
+        if (numCheckBox.isSelected()) {
+            table = new PdfPTable(width + 1);
+            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        } else {
+            table = new PdfPTable(width);
+        }
+
+        table.setSpacingBefore(25);
+        table.setSpacingAfter(25);
+
+        //Überschriften
+        for (int i = 0; i < width; i++) {
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        }
+
+        //Inhalt
+        for (int i = 0; i < heigth; i++) {
+            if (numCheckBox.isSelected()) {
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            }
+            for (int j = 0; j < width; j++) {
+                item = pdfExportOpSelectModel.getElementAt(j);
+                if (item.equals(pdfExportClassOpList[0])) {  //label
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportClassOpList[1])) {  //surname
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportClassOpList[2])) {  //birth
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportClassOpList[3])) {  //student_ID
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+
+                Other.errorWin("Fatal Error");
             }
         }
 
