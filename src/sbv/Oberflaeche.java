@@ -127,6 +127,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     static private String user;
     static private int lizenz;
+    static private final String[] lizenzenNamen = {"lokaler Admin", "Admin", "Sekretär", "Lehrkraft"};
 
     Connection conn = null;
 
@@ -168,11 +169,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                         if (schuelerRadioButton.isSelected()) {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                             table = schuelerEx(schuelerId);
-                            final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
-                            document.add(chapter);
+                            document.add(PDF_Export.pdfChapterStudent(schuelerId));
 //*****                        
                         } else if (klasseRadioButton.isSelected()) {
-                            table = classEx((String) pdfExportAuswahlSelectListModel.getElementAt(i));
+                            classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
+                            table = classEx(classe);
+                            document.add(PDF_Export.pdfChapterClass(classe));
 //*****
                         } else if (buchRadioButton.isSelected()) {
 //*****
@@ -248,54 +250,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 } else {
                     Other.errorWin("Fatal Error");
                     return;
-                }
-
-                pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
-                pdfExportProgressBar.setString("Fertig");//?
-                pdfExportPrint.setEnabled(true);
-
-            } catch (DocumentException | FileNotFoundException e) {
-                System.out.println(e + " => GroupExport");
-                pdfExportPrint.setEnabled(true);
-            }
-        }
-    };
-    Runnable exSoloSchueler = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-                int returnVal = chooser.showOpenDialog(basePanel);
-
-                File savefile = chooser.getSelectedFile();
-                final String pathName2 = savefile.getPath();
-
-                for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
-
-                    pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
-                    pdfExportProgressBar.setValue(i);
-
-                    final Document document = new Document(PageSize.A4);
-
-                    final PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i) + ".pdf"));
-
-                    document.addAuthor(System.getProperty("user.name"));
-                    document.addCreationDate();
-                    document.addCreator("Seminarkurs Programm Schulbuchverwaltung");
-                    document.addTitle("PDF-Export von " + pdfExportAuswahlSelectListModel.getElementAt(i));
-
-                    document.open();
-
-                    schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                    table = schuelerEx(schuelerId);
-                    final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
-                    document.add(chapter);
-                    document.add(table);
-
-                    document.close();
-                    writer.close();
                 }
 
                 pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
@@ -458,6 +412,8 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         }
 
+        lizenzName.setText(lizenzenNamen[lizenz]);
+
         welcome.setText("Willkommen " + user);
     }
 
@@ -475,6 +431,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         freieBuecher = new javax.swing.JLabel();
         welcome = new javax.swing.JLabel();
+        lizenzName = new javax.swing.JLabel();
         schuelerTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         klassenList = new javax.swing.JList();
@@ -624,6 +581,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         welcome.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         welcome.setText("---");
 
+        lizenzName.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+        lizenzName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lizenzName.setText("---");
+
         javax.swing.GroupLayout homeTabLayout = new javax.swing.GroupLayout(homeTab);
         homeTab.setLayout(homeTabLayout);
         homeTabLayout.setHorizontalGroup(
@@ -644,7 +605,10 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addGap(250, 250, 250)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(homeTabLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(361, Short.MAX_VALUE))
         );
         homeTabLayout.setVerticalGroup(
@@ -660,7 +624,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
+                .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         basePanel.addTab("Home", homeTab);
@@ -1907,8 +1873,8 @@ public class Oberflaeche extends javax.swing.JFrame {
         PDF_Export.studentPDF(schuelerId, this);
         try {
             PDF_Export.openPDF();
-        } catch (IOException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
         }
     }//GEN-LAST:event_schuelerExportMouseClicked
 
@@ -2173,8 +2139,8 @@ public class Oberflaeche extends javax.swing.JFrame {
         PDF_Export.studentBill(schuelerId, this);
         try {
             PDF_Export.openPDF();
-        } catch (IOException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
         }
     }//GEN-LAST:event_schuelerExportPreislisteMouseClicked
 
@@ -2189,9 +2155,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void kopieBarcodeErneutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieBarcodeErneutActionPerformed
         try {
             PDF_Export.barcodePDF(Integer.parseInt(momentaneKopie), 1);
-        } catch (IOException | DocumentException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex + " => Cant print Barcode of Copie");
+        } catch (IOException | DocumentException e) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println(e + " => Cant print Barcode of Copie");
         }
     }//GEN-LAST:event_kopieBarcodeErneutActionPerformed
 
@@ -2530,7 +2496,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             pdfExportAuswahlAllesListModel.addElement(data.get(i));
         }
         pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
-        
+
         superSelectComboBox.setModel(new DefaultComboBoxModel());
 
         superSelectComboBox.setMaximumRowCount(0);
@@ -2574,7 +2540,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int j = 0; j < width; j++) {
                 item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportSchuelerOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
@@ -2586,20 +2552,20 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                            System.out.println(e + " => schuelerEx - Pic ok1");
 //                        }
 //                    } else {
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
 //                    }
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * pdfExportSchuelerOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[4])) {  //code
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
@@ -2620,7 +2586,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private PdfPTable classEx(String classID) {
         names = Classes.classList(classID); //forename, surname, birth, student_ID
         System.out.println(names);
-        
+
         width = pdfExportOpSelectModel.size();
         heigth = names.size() / pdfExportOpAllesModel.size();
 
@@ -2647,19 +2613,19 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int j = 0; j < width; j++) {
                 item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportClassOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[1])) {  //surname
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[2])) {  //birth
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * 5 + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * pdfExportClassOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[3])) {  //student_ID
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
@@ -2800,6 +2766,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel kopiePaid;
     private javax.swing.JLabel kopieSur;
     private javax.swing.JTextField labelSuche;
+    private javax.swing.JLabel lizenzName;
     private javax.swing.JButton neuKlasseBtn;
     private javax.swing.JTextField neuKlasseFeld;
     private javax.swing.JTextField neuKopieAnzahl;

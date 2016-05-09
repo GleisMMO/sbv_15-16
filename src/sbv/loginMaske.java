@@ -104,7 +104,7 @@ public class loginMaske extends javax.swing.JFrame {
                         + "AND Passwort = '" + pw + "' ;").get(0)));
                 setVisible(false);
             } else if ((user.equalsIgnoreCase("Admin") && pw.equals("1234"))) {
-                Oberflaeche.main(args, user, "1");
+                Oberflaeche.main(args, user, "0");
                 setVisible(false);
             } else {
                 Other.errorWin("Benutzername oder Passwort falsch !");
