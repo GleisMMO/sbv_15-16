@@ -32,7 +32,7 @@ public class Copies {
         return null;
     }
 
-    public static String copiesInStockBySammy(String book_id) {
+    public static String copiesInStock(String book_id) {
         try {
             int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM sbm_copieshistory , sbm_copies "
@@ -46,8 +46,7 @@ public class Copies {
                     + "AND copy_id LIKE sbm_copies.ID "
                     + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copieshistory.ID)"));
-            int result = caughthistory + (all - history);
-            return Integer.toString(result);
+            return Integer.toString(caughthistory + (all - history));
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
         }
@@ -223,8 +222,8 @@ public class Copies {
         }
         return 0;
     }
+    
 }
-
 //Copy kaufen
 //    public static void copyBought(String copy_id) {
 //        try {

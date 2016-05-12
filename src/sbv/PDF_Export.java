@@ -300,6 +300,15 @@ public class PDF_Export {
         return chapter1;
     }
 
+    public static Chapter pdfChapterBook() {
+        Paragraph titel1 = new Paragraph("Bücher",
+                FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
+        
+        Chapter chapter1 = new Chapter(titel1, 1);
+        chapter1.setNumberDepth(0);
+        return chapter1;
+    }
+    
     public static void openPDF() throws IOException {
         Desktop.getDesktop().open(new File(pathName + "/" + pdfName));
     }

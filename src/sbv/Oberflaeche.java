@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -86,29 +85,30 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
     private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID"}; //forename, surname, birth, student_ID
+    private static final String pdfExportBookOpList[] = {"Label", "ISBN", "Preis", "Kauf", "ID", "Anz. Kopien", "Anz. Ausgegeben", "Anz. Lager"}; //label, isbn, price, buy, ID
     DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
     DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
 
-    static private ArrayList<String> names;
-    static private int index;
-    static private ArrayList<String> klasse;
-    static private ListModel dlm;
-    static private Object item;
-    static private ArrayList<String> data;
-    static private ArrayList<String> names1;
-    static private String buecherKlasse;
-    static private ArrayList<String> buchKlasse;
-    static private String buchISBN;
-    static private ArrayList<String> ids;
-    static private int buecherRow;
-    static private String buchLabel;
-    static private int anz;
-    static private int id;
-    static private String barcode;
-    static private String classe;
+    //static private ArrayList<String> names;
+    //static private int index;
+    //static private ArrayList<String> klasse;
+    //static private ListModel dlm;
+//    static private Object item;
+//    static private ArrayList<String> data;
+//    static private ArrayList<String> names1;
+//    static private String buecherKlasse;
+//    static private ArrayList<String> buchKlasse;
+//    static private String buchISBN;
+//    static private ArrayList<String> ids;
+//    static private int buecherRow;
+//    static private String buchLabel;
+//    static private int anz;
+//    static private int id;
+//    static private String barcode;
+//    static private String classe;
     static private String momentaneKopie;
-    static private int testInteger;
-    static private ArrayList<String> kopie;
+//    static private int testInteger;
+//    static private ArrayList<String> kopie;
     static private String schuelerId;
     static private int schuelerInKlasse;
     static private int schuelerRow;
@@ -117,13 +117,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private int currentPanel = 1;
     static private int speichern = 0;
     static private int skBearbeiten = 0;
-    static private Object[] input;
-    static private final ArrayList doppelt = new ArrayList();
-    static private int[] selected;
-    static private String pdfName;
-    static private String pathName;
-    static private PdfPTable table;
-    static private int width, heigth;
+//    static private Object[] input;
+//    static private final ArrayList doppelt = new ArrayList();
+//    static private int[] selected;
+//    static private PdfPTable table;
+//    static private int width, heigth;
 
     static private String user;
     static private int lizenz;
@@ -143,7 +141,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     JFileChooser chooser = new JFileChooser();
                     chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-                    int returnVal = chooser.showSaveDialog(basePanel);
+                    chooser.showSaveDialog(basePanel);
 
                     File savefile = chooser.getSelectedFile();
                     String pathName2 = savefile.getPath();
@@ -168,22 +166,24 @@ public class Oberflaeche extends javax.swing.JFrame {
 //*****                    
                         if (schuelerRadioButton.isSelected()) {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                            table = schuelerEx(schuelerId);
+                            document.add(schuelerEx(schuelerId));
                             document.add(PDF_Export.pdfChapterStudent(schuelerId));
 //*****                        
                         } else if (klasseRadioButton.isSelected()) {
-                            classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
-                            table = classEx(classe);
+                            String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
+                            document.add(classEx(classe));
                             document.add(PDF_Export.pdfChapterClass(classe));
 //*****
                         } else if (buchRadioButton.isSelected()) {
+                            i = pdfExportAuswahlSelectListModel.size();
+                            document.add(bookEx());
+                            document.add(PDF_Export.pdfChapterBook());
 //*****
                         } else {
                             Other.errorWin("Fatal Error");
                             return;
                         }
 
-                        document.add(table);
                     }
                     document.close();
                     writer.close();
@@ -194,7 +194,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     JFileChooser chooser = new JFileChooser();
                     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-                    int returnVal = chooser.showOpenDialog(basePanel);
+                    chooser.showOpenDialog(basePanel);
 
                     File savefile = chooser.getSelectedFile();
                     final String pathName2 = savefile.getPath();
@@ -219,22 +219,21 @@ public class Oberflaeche extends javax.swing.JFrame {
                         document.addTitle("PDF-Export von " + pdfExportAuswahlSelectListModel.getElementAt(i));
 
                         document.open();
-
+//*****                    
                         if (schuelerRadioButton.isSelected()) {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                            table = schuelerEx(schuelerId);
-                            final Chapter chapter = PDF_Export.pdfChapterStudent(schuelerId);
-                            document.add(chapter);
-
+                            document.add(schuelerEx(schuelerId));
+                            document.add(PDF_Export.pdfChapterStudent(schuelerId));
+//*****                    
                         } else if (klasseRadioButton.isSelected()) {
-
-                        } else if (buchRadioButton.isSelected()) {
-
+                            String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
+                            document.add(classEx(classe));
+                            document.add(PDF_Export.pdfChapterClass(classe));
+//*****                    
                         } else {
                             Other.errorWin("Fatal Error");
                             return;
                         }
-                        document.add(table);
 
                         document.close();
                         writer.close();
@@ -1577,6 +1576,11 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         pdfExportButtonGroup.add(buchRadioButton);
         buchRadioButton.setText("Buch");
+        buchRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buchRadioButtonActionPerformed(evt);
+            }
+        });
 
         pdfExportAuswahlAllesList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -1800,7 +1804,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schuelerTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_schuelerTabComponentAdded
-        names = Classes.getClassNameList();
+        ArrayList<String> names = Classes.getClassNameList();
         klassenList.setListData(names.toArray());
         buchKlassenList1.setListData(names.toArray());
         schuelerKlassenListNeu.setListData(names.toArray());
@@ -1809,27 +1813,24 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void klassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_klassenListMouseClicked
         currentPanel = 2;
-        index = klassenList.locationToIndex(evt.getPoint());
-        dlm = klassenList.getModel();
-        item = dlm.getElementAt(index);
-        momentaneKlasse = item.toString();
+        int index = klassenList.locationToIndex(evt.getPoint());
+        momentaneKlasse = klassenList.getModel().getElementAt(index).toString();
         klassenList.ensureIndexIsVisible(index);
-        klasse = Classes.classList(momentaneKlasse);
+        ArrayList<String> klasse = Classes.classList(momentaneKlasse);
         UpdateTable(klasse);
         schuelerInKlasse = klasse.size() / 4;
     }//GEN-LAST:event_klassenListMouseClicked
 
     private void schuelerTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerTblMouseClicked
         schuelerRow = schuelerTbl.getSelectedRow();
-        data = Classes.classList(momentaneKlasse);
-        schuelerId = data.get(schuelerRow * 4 + 3);
+        schuelerId = Classes.classList(momentaneKlasse).get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
         schuelerGeburt.setText(Students.SingelStudent(schuelerId, 3));
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        names = Students.BookList(schuelerId);
+        ArrayList<String> names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
@@ -1884,15 +1885,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         schuelerRow = schuelerRow + 1;
-        data = Classes.classList(momentaneKlasse);
-        schuelerId = data.get(schuelerRow * 4 + 3);
+        schuelerId = Classes.classList(momentaneKlasse).get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
         schuelerGeburt.setText(Students.SingelStudent(schuelerId, 3));
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());//ERROR
 
-        names = Students.BookList(schuelerId);
+        ArrayList<String> names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
@@ -1915,15 +1915,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         schuelerRow = schuelerRow - 1;
-        data = Classes.classList(momentaneKlasse);
-        schuelerId = data.get(schuelerRow * 4 + 3);
+        schuelerId = Classes.classList(momentaneKlasse).get(schuelerRow * 4 + 3);
         schuelerName.setText(Students.SingelStudent(schuelerId, 1) + " " + Students.SingelStudent(schuelerId, 2));
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
         schuelerGeburt.setText(Students.SingelStudent(schuelerId, 3));
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
         schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
-        names = Students.BookList(schuelerId);
+        ArrayList<String> names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
@@ -1947,19 +1946,15 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void buchKlassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenListMouseClicked
         currentPanel = 4;
-        index = buchKlassenList.locationToIndex(evt.getPoint());
-        dlm = buchKlassenList.getModel();
-        item = dlm.getElementAt(index);
-        buecherKlasse = item.toString();
+        int index = buchKlassenList.locationToIndex(evt.getPoint());
+        ListModel dlm = buchKlassenList.getModel();
         buchKlassenList1.ensureIndexIsVisible(index);
-        buchKlasse = BookGroups.BooksList(buecherKlasse);
-        UpdateTable(buchKlasse);
+        UpdateTable(BookGroups.BooksList(dlm.getElementAt(index).toString()));
     }//GEN-LAST:event_buchKlassenListMouseClicked
 
     private void klassenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenTabComponentAdded
-        ids = Classes.getClassIDs();
-        names = new ArrayList<>();
-        for (String s : ids) {
+        ArrayList<String> names = new ArrayList<>();
+        for (String s : Classes.getClassIDs()) {
             names.add(Classes.getClassName(s));
         }
         buchKlassenList.setListData(names.toArray());
@@ -1970,7 +1965,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_klasseExportBtnActionPerformed
 
     private void isbnSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnSucheActionPerformed
-        buchISBN = isbnSuche.getText();
+        String buchISBN = isbnSuche.getText();
         if (Books.singleBook(buchISBN, 0).isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mit dieser ISBN");
             einBuchISBNFeld.setText("");
@@ -1985,9 +1980,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_isbnSucheActionPerformed
 
     private void buecherTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buecherTblMouseClicked
-        buecherRow = buecherTbl.getSelectedRow();
-        data = Books.BookList();
-        buchISBN = data.get(buecherRow * 4 + 1);
+        String buchISBN = Books.BookList().get(buecherTbl.getSelectedRow() * 4 + 1);
         einBuchLabelFeld.setText(Books.singleBook(buchISBN, 0).get(0));
         einBuchISBNFeld.setText(Books.singleBook(buchISBN, 0).get(1));
         einBuchKaufFeld.setText(Books.singleBook(buchISBN, 0).get(3));
@@ -1999,7 +1992,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buecherTblMouseClicked
 
     private void labelSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelSucheActionPerformed
-        buchLabel = isbnSuche.getText();
+        String buchLabel = isbnSuche.getText();
         if (Books.singleBook(buchLabel, 1).isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mir diesem Label");
             einBuchISBNFeld.setText("");
@@ -2014,8 +2007,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_labelSucheActionPerformed
 
     private void neuKopieBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_neuKopieBtnMouseClicked
-        anz = Integer.parseInt(neuKopieAnzahl.getText());
-        id = Copies.newID();
+        int anz = Integer.parseInt(neuKopieAnzahl.getText());
+        int id = Copies.newID();
         if (id == 0) {
             neuKopieBtn.setText("Error");
         } else {
@@ -2031,11 +2024,10 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_neuKopieBtnMouseClicked
 
     private void schuelerKlassenListNeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerKlassenListNeuMouseClicked
-        index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
-        dlm = schuelerKlassenListNeu.getModel();
-        item = dlm.getElementAt(index);
+        int index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
+        ListModel dlm = schuelerKlassenListNeu.getModel();
         schuelerKlassenListNeu.ensureIndexIsVisible(index);
-        Students.addToClass(schuelerId, item.toString());
+        Students.addToClass(schuelerId, dlm.getElementAt(index).toString());
     }//GEN-LAST:event_schuelerKlassenListNeuMouseClicked
 
     private void buchNeuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchNeuActionPerformed
@@ -2087,13 +2079,10 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void buchKlassenList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenList1MouseClicked
         currentPanel = 5;
-        index = buchKlassenList1.locationToIndex(evt.getPoint());
-        dlm = buchKlassenList1.getModel();
-        item = dlm.getElementAt(index);
-        buecherKlasse = item.toString();
+        int index = buchKlassenList1.locationToIndex(evt.getPoint());
+        ListModel dlm = buchKlassenList1.getModel();
         buchKlassenList1.ensureIndexIsVisible(index);
-        buchKlasse = BookGroups.BooksList(buecherKlasse);
-        UpdateTable(buchKlasse);
+        UpdateTable(BookGroups.BooksList(dlm.getElementAt(index).toString()));
     }//GEN-LAST:event_buchKlassenList1MouseClicked
 
     private void klassenBearbeitenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenBearbeitenTabComponentAdded
@@ -2108,7 +2097,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_ausgebenActionPerformed
 
     private void buecherSchuelerTblAktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buecherSchuelerTblAktActionPerformed
-        names = Students.BookList(schuelerId);
+        ArrayList<String> names = Students.BookList(schuelerId);
 
         while (schuelerBuecherModel.getRowCount() != 0) {
             schuelerBuecherModel.removeRow(0);
@@ -2178,7 +2167,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void eineKopieSuchenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eineKopieSuchenActionPerformed
         try {
-            testInteger = Integer.parseInt(eineKopieSuchen.getText());
+            int testInteger = Integer.parseInt(eineKopieSuchen.getText());
         } catch (Exception e) {
             System.out.println(e + " => Cant convert Input to Integer");
             System.out.println(" => Input is not a number!");
@@ -2186,7 +2175,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         momentaneKopie = eineKopieSuchen.getText();
-        kopie = Copies.Singlecopy(momentaneKopie);
+        ArrayList<String> kopie = Copies.Singlecopy(momentaneKopie);
         eineKopieSuchen.selectAll();
 
         kopieLabel.setText(kopie.get(0));
@@ -2214,9 +2203,10 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_eineKopieSuchenActionPerformed
 
     private void einsammelnEingabeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnEingabeActionPerformed
-        barcode = einsammelnEingabe.getText();
-        kopie = Copies.Singlecopy(barcode);
+        String barcode = einsammelnEingabe.getText();
+        ArrayList<String> kopie = Copies.Singlecopy(barcode);
 
+        String classe;
         try {
             classe = (Students.SingelStudentClasses(kopie.get(1)).get(0));
         } catch (Exception e) {
@@ -2278,8 +2268,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
         while (einsammelTabelleModel.getRowCount() != 0) {
-            item = einsammelTabelleModel.getValueAt(0, 2);
-            Copies.collectCopy((String) item);
+            Copies.collectCopy((String) einsammelTabelleModel.getValueAt(0, 2));
             einsammelTabelleModel.removeRow(0);
         }
         einsammelnAlles.setEnabled(false);
@@ -2320,8 +2309,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
-        data = Classes.getClassNameList();
-        input = new Object[data.size()];
+        ArrayList<String> data = Classes.getClassNameList();
+        Object[] input = new Object[data.size()];
         for (int i = 0; i < data.size(); i++) {
             input[i] = data.get(i);
         }
@@ -2337,13 +2326,16 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
         pdfExportOpAllesList.setModel(pdfExportOpAllesModel);
         pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        groupExport.setEnabled(true);
+        soloExport.setEnabled(true);
     }//GEN-LAST:event_schuelerRadioButtonActionPerformed
 
     private void superSelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_superSelectComboBoxActionPerformed
         pdfExportAuswahlAllesListModel.removeAllElements();
 
         if (schuelerRadioButton.isSelected()) {
-            data = Classes.classList((String) superSelectComboBox.getSelectedItem());
+            ArrayList<String> data = Classes.classList((String) superSelectComboBox.getSelectedItem());
             for (int i = 0; i < data.size(); i = i + 4) {
                 String n1 = data.get(i);
                 String n2 = data.get(i + 1);
@@ -2382,8 +2374,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportDelAllButtonActionPerformed
 
     private void pdfExportAddSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportAddSelectButtonActionPerformed
-        selected = pdfExportAuswahlAllesList.getSelectedIndices();
-        id = 0;
+        int [] selected = pdfExportAuswahlAllesList.getSelectedIndices();
+        int id = 0;
         while (id < selected.length) {
             pdfExportAuswahlSelectListModel.addElement(pdfExportAuswahlAllesListModel.getElementAt(selected[id]));
             id++;
@@ -2392,7 +2384,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportAddSelectButtonActionPerformed
 
     private void checkForDoubles() {
-        doppelt.clear();
+        ArrayList doppelt = new ArrayList();
         for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
             for (int j = i + 1; j < pdfExportAuswahlSelectListModel.size(); j++) {
                 if (pdfExportAuswahlSelectListModel.get(i).equals(pdfExportAuswahlSelectListModel.get(j))) {
@@ -2400,9 +2392,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                 }
             }
         }
-        id = 0;
-        anz = pdfExportAuswahlSelectListModel.size();
-        for (int i = 0; i < anz; i++) {
+        int id = 0;
+        for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
             if (doppelt.contains(i)) {
                 pdfExportAuswahlSelectListModel.remove(id);
             } else {
@@ -2422,8 +2413,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportOpAddAllesButtonActionPerformed
 
     private void pdfExportOpAddSelectButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpAddSelectButton2ActionPerformed
-        selected = pdfExportOpAllesList.getSelectedIndices();
-        id = 0;
+        int [] selected = pdfExportOpAllesList.getSelectedIndices();
+        int id = 0;
         while (id < selected.length) {
             pdfExportOpSelectModel.addElement(pdfExportOpAllesModel.getElementAt(selected[id]));
             id++;
@@ -2442,7 +2433,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportOpDelSelectButton2ActionPerformed
 
     private void checkForDoublesOp() {
-        doppelt.clear();
+        ArrayList doppelt = new ArrayList();
         for (int i = 0; i < pdfExportOpSelectModel.size(); i++) {
             for (int j = i + 1; j < pdfExportOpSelectModel.size(); j++) {
                 if (pdfExportOpSelectModel.get(i).equals(pdfExportOpSelectModel.get(j))) {
@@ -2450,9 +2441,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                 }
             }
         }
-        id = 0;
-        anz = pdfExportOpSelectModel.size();
-        for (int i = 0; i < anz; i++) {
+        int id = 0;
+        for (int i = 0; i < pdfExportOpSelectModel.size(); i++) {
             if (doppelt.contains(i)) {
                 pdfExportOpSelectModel.remove(id);
             } else {
@@ -2491,7 +2481,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void klasseRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
-        data = Classes.getClassNameList();
+        ArrayList<String> data = Classes.getClassNameList();
         for (int i = 0; i < data.size(); i++) {
             pdfExportAuswahlAllesListModel.addElement(data.get(i));
         }
@@ -2509,14 +2499,45 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
         pdfExportOpAllesList.setModel(pdfExportOpAllesModel);
         pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        groupExport.setEnabled(true);
+        soloExport.setEnabled(true);
     }//GEN-LAST:event_klasseRadioButtonActionPerformed
 
+    private void buchRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchRadioButtonActionPerformed
+        pdfExportAuswahlSelectListModel.clear();
+        pdfExportAuswahlAllesListModel.clear();
+        ArrayList<String> data = Books.BookList();
+        for (int i = 0; i < data.size(); i = i + 4) {
+            pdfExportAuswahlAllesListModel.addElement(data.get(i));
+        }
+        pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
+
+        superSelectComboBox.setModel(new DefaultComboBoxModel());
+
+        superSelectComboBox.setMaximumRowCount(0);
+
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+
+        pdfExportOpAllesModel.clear();
+        for (int i = 0; i < pdfExportBookOpList.length; i++) {
+            pdfExportOpAllesModel.addElement(pdfExportBookOpList[i]);
+        }
+        pdfExportOpAllesList.setModel(pdfExportOpAllesModel);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        groupExport.setEnabled(false);
+        soloExport.setEnabled(false);
+        groupExport.setSelected(true);
+    }//GEN-LAST:event_buchRadioButtonActionPerformed
+
     private PdfPTable schuelerEx(String studentID) {
-        names = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
+        ArrayList<String> source = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
 
-        width = pdfExportOpSelectModel.size();
-        heigth = names.size() / pdfExportOpAllesModel.size();
+        int width = pdfExportOpSelectModel.size();
+        int heigth = source.size() / pdfExportOpAllesModel.size();
 
+        PdfPTable table;
         if (numCheckBox.isSelected()) {
             table = new PdfPTable(width + 1);
             table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
@@ -2538,9 +2559,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                 table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
             }
             for (int j = 0; j < width; j++) {
-                item = pdfExportOpSelectModel.getElementAt(j);
+                Object item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportSchuelerOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
@@ -2552,20 +2573,20 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                            System.out.println(e + " => schuelerEx - Pic ok1");
 //                        }
 //                    } else {
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
 //                    }
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * pdfExportSchuelerOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportSchuelerOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[4])) {  //code
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportSchuelerOpList.length + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
@@ -2584,12 +2605,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     }
 
     private PdfPTable classEx(String classID) {
-        names = Classes.classList(classID); //forename, surname, birth, student_ID
-        System.out.println(names);
+        ArrayList<String> source = Classes.classList(classID); //forename, surname, birth, student_ID
+        System.out.println(source);
 
-        width = pdfExportOpSelectModel.size();
-        heigth = names.size() / pdfExportOpAllesModel.size();
+        int width = pdfExportOpSelectModel.size();
+        int heigth = source.size() / pdfExportOpAllesModel.size();
 
+        PdfPTable table;
         if (numCheckBox.isSelected()) {
             table = new PdfPTable(width + 1);
             table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
@@ -2611,21 +2633,107 @@ public class Oberflaeche extends javax.swing.JFrame {
                 table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
             }
             for (int j = 0; j < width; j++) {
-                item = pdfExportOpSelectModel.getElementAt(j);
+                Object item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportClassOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[1])) {  //surname
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[2])) {  //birth
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) names.get(i * pdfExportClassOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportClassOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[3])) {  //student_ID
-                    table.addCell(new PdfPCell(new Phrase((String) names.get(i * pdfExportClassOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+
+                Other.errorWin("Fatal Error");
+            }
+        }
+
+        return table;
+    }
+
+    private PdfPTable bookEx() {
+        ArrayList<String> source = new ArrayList();
+        for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
+            ArrayList<String> source2 = Books.singleBook((String) pdfExportAuswahlSelectListModel.get(i), 1);   //label, isbn, price, buy, ID
+            for (int j = 0; j < source2.size(); j++) {
+                source.add(source2.get(j));
+            }
+        }
+
+        System.out.println(source);
+
+        int width = pdfExportOpSelectModel.size();
+        int heigth = source.size() / pdfExportOpAllesModel.size();
+
+        PdfPTable table;
+        if (numCheckBox.isSelected()) {
+            table = new PdfPTable(width + 1);
+            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        } else {
+            table = new PdfPTable(width);
+        }
+
+        table.setSpacingBefore(25);
+        table.setSpacingAfter(25);
+
+        //Überschriften
+        for (int i = 0; i < width; i++) {
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+        }
+
+        //Inhalt
+        for (int i = 0; i < heigth; i++) {
+            if (numCheckBox.isSelected()) {
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            }
+            for (int j = 0; j < width; j++) {
+                Object item = pdfExportOpSelectModel.getElementAt(j);
+                String bookId = source.get(i * pdfExportBookOpList.length + 4);
+                if (item.equals(pdfExportBookOpList[0])) {  //label
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[1])) {  //isbn
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[2])) {  //price
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[3])) {  //buy
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[4])) {  //ID
+                    table.addCell(new PdfPCell(new Phrase(bookId, FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[5])) {  //ges
+                    table.addCell(new PdfPCell(new Phrase(Copies.SingleCopyCountTotal(bookId), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[6])) {  //aus
+                    System.out.println(Copies.SingleCopyCountTotal(bookId));
+                    System.out.println(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)));
+                    int ges = Integer.parseInt(Copies.SingleCopyCountTotal(bookId));
+                    System.out.println(ges);
+                    int lager = Integer.parseInt(Copies.copiesInStock(bookId));
+                    System.out.println(lager);
+                    int aus = ges - lager;
+                    System.out.println(aus);
+                    table.addCell(new PdfPCell(new Phrase(String.valueOf(aus), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportBookOpList[7])) {  //lager
+                    table.addCell(new PdfPCell(new Phrase(Copies.copiesInStock(bookId), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
