@@ -32,6 +32,26 @@ public class Students {
         return null;
     }
 
+    //copies total
+    public static String copiesCount(String StudentId) {
+        try {
+            String result = Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+                    + "FROM `sbm_copieshistory`, `sbm_copies`, `sbm_books` "
+                    + "WHERE student_id LIKE '" + StudentId + "' "
+                    + "AND sbm_copies.book_id LIKE sbm_books.ID "
+                    + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
+                    + "GROUP BY student_id", 
+                    "COUNT(sbm_copieshistory.ID)");
+            if (result.isEmpty()) {
+                return "0";
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println(e + " => CopiesToReturn");
+        }
+        return "0";
+    }
+    
     //copies to return
     public static String CopiesToReturn(String StudentId) {
         try {
@@ -43,6 +63,9 @@ public class Students {
                     + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
                     + "GROUP BY student_id", 
                     "COUNT(sbm_copieshistory.ID)");
+            if (result.isEmpty()) {
+                return "0";
+            }
             return result;
             //cut
             /*return Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
@@ -56,7 +79,7 @@ public class Students {
         } catch (Exception e) {
             System.out.println(e + " => CopiesToReturn");
         }
-        return null;
+        return "0";
     }
 
     public static ArrayList<String> SingelStudentClasses(String StudentId) {

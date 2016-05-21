@@ -9,14 +9,10 @@ public class Other {
     public static String dateToNormal(String timestamp) {
         try {
             String s;
-            System.out.println(timestamp);
             long stuff = Long.parseLong(timestamp);
-            System.out.println(stuff);
             java.util.Date time = new java.util.Date((long) stuff * 1000);
 //            s = new SimpleDateFormat("MM/dd/yyyy").format(time);
             s = new SimpleDateFormat("dd.MM.yyyy").format(time);
-            System.out.println(s);
-            System.out.println("-dateDone-");
             return s;
         } catch (Exception e) {
             System.out.println(e + " => date");

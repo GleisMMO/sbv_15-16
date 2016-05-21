@@ -84,7 +84,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     DefaultListModel pdfExportAuswahlSelectListModel = new DefaultListModel();
 
     private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
-    private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID"}; //forename, surname, birth, student_ID
+    private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID", "Anz. Bücher", "Anz. zurückzugeben"}; //forename, surname, birth, student_ID
     private static final String pdfExportBookOpList[] = {"Label", "ISBN", "Preis", "Kauf", "ID", "Anz. Kopien", "Anz. Ausgegeben", "Anz. Lager"}; //label, isbn, price, buy, ID
     DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
     DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
@@ -130,7 +130,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     Connection conn = null;
 
     private Thread exp;
-    Runnable ex = new Runnable() {
+    Runnable exportRunnable = new Runnable() {
         @Override
         public void run() {
             try {
@@ -161,7 +161,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     document.open();
                     for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
 
-                        pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
+                        setProgressBarExportString((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                         pdfExportProgressBar.setValue(i);
 //*****                    
                         if (schuelerRadioButton.isSelected()) {
@@ -203,7 +203,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
                     for (int i = 0; i < pdfExportAuswahlSelectListModel.size(); i++) {
 
-                        pdfExportProgressBar.setString((String) pdfExportAuswahlSelectListModel.getElementAt(i));//?
+                        setProgressBarExportString((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                         pdfExportProgressBar.setValue(i);
 
                         final Document document = new Document(PageSize.A4);
@@ -238,11 +238,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                         document.close();
                         writer.close();
                     }
-
-                    pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
-                    pdfExportProgressBar.setString("Fertig");//?
-                    pdfExportPrint.setEnabled(true);
-
                     /**
                      * *************************************************
                      */
@@ -252,7 +247,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 }
 
                 pdfExportProgressBar.setValue(pdfExportAuswahlSelectListModel.size());
-                pdfExportProgressBar.setString("Fertig");//?
+                setProgressBarExportString("Fertig");//?
                 pdfExportPrint.setEnabled(true);
 
             } catch (DocumentException | FileNotFoundException e) {
@@ -2867,11 +2862,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         pdfExportProgressBar.setValue(0);
-        pdfExportProgressBar.setString("0%");
+        setProgressBarExportString("0%");
         pdfExportProgressBar.setMaximum(pdfExportAuswahlSelectListModel.size());
         pdfExportPrint.setEnabled(false);
 
-        exp = new Thread(ex);
+        exp = new Thread(exportRunnable);
         exp.start();
     }//GEN-LAST:event_pdfExportPrintActionPerformed
 
@@ -3074,7 +3069,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_Hover9MouseExited
 
     private void Hover10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseEntered
-         try {
+        try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
@@ -3091,7 +3086,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_Hover10MouseExited
 
     private void Hover12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseEntered
-         try {
+        try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
@@ -3287,7 +3282,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         System.out.println(source);
 
         int width = pdfExportOpSelectModel.size();
-        int heigth = source.size() / pdfExportOpAllesModel.size();
+        int heigth = source.size() / 4;
 
         PdfPTable table;
         if (numCheckBox.isSelected()) {
@@ -3313,19 +3308,27 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportClassOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[1])) {  //surname
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[2])) {  //birth
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportClassOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[3])) {  //student_ID
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportClassOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportClassOpList[4])) {  //all
+                    table.addCell(new PdfPCell(new Phrase(Students.copiesCount(source.get(i * 4 + 3)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    continue;
+                }
+                if (item.equals(pdfExportClassOpList[5])) {  //ret
+                    table.addCell(new PdfPCell(new Phrase(Students.CopiesToReturn(source.get(i * 4 + 3)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
 
@@ -3348,7 +3351,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         System.out.println(source);
 
         int width = pdfExportOpSelectModel.size();
-        int heigth = source.size() / pdfExportOpAllesModel.size();
+        int heigth = source.size() / 5;
+        
+        pdfExportProgressBar.setMaximum(heigth);
 
         PdfPTable table;
         if (numCheckBox.isSelected()) {
@@ -3371,23 +3376,29 @@ public class Oberflaeche extends javax.swing.JFrame {
             if (numCheckBox.isSelected()) {
                 table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
             }
+
+            String bookId = source.get(i * 5 + 4);
+            
+            pdfExportProgressBar.setValue(i);
+            setProgressBarExportString(source.get(i * 5 + 0));
+            
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
-                String bookId = source.get(i * pdfExportBookOpList.length + 4);
+                
                 if (item.equals(pdfExportBookOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[1])) {  //isbn
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[2])) {  //price
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[3])) {  //buy
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportBookOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[4])) {  //ID
@@ -3399,16 +3410,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[6])) {  //aus
-                    System.out.println(bookId);
-                    System.out.println(Copies.SingleCopyCountTotal(bookId));
-                    System.out.println(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)));//ERROR
-                    int ges = Integer.parseInt(Copies.SingleCopyCountTotal(bookId));
-                    System.out.println(ges);
-                    int lager = Integer.parseInt(Copies.copiesInStock(bookId));
-                    System.out.println(lager);
-                    int aus = ges - lager;
-                    System.out.println(aus);
-                    table.addCell(new PdfPCell(new Phrase(String.valueOf(aus), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(String.valueOf(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)) - Integer.parseInt(Copies.copiesInStock(bookId))), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[7])) {  //lager
@@ -3421,6 +3423,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         return table;
+    }
+
+    private void setProgressBarExportString(String text) {
+        if (text.length() > 22) {
+            pdfExportProgressBar.setString(text.substring(0, 22));
+        } else {
+            pdfExportProgressBar.setString(text);
+        }
     }
 
     /**
