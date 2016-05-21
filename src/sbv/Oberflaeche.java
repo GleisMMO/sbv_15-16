@@ -166,18 +166,18 @@ public class Oberflaeche extends javax.swing.JFrame {
 //*****                    
                         if (schuelerRadioButton.isSelected()) {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                            document.add(schuelerEx(schuelerId));
                             document.add(PDF_Export.pdfChapterStudent(schuelerId));
+                            document.add(schuelerEx(schuelerId));
 //*****                        
                         } else if (klasseRadioButton.isSelected()) {
                             String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
-                            document.add(classEx(classe));
                             document.add(PDF_Export.pdfChapterClass(classe));
+                            document.add(classEx(classe));
 //*****
                         } else if (buchRadioButton.isSelected()) {
                             i = pdfExportAuswahlSelectListModel.size();
-                            document.add(bookEx());
                             document.add(PDF_Export.pdfChapterBook());
+                            document.add(bookEx());
 //*****
                         } else {
                             Other.errorWin("Fatal Error");
@@ -222,13 +222,13 @@ public class Oberflaeche extends javax.swing.JFrame {
 //*****                    
                         if (schuelerRadioButton.isSelected()) {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
-                            document.add(schuelerEx(schuelerId));
                             document.add(PDF_Export.pdfChapterStudent(schuelerId));
+                            document.add(schuelerEx(schuelerId));
 //*****                    
                         } else if (klasseRadioButton.isSelected()) {
                             String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
-                            document.add(classEx(classe));
                             document.add(PDF_Export.pdfChapterClass(classe));
+                            document.add(classEx(classe));
 //*****                    
                         } else {
                             Other.errorWin("Fatal Error");
@@ -604,11 +604,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addGap(250, 250, 250)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(203, 203, 203))
                     .addGroup(homeTabLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
         homeTabLayout.setVerticalGroup(
             homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2339,17 +2340,8 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int i = 0; i < data.size(); i = i + 4) {
                 String n1 = data.get(i);
                 String n2 = data.get(i + 1);
-                pdfExportAuswahlAllesListModel.addElement(new StringBuilder(n1).append(" ").append(n2).toString());
-//                System.out.println(data.get(i));
-//                System.out.println(n2);
-//                System.out.println(data.get(i + 1));
-//                System.out.println(n1);
-//                System.out.println(n2 + n1);
-//                System.out.println(n2.concat(n1));
-//                System.out.println(new StringBuilder(n2).append(n1));
-//                System.out.println(new StringBuilder(n2).append(n1));
-//                System.out.println(pdfExportAuswahlAllesListModel.get(pdfExportAuswahlAllesListModel.getSize() - 1));
-//                System.out.println("-----");
+                pdfExportAuswahlAllesListModel.addElement(data.get(i).concat(" ").concat(data.get(i + 1)));
+                System.out.println(pdfExportAuswahlAllesListModel.get(pdfExportAuswahlAllesListModel.getSize() - 1));
             }
 
         } else if (klasseRadioButton.isSelected()) {
@@ -2374,7 +2366,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportDelAllButtonActionPerformed
 
     private void pdfExportAddSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportAddSelectButtonActionPerformed
-        int [] selected = pdfExportAuswahlAllesList.getSelectedIndices();
+        int[] selected = pdfExportAuswahlAllesList.getSelectedIndices();
         int id = 0;
         while (id < selected.length) {
             pdfExportAuswahlSelectListModel.addElement(pdfExportAuswahlAllesListModel.getElementAt(selected[id]));
@@ -2413,7 +2405,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_pdfExportOpAddAllesButtonActionPerformed
 
     private void pdfExportOpAddSelectButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpAddSelectButton2ActionPerformed
-        int [] selected = pdfExportOpAllesList.getSelectedIndices();
+        int[] selected = pdfExportOpAllesList.getSelectedIndices();
         int id = 0;
         while (id < selected.length) {
             pdfExportOpSelectModel.addElement(pdfExportOpAllesModel.getElementAt(selected[id]));
@@ -2721,8 +2713,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[6])) {  //aus
+                    System.out.println(bookId);
                     System.out.println(Copies.SingleCopyCountTotal(bookId));
-                    System.out.println(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)));
+                    System.out.println(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)));//ERROR
                     int ges = Integer.parseInt(Copies.SingleCopyCountTotal(bookId));
                     System.out.println(ges);
                     int lager = Integer.parseInt(Copies.copiesInStock(bookId));
