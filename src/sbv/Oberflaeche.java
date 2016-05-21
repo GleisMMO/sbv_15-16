@@ -431,6 +431,8 @@ public class Oberflaeche extends javax.swing.JFrame {
         freieBuecher = new javax.swing.JLabel();
         welcome = new javax.swing.JLabel();
         lizenzName = new javax.swing.JLabel();
+        Hover5 = new javax.swing.JLabel();
+        ToolTip5 = new javax.swing.JLabel();
         schuelerTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         klassenList = new javax.swing.JList();
@@ -442,6 +444,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         neuKlasseBtn = new javax.swing.JButton();
         klasseExportPreislist = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        Hover6 = new javax.swing.JLabel();
+        Hover7 = new javax.swing.JLabel();
+        Hover8 = new javax.swing.JLabel();
+        Hover9 = new javax.swing.JLabel();
+        ToolTip6 = new javax.swing.JLabel();
         einSchuelerTab = new javax.swing.JPanel();
         schuelerName = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -465,6 +472,12 @@ public class Oberflaeche extends javax.swing.JFrame {
         buecherSchuelerTblAkt = new javax.swing.JButton();
         schuelerExportPreisliste = new javax.swing.JButton();
         schuelerID = new javax.swing.JLabel();
+        ToolTip7 = new javax.swing.JLabel();
+        ToolTip8 = new javax.swing.JLabel();
+        ToolTip9 = new javax.swing.JLabel();
+        Hover11 = new javax.swing.JLabel();
+        Hover12 = new javax.swing.JLabel();
+        Hover10 = new javax.swing.JLabel();
         buecherTab = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         buecherTbl = new javax.swing.JTable();
@@ -487,6 +500,15 @@ public class Oberflaeche extends javax.swing.JFrame {
         einBuchKaufFeld = new javax.swing.JTextField();
         einBuchPreisFeld = new javax.swing.JTextField();
         einBuchLabelFeld = new javax.swing.JTextField();
+        Hover13 = new javax.swing.JLabel();
+        Hover14 = new javax.swing.JLabel();
+        Hover15 = new javax.swing.JLabel();
+        Hover16 = new javax.swing.JLabel();
+        Hover17 = new javax.swing.JLabel();
+        Hover18 = new javax.swing.JLabel();
+        ToolTip10 = new javax.swing.JLabel();
+        ToolTip11 = new javax.swing.JLabel();
+        ToolTip12 = new javax.swing.JLabel();
         einKopieTab = new javax.swing.JPanel();
         eineKopieSuchen = new javax.swing.JTextField();
         kopieLabel = new javax.swing.JLabel();
@@ -511,6 +533,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         Hover2 = new javax.swing.JLabel();
         Hover3 = new javax.swing.JLabel();
         Hover4 = new javax.swing.JLabel();
+        ToolTip2 = new javax.swing.JLabel();
+        ToolTip3 = new javax.swing.JLabel();
+        ToolTip4 = new javax.swing.JLabel();
         einsammelnTab = new javax.swing.JPanel();
         einsammelnEingabe = new javax.swing.JTextField();
         einsammelnEintragLoeschen = new javax.swing.JButton();
@@ -589,6 +614,21 @@ public class Oberflaeche extends javax.swing.JFrame {
         lizenzName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lizenzName.setText("---");
 
+        Hover5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover5.setText("?");
+        Hover5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover5MouseExited(evt);
+            }
+        });
+
+        ToolTip5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout homeTabLayout = new javax.swing.GroupLayout(homeTab);
         homeTab.setLayout(homeTabLayout);
         homeTabLayout.setHorizontalGroup(
@@ -612,6 +652,11 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(homeTabLayout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(Hover5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ToolTip5, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(homeTabLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(361, Short.MAX_VALUE))
         );
@@ -628,8 +673,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
                 .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addGroup(homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ToolTip5, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+                    .addComponent(Hover5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -711,26 +760,92 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        Hover6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover6.setText("?");
+        Hover6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover6MouseExited(evt);
+            }
+        });
+
+        Hover7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover7.setText("?");
+        Hover7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover7MouseExited(evt);
+            }
+        });
+
+        Hover8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover8.setText("?");
+        Hover8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover8MouseExited(evt);
+            }
+        });
+
+        Hover9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover9.setText("?");
+        Hover9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Hover9MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover9MouseExited(evt);
+            }
+        });
+
+        ToolTip6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout schuelerTabLayout = new javax.swing.GroupLayout(schuelerTab);
         schuelerTab.setLayout(schuelerTabLayout);
         schuelerTabLayout.setHorizontalGroup(
             schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(schuelerTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(neuKlasseFeld)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(schuelerTblPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(schuelerTabLayout.createSequentialGroup()
-                        .addComponent(neuKlasseBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addContainerGap()
+                        .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(neuKlasseFeld)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(klasseExportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(klasseExportPreislist, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(schuelerTblPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(schuelerTabLayout.createSequentialGroup()
+                                .addComponent(neuKlasseBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Hover9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(299, 299, 299)
+                                .addComponent(Hover6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2)
+                                .addGap(35, 35, 35)
+                                .addComponent(Hover7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(klasseExportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(Hover8, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(klasseExportPreislist, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(schuelerTabLayout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(ToolTip6, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         schuelerTabLayout.setVerticalGroup(
@@ -745,12 +860,19 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(neuKlasseFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(neuKlasseBtn))
+                        .addComponent(neuKlasseBtn)
+                        .addComponent(Hover9))
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(klasseExportPreislist)
                         .addComponent(klasseExportBtn)
-                        .addComponent(jButton2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(Hover7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(Hover6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(2, 2, 2)
+                .addComponent(ToolTip6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         basePanel.addTab("Schüler", schuelerTab);
@@ -874,6 +996,43 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerID.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         schuelerID.setText("ID");
 
+        ToolTip7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        Hover11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover11.setText("?");
+        Hover11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        Hover12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover12.setText("?");
+        Hover12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover12MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover12MouseExited(evt);
+            }
+        });
+
+        Hover10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover10.setText("?");
+        Hover10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover10MouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout einSchuelerTabLayout = new javax.swing.GroupLayout(einSchuelerTab);
         einSchuelerTab.setLayout(einSchuelerTabLayout);
         einSchuelerTabLayout.setHorizontalGroup(
@@ -902,13 +1061,15 @@ public class Oberflaeche extends javax.swing.JFrame {
                                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(schuelerWeiter, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                                            .addGap(36, 36, 36)
+                                            .addGap(14, 14, 14)
+                                            .addComponent(Hover10, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(schuelerKlassenBearbeiten, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jScrollPane5))))))
+                                                .addComponent(jScrollPane5)))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(schuelerWeiter, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(schuelerID))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
@@ -920,19 +1081,34 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(schuelerExportPreisliste, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Hover12, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ausgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
+            .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                .addGap(108, 108, 108)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                        .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                    .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                        .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                        .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ToolTip7, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buecherSchuelerTblAkt)
                         .addGap(344, 344, 344))))
+            .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(Hover11)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         einSchuelerTabLayout.setVerticalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -959,23 +1135,38 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(schuelerKlassenBearbeiten)
+                                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(schuelerKlassenBearbeiten)
+                                    .addComponent(Hover10))
                                 .addGap(74, 74, 74)
                                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(schuelerZurueck)
                                     .addComponent(schuelerWeiter)))
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buecherSchuelerTblAkt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(buecherSchuelerTblAkt)
+                    .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                        .addComponent(ToolTip7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(schuelerExport)
                     .addComponent(ausgeben)
                     .addComponent(schuelerExportPreisliste)
-                    .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
+            .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(Hover11)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         basePanel.addTab("Einzelner Schueler", einSchuelerTab);
@@ -1099,6 +1290,87 @@ public class Oberflaeche extends javax.swing.JFrame {
         einBuchLabelFeld.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         einBuchLabelFeld.setText("- - -");
 
+        Hover13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover13.setText("?");
+        Hover13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover13MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover13MouseExited(evt);
+            }
+        });
+
+        Hover14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover14.setText("?");
+        Hover14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover14MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover14MouseExited(evt);
+            }
+        });
+
+        Hover15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover15.setText("?");
+        Hover15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover15MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover15MouseExited(evt);
+            }
+        });
+
+        Hover16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover16.setText("?");
+        Hover16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover16MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover16MouseExited(evt);
+            }
+        });
+
+        Hover17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover17.setText("?");
+        Hover17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover17MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover17MouseExited(evt);
+            }
+        });
+
+        Hover18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Hover18.setText("?");
+        Hover18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Hover18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                Hover18MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                Hover18MouseExited(evt);
+            }
+        });
+
+        ToolTip10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout einBuchTabLayout = new javax.swing.GroupLayout(einBuchTab);
         einBuchTab.setLayout(einBuchTabLayout);
         einBuchTabLayout.setHorizontalGroup(
@@ -1109,21 +1381,26 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addGroup(einBuchTabLayout.createSequentialGroup()
                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16)
-                            .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(einBuchTabLayout.createSequentialGroup()
+                                .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Hover13, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel17))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(457, 1141, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, einBuchTabLayout.createSequentialGroup()
                                 .addComponent(labelSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(260, 260, 260)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Hover14, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(238, 238, 238)
                                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(einBuchTabLayout.createSequentialGroup()
                                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(einBuchISBNL, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGap(0, 267, Short.MAX_VALUE))
                                     .addComponent(einBuchLabelFeld)))
                             .addGroup(einBuchTabLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -1139,47 +1416,78 @@ public class Oberflaeche extends javax.swing.JFrame {
                                         .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))))
                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(einBuchTabLayout.createSequentialGroup()
-                                    .addGap(365, 365, 365)
-                                    .addComponent(buchBearbeiten))
+                                .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(einBuchTabLayout.createSequentialGroup()
+                                        .addGap(343, 343, 343)
+                                        .addComponent(Hover17, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buchBearbeiten))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Hover18, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buchLöschen, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(buchLöschen, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
+                                    .addComponent(Hover16, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(buchNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(einBuchTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buchNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(Hover15, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
+            .addGroup(einBuchTabLayout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ToolTip12, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToolTip11, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToolTip10, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         einBuchTabLayout.setVerticalGroup(
             einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(einBuchTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16)
                 .addGap(12, 12, 12)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelSuche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(einBuchLabelFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(einBuchLabelFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
                 .addGap(41, 41, 41)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(einBuchISBNL)
                     .addComponent(buchNeu)
-                    .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover16))
                 .addGap(41, 41, 41)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(buchBearbeiten)
-                    .addComponent(einBuchKaufFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(einBuchKaufFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover17))
                 .addGap(41, 41, 41)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(buchLöschen)
-                    .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(neuKopieBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover18))
+                .addGap(33, 33, 33)
+                .addComponent(ToolTip10, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ToolTip11, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ToolTip12, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(142, 142, 142)
+                .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(neuKopieBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hover15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(neuKopieAnzahl, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1257,6 +1565,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
 
         ToolTip1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         Hover1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Hover1.setText("?");
@@ -1306,70 +1615,82 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        ToolTip2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        ToolTip4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ToolTip4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout einKopieTabLayout = new javax.swing.GroupLayout(einKopieTab);
         einKopieTab.setLayout(einKopieTabLayout);
         einKopieTabLayout.setHorizontalGroup(
             einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(einKopieTabLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einKopieTabLayout.createSequentialGroup()
-                        .addGap(75, 75, 75)
+                        .addContainerGap()
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(einKopieTabLayout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(kopieFore, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(einKopieTabLayout.createSequentialGroup()
-                                .addGap(282, 282, 282)
-                                .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(485, 485, 485))
-                    .addGroup(einKopieTabLayout.createSequentialGroup()
-                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(einKopieTabLayout.createSequentialGroup()
-                                .addGap(128, 128, 128)
-                                .addComponent(Hover2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einKopieTabLayout.createSequentialGroup()
+                                .addComponent(eineKopieSuchen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover3, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(kopieLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(einKopieTabLayout.createSequentialGroup()
-                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(kopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(einKopieTabLayout.createSequentialGroup()
-                                        .addComponent(kopieLöschen)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(Hover4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(kopieBarcodeErneut))
-                                    .addGroup(einKopieTabLayout.createSequentialGroup()
-                                        .addGap(58, 58, 58)
-                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(kopieDistributed, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                                .addComponent(kopieBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                                .addGap(18, 18, 18)
-                                .addComponent(PicEinzelneKopie)))
-                        .addGap(292, 292, 292))))
-            .addGroup(einKopieTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Hover1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(einKopieTabLayout.createSequentialGroup()
-                        .addComponent(eineKopieSuchen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Hover1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(41, 41, 41)
+                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(einKopieTabLayout.createSequentialGroup()
+                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(einKopieTabLayout.createSequentialGroup()
+                                        .addGap(453, 453, 453)
+                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(Hover2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Hover3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(ToolTip2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ToolTip3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(kopieLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(einKopieTabLayout.createSequentialGroup()
+                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(kopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(einKopieTabLayout.createSequentialGroup()
+                                                .addComponent(kopieLöschen)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(Hover4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(kopieBarcodeErneut))
+                                            .addGroup(einKopieTabLayout.createSequentialGroup()
+                                                .addGap(58, 58, 58)
+                                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(kopieDistributed, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                                        .addComponent(kopieBought, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(PicEinzelneKopie))))
+                            .addGroup(einKopieTabLayout.createSequentialGroup()
+                                .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(einKopieTabLayout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(33, 33, 33)
+                                        .addComponent(kopieFore, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(einKopieTabLayout.createSequentialGroup()
+                                        .addGap(282, 282, 282)
+                                        .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(364, 364, 364)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         einKopieTabLayout.setVerticalGroup(
@@ -1408,23 +1729,27 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addComponent(kopieSur, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)
                                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(einKopieTabLayout.createSequentialGroup()
-                                        .addComponent(kopieClass, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(25, 25, 25)
-                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(kopieDistributed, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel9))
-                                        .addGap(30, 30, 30)
-                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(kopieBought, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel10))
-                                        .addGap(30, 30, 30)
-                                        .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(92, Short.MAX_VALUE))))
+                                    .addComponent(kopieDistributed, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
+                                .addGap(30, 30, 30)
+                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(kopieBought, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addGap(30, 30, 30)
+                                .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(4, 4, 4)
+                                .addComponent(ToolTip2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ToolTip3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(103, Short.MAX_VALUE))))
         );
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
@@ -2610,10 +2935,16 @@ public class Oberflaeche extends javax.swing.JFrame {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
         }
         ToolTip1.setText("Hier Text einfügen");
+        ToolTip2.setText("Hier Text einfügen");
+        ToolTip3.setText("Hier Text einfügen");
+        ToolTip4.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover1MouseEntered
 
     private void Hover1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover1MouseExited
         ToolTip1.setText("");
+        ToolTip2.setText("");
+        ToolTip3.setText("");
+        ToolTip4.setText("");
     }//GEN-LAST:event_Hover1MouseExited
 
     private void Hover2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover2MouseEntered
@@ -2623,10 +2954,16 @@ public class Oberflaeche extends javax.swing.JFrame {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
         }
         ToolTip1.setText("Hier Text einfügen");
+        ToolTip2.setText("Hier Text einfügen");
+        ToolTip3.setText("Hier Text einfügen");
+        ToolTip4.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover2MouseEntered
 
     private void Hover2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover2MouseExited
         ToolTip1.setText("");
+        ToolTip2.setText("");
+        ToolTip3.setText("");
+        ToolTip4.setText("");
     }//GEN-LAST:event_Hover2MouseExited
 
     private void Hover3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover3MouseEntered
@@ -2636,10 +2973,16 @@ public class Oberflaeche extends javax.swing.JFrame {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
         }
         ToolTip1.setText("Hier Text einfügen");
+        ToolTip2.setText("Hier Text einfügen");
+        ToolTip3.setText("Hier Text einfügen");
+        ToolTip4.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover3MouseEntered
 
     private void Hover3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover3MouseExited
         ToolTip1.setText("");
+        ToolTip2.setText("");
+        ToolTip3.setText("");
+        ToolTip4.setText("");
     }//GEN-LAST:event_Hover3MouseExited
 
     private void Hover4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover4MouseEntered
@@ -2649,11 +2992,222 @@ public class Oberflaeche extends javax.swing.JFrame {
             Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
         }
         ToolTip1.setText("Hier Text einfügen");
+        ToolTip2.setText("Hier Text einfügen");
+        ToolTip3.setText("Hier Text einfügen");
+        ToolTip4.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover4MouseEntered
 
     private void Hover4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover4MouseExited
         ToolTip1.setText("");
+        ToolTip2.setText("");
+        ToolTip3.setText("");
+        ToolTip4.setText("");
     }//GEN-LAST:event_Hover4MouseExited
+
+    private void Hover5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover5MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip5.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover5MouseEntered
+
+    private void Hover5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover5MouseExited
+        ToolTip5.setText("");
+    }//GEN-LAST:event_Hover5MouseExited
+
+    private void Hover6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover6MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip6.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover6MouseEntered
+
+    private void Hover6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover6MouseExited
+        ToolTip6.setText("");
+    }//GEN-LAST:event_Hover6MouseExited
+
+    private void Hover7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip6.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover7MouseEntered
+
+    private void Hover7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseExited
+        ToolTip6.setText("");
+    }//GEN-LAST:event_Hover7MouseExited
+
+    private void Hover8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover8MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip6.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover8MouseEntered
+
+    private void Hover8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover8MouseExited
+        ToolTip6.setText("");
+    }//GEN-LAST:event_Hover8MouseExited
+
+    private void Hover9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Hover9MouseClicked
+
+    private void Hover9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip6.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover9MouseEntered
+
+    private void Hover9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseExited
+        ToolTip6.setText("");
+    }//GEN-LAST:event_Hover9MouseExited
+
+    private void Hover10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseEntered
+         try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip7.setText("Hier Text einfügen");
+        ToolTip8.setText("Hier Text einfügen");
+        ToolTip9.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover10MouseEntered
+
+    private void Hover10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseExited
+        ToolTip7.setText("");
+        ToolTip8.setText("");
+        ToolTip9.setText("");
+    }//GEN-LAST:event_Hover10MouseExited
+
+    private void Hover12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseEntered
+         try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip7.setText("Hier Text einfügen");
+        ToolTip8.setText("Hier Text einfügen");
+        ToolTip9.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover12MouseEntered
+
+    private void Hover12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseExited
+        ToolTip7.setText("");
+        ToolTip8.setText("");
+        ToolTip9.setText("");
+    }//GEN-LAST:event_Hover12MouseExited
+
+    private void Hover13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover13MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover13MouseEntered
+
+    private void Hover13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover13MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover13MouseExited
+
+    private void Hover14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover14MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover14MouseEntered
+
+    private void Hover14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover14MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover14MouseExited
+
+    private void Hover15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover15MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover15MouseEntered
+
+    private void Hover15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover15MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover15MouseExited
+
+    private void Hover16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover16MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover16MouseEntered
+
+    private void Hover16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover16MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover16MouseExited
+
+    private void Hover17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover17MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover17MouseEntered
+
+    private void Hover17MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover17MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover17MouseExited
+
+    private void Hover18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover18MouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ToolTip10.setText("Hier Text einfügen");
+        ToolTip11.setText("Hier Text einfügen");
+        ToolTip12.setText("Hier Text einfügen");
+    }//GEN-LAST:event_Hover18MouseEntered
+
+    private void Hover18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover18MouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_Hover18MouseExited
 
     private PdfPTable schuelerEx(String studentID) {
         ArrayList<String> source = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
@@ -2910,11 +3464,36 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Hover1;
+    private javax.swing.JLabel Hover10;
+    private javax.swing.JLabel Hover11;
+    private javax.swing.JLabel Hover12;
+    private javax.swing.JLabel Hover13;
+    private javax.swing.JLabel Hover14;
+    private javax.swing.JLabel Hover15;
+    private javax.swing.JLabel Hover16;
+    private javax.swing.JLabel Hover17;
+    private javax.swing.JLabel Hover18;
     private javax.swing.JLabel Hover2;
     private javax.swing.JLabel Hover3;
     private javax.swing.JLabel Hover4;
+    private javax.swing.JLabel Hover5;
+    private javax.swing.JLabel Hover6;
+    private javax.swing.JLabel Hover7;
+    private javax.swing.JLabel Hover8;
+    private javax.swing.JLabel Hover9;
     private javax.swing.JLabel PicEinzelneKopie;
     private javax.swing.JLabel ToolTip1;
+    private javax.swing.JLabel ToolTip10;
+    private javax.swing.JLabel ToolTip11;
+    private javax.swing.JLabel ToolTip12;
+    private javax.swing.JLabel ToolTip2;
+    private javax.swing.JLabel ToolTip3;
+    private javax.swing.JLabel ToolTip4;
+    private javax.swing.JLabel ToolTip5;
+    private javax.swing.JLabel ToolTip6;
+    private javax.swing.JLabel ToolTip7;
+    private javax.swing.JLabel ToolTip8;
+    private javax.swing.JLabel ToolTip9;
     private javax.swing.JButton ausgeben;
     private javax.swing.JTextField ausgebenIDFeld;
     private javax.swing.JTextField ausgebenKaufenFeld;
