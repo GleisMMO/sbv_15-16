@@ -29,6 +29,8 @@ import javax.swing.JFileChooser;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
+    public final Font format = new Font(FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
+
     private static final String einsammelnCol[] = {"N", "Label", "Code", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
     DefaultTableModel einsammelTabelleModel = new DefaultTableModel(einsammelnCol, 0) {
         @Override
@@ -84,8 +86,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     DefaultListModel pdfExportAuswahlSelectListModel = new DefaultListModel();
 
     private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
-    private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID", "Anz. Bücher", "Anz. zurückzugeben"}; //forename, surname, birth, student_ID
-    private static final String pdfExportBookOpList[] = {"Label", "ISBN", "Preis", "Kauf", "ID", "Anz. Kopien", "Anz. Ausgegeben", "Anz. Lager"}; //label, isbn, price, buy, ID
+    private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID", "Bücher", "zurück"}; //forename, surname, birth, student_ID
+    private static final String pdfExportBookOpList[] = {"Label", "ISBN", "Preis", "Kauf", "ID", "Kopien", "Ausgegeben", "Lager"}; //label, isbn, price, buy, ID
     DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
     DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
 
@@ -3211,30 +3213,67 @@ public class Oberflaeche extends javax.swing.JFrame {
         int heigth = source.size() / pdfExportOpAllesModel.size();
 
         PdfPTable table;
+        float[] columnWidth;
+        int start;
         if (numCheckBox.isSelected()) {
-            table = new PdfPTable(width + 1);
-            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            columnWidth = new float[width + 1];
+            columnWidth[0] = 1;
+            start = 1;
         } else {
-            table = new PdfPTable(width);
+            columnWidth = new float[width];
+            start = 0;
         }
+
+        for (int i = start; i < columnWidth.length; i++) {
+            Object item = pdfExportOpSelectModel.getElementAt(i - start);
+
+            if (item.equals(pdfExportSchuelerOpList[0])) {  //label
+                columnWidth[i] = 9;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
+                columnWidth[i] = 2;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
+                columnWidth[i] = 5;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
+                columnWidth[i] = 2;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[4])) {  //sbm_copies.ID
+                columnWidth[i] = 3;
+                continue;
+            }
+
+            Other.errorWin("Fatal Error");
+
+        }
+
+        table = new PdfPTable(columnWidth);
 
         table.setSpacingBefore(25);
         table.setSpacingAfter(25);
 
         //Überschriften
+        if (numCheckBox.isSelected()) {
+            table.addCell(new PdfPCell(new Phrase("N", format)));
+        }
         for (int i = 0; i < width; i++) {
-            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), format)));
         }
 
         //Inhalt
         for (int i = 0; i < heigth; i++) {
             if (numCheckBox.isSelected()) {
-                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), format)));
             }
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportSchuelerOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 0), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
@@ -3246,20 +3285,20 @@ public class Oberflaeche extends javax.swing.JFrame {
 //                            System.out.println(e + " => schuelerEx - Pic ok1");
 //                        }
 //                    } else {
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 1), format)));
 //                    }
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportSchuelerOpList.length + 2)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportSchuelerOpList.length + 2)), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 3), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[4])) {  //code
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 4), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 4), format)));
                     continue;
                 }
 
@@ -3267,7 +3306,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
 //                for (int k = 0; k < pdfExportOpAllesModel.size(); k++) {
 //                    if (pdfExportOpSelectModel.getElementAt(j).equals(pdfExportSchuelerOpList[k])) {
-//                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + j), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+//                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + j), format)));
 //                        break;
 //                    }
 //                }
@@ -3285,50 +3324,91 @@ public class Oberflaeche extends javax.swing.JFrame {
         int heigth = source.size() / 4;
 
         PdfPTable table;
+        float[] columnWidth;
+        int start;
         if (numCheckBox.isSelected()) {
-            table = new PdfPTable(width + 1);
-            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            columnWidth = new float[width + 1];
+            columnWidth[0] = 2;
+            start = 1;
         } else {
-            table = new PdfPTable(width);
+            columnWidth = new float[width];
+            start = 0;
         }
+
+        for (int i = start; i < columnWidth.length; i++) {
+            Object item = pdfExportOpSelectModel.getElementAt(i - start);
+
+            if (item.equals(pdfExportClassOpList[0])) {  //forename
+                columnWidth[i] = 7;
+                continue;
+            }
+            if (item.equals(pdfExportClassOpList[1])) {  //surname
+                columnWidth[i] = 7;
+                continue;
+            }
+            if (item.equals(pdfExportClassOpList[2])) {  //birth
+                columnWidth[i] = 7;
+                continue;
+            }
+            if (item.equals(pdfExportClassOpList[3])) {  //student_ID
+                columnWidth[i] = 3;
+                continue;
+            }
+            if (item.equals(pdfExportClassOpList[4])) {  //all
+                columnWidth[i] = 2;
+                continue;
+            }
+            if (item.equals(pdfExportClassOpList[5])) {  //ret
+                columnWidth[i] = 2;
+                continue;
+            }
+
+            Other.errorWin("Fatal Error");
+
+        }
+
+        table = new PdfPTable(columnWidth);
 
         table.setSpacingBefore(25);
         table.setSpacingAfter(25);
 
         //Überschriften
+        if (numCheckBox.isSelected()) {
+            table.addCell(new PdfPCell(new Phrase("N", format)));
+        }
         for (int i = 0; i < width; i++) {
-            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), format)));
         }
 
         //Inhalt
         for (int i = 0; i < heigth; i++) {
             if (numCheckBox.isSelected()) {
-                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), format)));
             }
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
-                if (item.equals(pdfExportClassOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                if (item.equals(pdfExportClassOpList[0])) {  //forename
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 0), format)));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[1])) {  //surname
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 1), format)));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[2])) {  //birth
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 2), format)));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[3])) {  //student_ID
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 4 + 3), format)));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[4])) {  //all
-                    table.addCell(new PdfPCell(new Phrase(Students.copiesCount(source.get(i * 4 + 3)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Students.copiesCount(source.get(i * 4 + 3)), format)));
                     continue;
                 }
                 if (item.equals(pdfExportClassOpList[5])) {  //ret
-                    table.addCell(new PdfPCell(new Phrase(Students.CopiesToReturn(source.get(i * 4 + 3)), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Students.CopiesToReturn(source.get(i * 4 + 3)), format)));
                     continue;
                 }
 
@@ -3348,73 +3428,120 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         }
 
-        System.out.println(source);
-
         int width = pdfExportOpSelectModel.size();
         int heigth = source.size() / 5;
-        
+
         pdfExportProgressBar.setMaximum(heigth);
 
         PdfPTable table;
+        float[] columnWidth;
+        int start;
         if (numCheckBox.isSelected()) {
-            table = new PdfPTable(width + 1);
-            table.addCell(new PdfPCell(new Phrase("N", FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            columnWidth = new float[width + 1];
+            columnWidth[0] = 2;
+            start = 1;
         } else {
-            table = new PdfPTable(width);
+            columnWidth = new float[width];
+            start = 0;
         }
+
+        for (int i = start; i < columnWidth.length; i++) {
+            Object item = pdfExportOpSelectModel.getElementAt(i - start);
+
+            if (item.equals(pdfExportBookOpList[0])) {  //label
+                columnWidth[i] = 12;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[1])) {  //isbn
+                columnWidth[i] = 5;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[2])) {  //price
+                columnWidth[i] = 4;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[3])) {  //buy
+                columnWidth[i] = 2;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[4])) {  //ID
+                columnWidth[i] = 2;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[5])) {  //ges
+                columnWidth[i] = 3;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[6])) {  //aus
+                columnWidth[i] = 3;
+                continue;
+            }
+            if (item.equals(pdfExportBookOpList[7])) {  //lager
+                columnWidth[i] = 3;
+                continue;
+            }
+
+            Other.errorWin("Fatal Error");
+
+        }
+
+        table = new PdfPTable(columnWidth);
 
         table.setSpacingBefore(25);
         table.setSpacingAfter(25);
 
         //Überschriften
+        if (numCheckBox.isSelected()) {
+            table.addCell(new PdfPCell(new Phrase("N", format)));
+        }
         for (int i = 0; i < width; i++) {
-            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+            table.addCell(new PdfPCell(new Phrase((String) pdfExportOpSelectModel.get(i), format)));
         }
 
         //Inhalt
         for (int i = 0; i < heigth; i++) {
             if (numCheckBox.isSelected()) {
-                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                table.addCell(new PdfPCell(new Phrase(String.valueOf(i + 1), format)));
             }
 
             String bookId = source.get(i * 5 + 4);
-            
+
             pdfExportProgressBar.setValue(i);
             setProgressBarExportString(source.get(i * 5 + 0));
-            
+
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
-                
+
                 if (item.equals(pdfExportBookOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 0), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 0), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[1])) {  //isbn
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 1), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 1), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[2])) {  //price
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 2), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 2), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[3])) {  //buy
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 3), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 3), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[4])) {  //ID
-                    table.addCell(new PdfPCell(new Phrase(bookId, FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(bookId, format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[5])) {  //ges
-                    table.addCell(new PdfPCell(new Phrase(Copies.SingleCopyCountTotal(bookId), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Copies.SingleCopyCountTotal(bookId), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[6])) {  //aus
-                    table.addCell(new PdfPCell(new Phrase(String.valueOf(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)) - Integer.parseInt(Copies.copiesInStock(bookId))), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(String.valueOf(Integer.parseInt(Copies.SingleCopyCountTotal(bookId)) - Integer.parseInt(Copies.copiesInStock(bookId))), format)));
                     continue;
                 }
                 if (item.equals(pdfExportBookOpList[7])) {  //lager
-                    table.addCell(new PdfPCell(new Phrase(Copies.copiesInStock(bookId), FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD))));
+                    table.addCell(new PdfPCell(new Phrase(Copies.copiesInStock(bookId), format)));
                     continue;
                 }
 

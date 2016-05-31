@@ -8,7 +8,7 @@ public class loginMaske extends javax.swing.JFrame {
     public loginMaske() {
         initComponents();
     }
-    
+
     private static String args[];
 
     /**
@@ -112,22 +112,26 @@ public class loginMaske extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e + "Anmeldung");
         }
-        
+
 
     }//GEN-LAST:event_loginActionPerformed
 
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
         loginActionPerformed(evt);
     }//GEN-LAST:event_passwordActionPerformed
-    
+
     public static void main(String args[]) {
-        loginMaske.args = args;
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new loginMaske().setVisible(true);
-            }
-        });
+        if (true) {
+            Oberflaeche.main(args, "Admin", "0");
+        } else {
+            loginMaske.args = args;
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new loginMaske().setVisible(true);
+                }
+            });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
