@@ -71,7 +71,7 @@ public class Classes {
     //all studentsnames in a class
     public static ArrayList<String> classListNames(String name) {
         try {
-            return Query.anyQuery("SELECT forename, surname, birth, student_ID "
+            return Query.anyQuery("SELECT forename, surname "
                     + "FROM  `sbm_students`, `sbm_students-classes`, `sbm_classes` "
                     + "WHERE sbm_classes.ID LIKE class_ID "
                     + "AND student_ID lIKE sbm_students.ID "

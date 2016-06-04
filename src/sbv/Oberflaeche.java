@@ -7,8 +7,6 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -85,32 +83,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     DefaultListModel pdfExportAuswahlAllesListModel = new DefaultListModel();
     DefaultListModel pdfExportAuswahlSelectListModel = new DefaultListModel();
 
-    private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code"}; //label, buy, distributed, paid, sbm_copies.ID
+    private static final String pdfExportSchuelerOpList[] = {"Label", "Gekauft", "Ausgegeben", "Bezahlt", "Code", "ISBN", "Preis", "zuzahlen"}; //label, buy, distributed, paid, sbm_copies.ID, (isbn, price)
     private static final String pdfExportClassOpList[] = {"Vorname", "Nachname", "Geburtstag", "Schüler-ID", "Bücher", "zurück"}; //forename, surname, birth, student_ID
     private static final String pdfExportBookOpList[] = {"Label", "ISBN", "Preis", "Kauf", "ID", "Kopien", "Ausgegeben", "Lager"}; //label, isbn, price, buy, ID
     DefaultListModel pdfExportOpAllesModel = new DefaultListModel();
     DefaultListModel pdfExportOpSelectModel = new DefaultListModel();
 
-    //static private ArrayList<String> names;
-    //static private int index;
-    //static private ArrayList<String> klasse;
-    //static private ListModel dlm;
-//    static private Object item;
-//    static private ArrayList<String> data;
-//    static private ArrayList<String> names1;
-//    static private String buecherKlasse;
-//    static private ArrayList<String> buchKlasse;
-//    static private String buchISBN;
-//    static private ArrayList<String> ids;
-//    static private int buecherRow;
-//    static private String buchLabel;
-//    static private int anz;
-//    static private int id;
-//    static private String barcode;
-//    static private String classe;
     static private String momentaneKopie;
-//    static private int testInteger;
-//    static private ArrayList<String> kopie;
     static private String schuelerId;
     static private int schuelerInKlasse;
     static private int schuelerRow;
@@ -119,11 +98,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private int currentPanel = 1;
     static private int speichern = 0;
     static private int skBearbeiten = 0;
-//    static private Object[] input;
-//    static private final ArrayList doppelt = new ArrayList();
-//    static private int[] selected;
-//    static private PdfPTable table;
-//    static private int width, heigth;
+    static private double pay;
 
     static private String user;
     static private int lizenz;
@@ -170,6 +145,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                             document.add(PDF_Export.pdfChapterStudent(schuelerId));
                             document.add(schuelerEx(schuelerId));
+                            if (sumPrice.isSelected()) {
+                                pay = pay * 100;
+                                pay = Math.round(pay);
+                                pay = pay / 100;
+                                document.add(new Phrase("Gesamt: " + pay + " €", format));
+                            }
 //*****                        
                         } else if (klasseRadioButton.isSelected()) {
                             String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
@@ -223,6 +204,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                             schuelerId = Students.StudentSearch((String) pdfExportAuswahlSelectListModel.getElementAt(i));
                             document.add(PDF_Export.pdfChapterStudent(schuelerId));
                             document.add(schuelerEx(schuelerId));
+                            if (sumPrice.isSelected()) {
+                                pay = pay * 100;
+                                pay = Math.round(pay);
+                                pay = pay / 100;
+                                document.add(new Phrase("Gesamt: " + pay + " €", format));
+                            }
 //*****                    
                         } else if (klasseRadioButton.isSelected()) {
                             String classe = (String) pdfExportAuswahlSelectListModel.getElementAt(i);
@@ -366,7 +353,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     }
 
     public Oberflaeche() {
-        //this.pdfExportSchuelerOperationsModel = new DefaultListModel(pdfExportSchuelerOperations, 0);
         initComponents();
 
         //this.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -388,6 +374,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                 neuKopieAnzahl.setVisible(false);
                 buchNeu.setEnabled(false);                      //neue Bücher erstellen
                 buchNeu.setVisible(false);
+                kopieBarcodeErneut.setEnabled(false);           //Barcode erneut ausdrucken
+                kopieBarcodeErneut.setVisible(false);
 
             case 2:
                 buchLöschen.setEnabled(false);                  //Bücher löschen
@@ -437,7 +425,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         neuKlasseFeld = new javax.swing.JTextField();
         neuKlasseBtn = new javax.swing.JButton();
         klasseExportPreislist = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         Hover6 = new javax.swing.JLabel();
         Hover7 = new javax.swing.JLabel();
         Hover8 = new javax.swing.JLabel();
@@ -575,6 +562,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         groupExport = new javax.swing.JRadioButton();
         numCheckBox = new javax.swing.JCheckBox();
         pdfExportProgressBar = new javax.swing.JProgressBar();
+        sumPrice = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Schulbuchverwaltung");
@@ -747,13 +735,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Fake Preisliste");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         Hover6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Hover6.setText("?");
         Hover6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -794,9 +775,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         Hover9.setText("?");
         Hover9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Hover9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                Hover9MouseClicked(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 Hover9MouseEntered(evt);
             }
@@ -827,9 +805,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addComponent(Hover9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(299, 299, 299)
                                 .addComponent(Hover6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
-                                .addGap(35, 35, 35)
+                                .addGap(140, 140, 140)
                                 .addComponent(Hover7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(klasseExportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -861,9 +837,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addComponent(klasseExportPreislist)
                         .addComponent(Hover7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(Hover6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(Hover6))
                 .addGap(2, 2, 2)
                 .addComponent(ToolTip6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1982,11 +1956,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        pdfExportAuswahlAllesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane12.setViewportView(pdfExportAuswahlAllesList);
 
         pdfExportAddAllesButton.setText(">>");
@@ -2010,11 +1979,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        pdfExportAuswahlSelectList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane14.setViewportView(pdfExportAuswahlSelectList);
 
         pdfExportDelSelectButton.setText("<");
@@ -2024,18 +1988,12 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        superSelectComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         superSelectComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 superSelectComboBoxActionPerformed(evt);
             }
         });
 
-        pdfExportOpAllesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane17.setViewportView(pdfExportOpAllesList);
 
         pdfExportOpAddAllesButton.setText(">>");
@@ -2059,11 +2017,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        pdfExportOpSelectList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane18.setViewportView(pdfExportOpSelectList2);
 
         pdfExportOpDelSelectButton2.setText("<");
@@ -2084,6 +2037,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         soloExport.setText("einzeln");
 
         exportFilesGroup.add(groupExport);
+        groupExport.setSelected(true);
         groupExport.setText("zusammen");
 
         numCheckBox.setSelected(true);
@@ -2092,6 +2046,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         pdfExportProgressBar.setMaximum(10);
         pdfExportProgressBar.setToolTipText("");
         pdfExportProgressBar.setStringPainted(true);
+
+        sumPrice.setText("Gesammtkosten");
+        sumPrice.setActionCommand("");
+        sumPrice.setEnabled(false);
 
         javax.swing.GroupLayout exportTabLayout = new javax.swing.GroupLayout(exportTab);
         exportTab.setLayout(exportTabLayout);
@@ -2127,7 +2085,10 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addComponent(superSelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(48, 48, 48)
                         .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(numCheckBox)
+                            .addGroup(exportTabLayout.createSequentialGroup()
+                                .addComponent(numCheckBox)
+                                .addGap(18, 18, 18)
+                                .addComponent(sumPrice))
                             .addGroup(exportTabLayout.createSequentialGroup()
                                 .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2156,7 +2117,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(superSelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numCheckBox))
+                    .addComponent(numCheckBox)
+                    .addComponent(sumPrice))
                 .addGap(18, 18, 18)
                 .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -2271,12 +2233,27 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_schuelerTblMouseClicked
 
     private void schuelerExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerExportMouseClicked
-        PDF_Export.studentPDF(schuelerId, this);
-        try {
-            PDF_Export.openPDF();
-        } catch (IOException e) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
-        }
+        basePanel.setSelectedIndex(9);
+
+        schuelerRadioButton.setSelected(true);
+        schuelerRadioButtonActionPerformed(null);
+
+        superSelectComboBox.setSelectedItem(schuelerKlassenList.getModel().getElementAt(0));
+        superSelectComboBoxActionPerformed(null);
+
+        pdfExportAuswahlSelectListModel.addElement(schuelerName.getText());
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[0]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[2]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[5]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[4]);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        sumPrice.setEnabled(false);
+        sumPrice.setSelected(false);
+
+        numCheckBox.setSelected(true);
     }//GEN-LAST:event_schuelerExportMouseClicked
 
     private void schuelerWeiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerWeiterActionPerformed
@@ -2290,7 +2267,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerID.setText(Students.SingelStudent(schuelerId, 0));
         schuelerGeburt.setText(Students.SingelStudent(schuelerId, 3));
         schuelerZurueckAnzahl.setText(Students.CopiesToReturn(schuelerId));
-        schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());//ERROR
+        schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
 
         ArrayList<String> names = Students.BookList(schuelerId);
 
@@ -2361,7 +2338,26 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_klassenTabComponentAdded
 
     private void klasseExportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseExportBtnActionPerformed
-        PDF_Export.studentClassPDF(momentaneKlasse, this);
+        basePanel.setSelectedIndex(9);
+
+        schuelerRadioButton.setSelected(true);
+        schuelerRadioButtonActionPerformed(null);
+
+        superSelectComboBox.setSelectedItem(momentaneKlasse);
+        superSelectComboBoxActionPerformed(null);
+
+        pdfExportAddAllesButtonActionPerformed(evt);
+
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[0]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[2]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[5]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[4]);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        sumPrice.setEnabled(false);
+        sumPrice.setSelected(false);
+
+        numCheckBox.setSelected(true);
     }//GEN-LAST:event_klasseExportBtnActionPerformed
 
     private void isbnSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnSucheActionPerformed
@@ -2410,7 +2406,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         int anz = Integer.parseInt(neuKopieAnzahl.getText());
         int id = Copies.newID();
         if (id == 0) {
-            neuKopieBtn.setText("Error");
+            Other.errorWin("Fehler beim Erstellen neuer Kopien");
         } else {
             try {
                 PDF_Export.barcodePDF(id, anz);
@@ -2491,7 +2487,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_klassenBearbeitenTabComponentAdded
 
     private void ausgebenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausgebenActionPerformed
-        //Kopie in DB ausgeben
         Copies.distributeCopy(ausgebenIDFeld.getText(), schuelerId, ausgebenKaufenFeld.getText());
         ausgebenIDFeld.setText("");
     }//GEN-LAST:event_ausgebenActionPerformed
@@ -2525,27 +2520,58 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_neuKlasseBtnMouseClicked
 
     private void schuelerExportPreislisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerExportPreislisteMouseClicked
-        PDF_Export.studentBill(schuelerId, this);
-        try {
-            PDF_Export.openPDF();
-        } catch (IOException e) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
-        }
+        basePanel.setSelectedIndex(9);
+
+        schuelerRadioButton.setSelected(true);
+        schuelerRadioButtonActionPerformed(null);
+
+        superSelectComboBox.setSelectedItem(schuelerKlassenList.getModel().getElementAt(0));
+        superSelectComboBoxActionPerformed(null);
+
+        pdfExportAuswahlSelectListModel.addElement(schuelerName.getText());
+        pdfExportAuswahlSelectList.setModel(pdfExportAuswahlSelectListModel);
+
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[0]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[1]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[3]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[6]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[7]);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        sumPrice.setEnabled(true);
+        sumPrice.setSelected(true);
+
+        numCheckBox.setSelected(false);
     }//GEN-LAST:event_schuelerExportPreislisteMouseClicked
 
     private void klasseExportPreislistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseExportPreislistActionPerformed
-        PDF_Export.classBill(momentaneKlasse, this);
-    }//GEN-LAST:event_klasseExportPreislistActionPerformed
+        basePanel.setSelectedIndex(9);
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        PDF_Export.classBillFake(momentaneKlasse, this);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        schuelerRadioButton.setSelected(true);
+        schuelerRadioButtonActionPerformed(null);
+
+        superSelectComboBox.setSelectedItem(momentaneKlasse);
+        superSelectComboBoxActionPerformed(null);
+
+        pdfExportAddAllesButtonActionPerformed(evt);
+
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[0]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[1]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[3]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[6]);
+        pdfExportOpSelectModel.addElement(pdfExportSchuelerOpList[7]);
+        pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
+
+        sumPrice.setEnabled(true);
+        sumPrice.setSelected(true);
+
+        numCheckBox.setSelected(false);
+    }//GEN-LAST:event_klasseExportPreislistActionPerformed
 
     private void kopieBarcodeErneutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieBarcodeErneutActionPerformed
         try {
             PDF_Export.barcodePDF(Integer.parseInt(momentaneKopie), 1);
         } catch (IOException | DocumentException e) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e + " => Cant print Barcode of Copie");
         }
     }//GEN-LAST:event_kopieBarcodeErneutActionPerformed
@@ -2708,6 +2734,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
+        pdfExportOpSelectModel.clear();
         ArrayList<String> data = Classes.getClassNameList();
         Object[] input = new Object[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -2731,23 +2758,14 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_schuelerRadioButtonActionPerformed
 
     private void superSelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_superSelectComboBoxActionPerformed
-        pdfExportAuswahlAllesListModel.removeAllElements();
-
         if (schuelerRadioButton.isSelected()) {
+            pdfExportAuswahlAllesListModel.removeAllElements();
             ArrayList<String> data = Classes.classList((String) superSelectComboBox.getSelectedItem());
             for (int i = 0; i < data.size(); i = i + 4) {
-                String n1 = data.get(i);
-                String n2 = data.get(i + 1);
                 pdfExportAuswahlAllesListModel.addElement(data.get(i).concat(" ").concat(data.get(i + 1)));
             }
-
-        } else if (klasseRadioButton.isSelected()) {
-
-        } else if (buchRadioButton.isSelected()) {
-
+            pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
         }
-
-        pdfExportAuswahlAllesList.setModel(pdfExportAuswahlAllesListModel);
     }//GEN-LAST:event_superSelectComboBoxActionPerformed
 
 
@@ -2813,11 +2831,15 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void pdfExportOpDelAllButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpDelAllButton2ActionPerformed
         pdfExportOpSelectModel.removeAllElements();
+        sumPrice.setEnabled(false);
     }//GEN-LAST:event_pdfExportOpDelAllButton2ActionPerformed
 
     private void pdfExportOpDelSelectButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfExportOpDelSelectButton2ActionPerformed
         while (pdfExportOpSelectList2.getSelectedIndex() != -1) {
             pdfExportOpSelectModel.remove(pdfExportOpSelectList2.getSelectedIndex());
+        }
+        if (pdfExportOpSelectModel.contains(pdfExportSchuelerOpList[7])) {
+            sumPrice.setEnabled(false);
         }
     }//GEN-LAST:event_pdfExportOpDelSelectButton2ActionPerformed
 
@@ -2837,6 +2859,10 @@ public class Oberflaeche extends javax.swing.JFrame {
             } else {
                 id++;
             }
+        }
+
+        if (pdfExportOpSelectModel.contains(pdfExportSchuelerOpList[7])) {
+            sumPrice.setEnabled(true);
         }
 
         pdfExportOpSelectList2.setModel(pdfExportOpSelectModel);
@@ -2870,6 +2896,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void klasseRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
+        pdfExportOpSelectModel.clear();
+        sumPrice.setEnabled(false);
         ArrayList<String> data = Classes.getClassNameList();
         for (int i = 0; i < data.size(); i++) {
             pdfExportAuswahlAllesListModel.addElement(data.get(i));
@@ -2896,6 +2924,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void buchRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
+        pdfExportOpSelectModel.clear();
+        sumPrice.setEnabled(false);
+
         ArrayList<String> data = Books.BookList();
         for (int i = 0; i < data.size(); i = i + 4) {
             pdfExportAuswahlAllesListModel.addElement(data.get(i));
@@ -2923,8 +2954,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover1MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip1.setText("Hier Text einfügen");
         ToolTip2.setText("Hier Text einfügen");
@@ -2942,8 +2973,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover2MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip1.setText("Hier Text einfügen");
         ToolTip2.setText("Hier Text einfügen");
@@ -2961,8 +2992,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover3MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip1.setText("Hier Text einfügen");
         ToolTip2.setText("Hier Text einfügen");
@@ -2980,8 +3011,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover4MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip1.setText("Hier Text einfügen");
         ToolTip2.setText("Hier Text einfügen");
@@ -2999,8 +3030,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover5MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip5.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover5MouseEntered
@@ -3012,8 +3043,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover6MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip6.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover6MouseEntered
@@ -3025,8 +3056,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip6.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover7MouseEntered
@@ -3038,8 +3069,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover8MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip6.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover8MouseEntered
@@ -3048,15 +3079,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip6.setText("");
     }//GEN-LAST:event_Hover8MouseExited
 
-    private void Hover9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Hover9MouseClicked
-
     private void Hover9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip6.setText("Hier Text einfügen");
     }//GEN-LAST:event_Hover9MouseEntered
@@ -3068,8 +3095,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip7.setText("Hier Text einfügen");
         ToolTip8.setText("Hier Text einfügen");
@@ -3085,8 +3112,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip7.setText("Hier Text einfügen");
         ToolTip8.setText("Hier Text einfügen");
@@ -3102,8 +3129,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover13MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3119,8 +3146,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover14MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3136,8 +3163,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover15MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3153,8 +3180,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover16MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3170,8 +3197,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover17MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3187,8 +3214,8 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void Hover18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover18MouseEntered
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Oberflaeche.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
         }
         ToolTip10.setText("Hier Text einfügen");
         ToolTip11.setText("Hier Text einfügen");
@@ -3203,16 +3230,20 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private PdfPTable schuelerEx(String studentID) {
         ArrayList<String> source = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
+        ArrayList<String> prices = Copies.copyBill(studentID);
 
         int width = pdfExportOpSelectModel.size();
-        int heigth = source.size() / pdfExportOpAllesModel.size();
+        int heigth = source.size() / 5;
+
+        pay = 0;
+        int sumPos = 1;
 
         PdfPTable table;
         float[] columnWidth;
         int start;
         if (numCheckBox.isSelected()) {
             columnWidth = new float[width + 1];
-            columnWidth[0] = 1;
+            columnWidth[0] = 2;
             start = 1;
         } else {
             columnWidth = new float[width];
@@ -3242,6 +3273,18 @@ public class Oberflaeche extends javax.swing.JFrame {
                 columnWidth[i] = 3;
                 continue;
             }
+            if (item.equals(pdfExportSchuelerOpList[5])) {  //ISBN
+                columnWidth[i] = 5;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[6])) {  //Preis
+                columnWidth[i] = 3;
+                continue;
+            }
+            if (item.equals(pdfExportSchuelerOpList[7])) {  //zuzahlen
+                columnWidth[i] = 3;
+                continue;
+            }
 
             Other.errorWin("Fatal Error");
 
@@ -3268,23 +3311,43 @@ public class Oberflaeche extends javax.swing.JFrame {
             for (int j = 0; j < width; j++) {
                 Object item = pdfExportOpSelectModel.getElementAt(j);
                 if (item.equals(pdfExportSchuelerOpList[0])) {  //label
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 0), format)));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 0), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 1), format)));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 1), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
-                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * pdfExportSchuelerOpList.length + 2)), format)));
+                    table.addCell(new PdfPCell(new Phrase(Other.dateToNormal((String) source.get(i * 5 + 2)), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[3])) {  //paid
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 3), format)));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 3), format)));
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[4])) {  //code
-                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 4), format)));
+                    table.addCell(new PdfPCell(new Phrase((String) source.get(i * 5 + 4), format)));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[5])) {  //ISBN
+                    table.addCell(new PdfPCell(new Phrase(Books.singleBook(
+                            source.get(i * 5 + 0), 1)
+                            .get(1), format)));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[6])) {  //Preis
+                    table.addCell(new PdfPCell(new Phrase((String) prices.get(i), format)));
+                    continue;
+                }
+                if (item.equals(pdfExportSchuelerOpList[7])) {  //zuzahlen
+                    sumPos = j;
+                    if (source.get(i * 5 + 1).equals("1") && source.get(i * 5 + 3).equals("0")) {
+                        table.addCell(new PdfPCell(new Phrase(prices.get(i), format)));
+                        pay = pay + Double.parseDouble(prices.get(i));
+                        continue;
+                    }
+                    table.addCell(new PdfPCell(new Phrase("", format)));
                     continue;
                 }
 
@@ -3556,16 +3619,11 @@ public class Oberflaeche extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Oberflaeche.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e) {
+            System.out.println(e + " => main");
         }
         //</editor-fold>
-        //</editor-fold>
-
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -3574,7 +3632,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
         Oberflaeche.user = user;
         Oberflaeche.lizenz = Integer.parseInt(lizenz);
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -3647,7 +3704,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JRadioButton groupExport;
     private javax.swing.JPanel homeTab;
     private javax.swing.JTextField isbnSuche;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -3737,6 +3793,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JButton schuelerZurueck;
     private javax.swing.JLabel schuelerZurueckAnzahl;
     private javax.swing.JRadioButton soloExport;
+    private javax.swing.JCheckBox sumPrice;
     private javax.swing.JComboBox superSelectComboBox;
     private javax.swing.JLabel welcome;
     // End of variables declaration//GEN-END:variables

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Query {
 
-    final static Connection con = DbConnector.getConnection(); //connect   
+    final static Connection con = Other.getConnection(); //connect   
 
     //example get method just copy paste and modifie it :3 (must have been drunk when wrote that...
     public static String getString(String Statement, String label) {
@@ -93,23 +93,23 @@ public class Query {
 
         return table;
     }
-
-    //primitiv method for SystemPrinting SQL Results
-    public static void output(ArrayList<String> result, String[] collums) {
-        int rows = collums.length;
-
-        for (int i = 0; i < result.size(); i = i + rows) {
-            for (int o = i; o < (rows + i); o++) {
-                System.out.print(result.get(o));
-                System.out.print(" ");
-            }
-            System.out.println(" ");
-        }
-
-    }
 }
 
-
+//
+//
+//    //primitiv method for SystemPrinting SQL Results
+//    public static void output(ArrayList<String> result, String[] collums) {
+//        int rows = collums.length;
+//
+//        for (int i = 0; i < result.size(); i = i + rows) {
+//            for (int o = i; o < (rows + i); o++) {
+//                System.out.print(result.get(o));
+//                System.out.print(" ");
+//            }
+//            System.out.println(" ");
+//        }
+//
+//    }
     //SQL Console
 //    public static void Console() throws Exception {
 //        InputStreamReader Input = new InputStreamReader(System.in);

@@ -1,5 +1,8 @@
 package sbv;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,4 +27,21 @@ public class Other {
         JOptionPane.showMessageDialog(new JFrame(), text, "Fehler", JOptionPane.ERROR_MESSAGE);
     }
 
+    public static Connection getConnection() {
+        while (true) {
+            try {
+                final String driver = "com.mysql.jdbc.Driver";                //chosing driver
+                final String url = "jdbc:mysql://localhost:3307/sbv_aes_2013";//choosing mySQL server
+                final String username = "root";                               //DB ussername and password
+                final String password = "usbw";
+                Class.forName(driver);
+                Connection con = DriverManager.getConnection(url, username, password); //Connecting
+                System.out.println("Connected");                                     //conectian establischt notification
+                return con;
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println(e + " => getConnection");
+                Other.errorWin("Verbindung zum Server fehlgeschlagen");
+            }
+        }
+    }
 }

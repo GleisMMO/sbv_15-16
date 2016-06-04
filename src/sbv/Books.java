@@ -16,53 +16,6 @@ public class Books {
         return null;
     }
 
-    public static ArrayList<String> BookIDList() {
-        try {
-            return Query.anyQuery("SELECT ID "
-                    + "FROM sbm_books "
-                    + "ORDER BY ID");
-        } catch (Exception e) {
-            System.out.println(e + " => BookIDList");
-        }
-        return null;
-    }
-
-    //gives information on one book
-    public static ArrayList<String> singleBook(String sterm, int i) {
-        if (i == 0) {
-            try {
-                return Query.anyQuery("SELECT label, isbn, price, buy, ID "
-                        + "FROM sbm_books "
-                        + "WHERE isbn Like '" + sterm + "'");
-            } catch (Exception e) {
-                System.out.println(e + " => singleBook");
-            }
-        } else {
-            try {
-                return Query.anyQuery("SELECT label, isbn, price, buy, ID "
-                        + "FROM sbm_books "
-                        + "WHERE label Like '" + sterm + "'");
-            } catch (Exception e) {
-                System.out.println(e + " => singleBook");
-            }
-        }
-        return null;
-    }
-
-    public static String singleBookName(String bookID) {
-
-        try {
-            return Query.getString("SELECT label "
-                    + "FROM sbm_books "
-                    + "WHERE ID Like '" + bookID + "'", 
-                    "label");
-        } catch (Exception e) {
-            System.out.println(e + " => singleBook");
-        }
-        return null;
-
-    }
-
     //edits book
     public static void editBook(String ID, String label, String isbn, String price, String buy) {
         try {
@@ -89,4 +42,52 @@ public class Books {
             System.out.println(e + " => newBook");
         }
     }
+    //gives information on one book
+    public static ArrayList<String> singleBook(String sterm, int i) {
+        if (i == 0) {
+            try {
+                return Query.anyQuery("SELECT label, isbn, price, buy, ID "
+                        + "FROM sbm_books "
+                        + "WHERE isbn Like '" + sterm + "'");
+            } catch (Exception e) {
+                System.out.println(e + " => singleBook");
+            }
+        } else {
+            try {
+                return Query.anyQuery("SELECT label, isbn, price, buy, ID "
+                        + "FROM sbm_books "
+                        + "WHERE label Like '" + sterm + "'");
+            } catch (Exception e) {
+                System.out.println(e + " => singleBook");
+            }
+        }
+        return null;
+    }
 }
+
+
+//    public static ArrayList<String> BookIDList() {
+//        try {
+//            return Query.anyQuery("SELECT ID "
+//                    + "FROM sbm_books "
+//                    + "ORDER BY ID");
+//        } catch (Exception e) {
+//            System.out.println(e + " => BookIDList");
+//        }
+//        return null;
+//    }
+//
+//
+//    public static String singleBookName(String bookID) {
+//
+//        try {
+//            return Query.getString("SELECT label "
+//                    + "FROM sbm_books "
+//                    + "WHERE ID Like '" + bookID + "'", 
+//                    "label");
+//        } catch (Exception e) {
+//            System.out.println(e + " => singleBook");
+//        }
+//        return null;
+//
+//    }

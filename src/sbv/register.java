@@ -1,5 +1,8 @@
 package sbv;
 
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
+
 public class register extends javax.swing.JFrame {
 
     /**
@@ -160,18 +163,20 @@ public class register extends javax.swing.JFrame {
                 if (newPass.getText().equals(newPass2.getText())) {
                     if (newPass.getText().length() > 7) {
                         Query.anyUpdate("INSERT INTO `sbm_benutzerverwaltung` "
-                            + "SET Benutzer = '" + newAcc.getText() + "', "
-                            + "Passwort = '" + newPass.getText() + "', "
-                            + "Lizenz = " + (lizenz.getSelectedIndex() + 2) + " ;");
+                                + "SET Benutzer = '" + newAcc.getText() + "', "
+                                + "Passwort = '" + newPass.getText() + "', "
+                                + "Lizenz = " + (lizenz.getSelectedIndex() + 2) + " ;");
+                        logger.log(Level.SEVERE, "created new User ''{0}'' ({1}) with the AdminAcc ''{2}''", new Object[]{newAcc.getText(), lizenz.getSelectedIndex() + 2, adminName.getText()});
                         setVisible(false);
                     } else {
                         Other.errorWin("Passwort muss mindestens 8 Zeichen lang sein");
                     }
                 } else {
-                        Other.errorWin("neues Passwort ist nicht identisch");
-                    }
+                    Other.errorWin("neues Passwort ist nicht identisch");
+                }
             } else {
                 Other.errorWin("Admin-Anmeldung fehlgeschlagen");
+                logger.log(Level.SEVERE, "false AdminLogin while creating new User ''{0}'' ({1}) with the AdminAcc ''{2}''", new Object[]{newAcc.getText(), lizenz.getSelectedIndex() + 2, adminName.getText()});
             }
         } catch (Exception e) {
             System.out.println(e + " => Registrierung");

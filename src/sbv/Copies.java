@@ -71,27 +71,13 @@ public class Copies {
 
     public static ArrayList<String> copyBill(String student_id) {
         try {
-            ArrayList<String> bill = Query.anyQuery("SELECT sbm_books.label, sbm_books.price "
+            return Query.anyQuery("SELECT sbm_books.price "
                     + "FROM sbm_copieshistory, sbm_books, sbm_copies "
                     + "WHERE sbm_copies.book_id LIKE sbm_books.ID "
                     + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
-                    + "AND buy LIKE 1 "
-                    + "AND paid LIKE 0 "
                     + "AND student_id LIKE '" + student_id + "'");
-            bill.add("Gesammt");
-            bill.add(Query.getString("SELECT sum(price) "
-                    + "FROM sbm_copieshistory, sbm_books, sbm_copies "
-                    + "WHERE buy LIKE 1 "
-                    + "AND paid LIKE 0 "
-                    + "AND sbm_copieshistory.copy_id LIKE sbm_copies.ID "
-                    + "AND sbm_copies.book_id LIKE sbm_books.ID"
-                    + "AND student_id LIKE '" + student_id + "'",
-                    "sum(price)"));
-            Query.output(bill, Query.TableNames("SELECT sbm_books.label, sbm_books.price "
-                    + "FROM"));//todo read
-            return bill;
         } catch (Exception e) {
-            System.out.println(e + " => CopyCount");
+            System.out.println(e + " => copyBill");
         }
         return null;
     }

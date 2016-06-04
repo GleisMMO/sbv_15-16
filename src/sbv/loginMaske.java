@@ -1,5 +1,9 @@
 package sbv;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static sbv.Sbv.logger;
+
 public class loginMaske extends javax.swing.JFrame {
 
     /**
@@ -113,12 +117,15 @@ public class loginMaske extends javax.swing.JFrame {
                         + "FROM sbm_benutzerverwaltung "
                         + "WHERE Benutzer LIKE '" + user + "' "
                         + "AND Passwort = '" + pw + "' ;").get(0)));
+                logger.log(Level.SEVERE, "login of the User ''{0}''", user);
                 setVisible(false);
             } else if ((user.equalsIgnoreCase("Admin") && pw.equals("1234"))) {
                 Oberflaeche.main(args, user, "0");
+                logger.log(Level.SEVERE, "login of the local Admin");
                 setVisible(false);
             } else {
                 Other.errorWin("Benutzername oder Passwort falsch !");
+                logger.log(Level.SEVERE, "false login of the User ''{0}''", user);
             } // end of if-else
         } catch (Exception e) {
             System.out.println(e + "Anmeldung");

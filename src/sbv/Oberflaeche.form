@@ -253,9 +253,7 @@
                                       <Component id="Hover9" min="-2" pref="18" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="299" max="-2" attributes="0"/>
                                       <Component id="Hover6" min="-2" pref="18" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                                       <Component id="Hover7" min="-2" pref="18" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="klasseExportBtn" min="-2" pref="200" max="-2" attributes="0"/>
@@ -298,10 +296,7 @@
                               <Component id="Hover7" alignment="3" max="32767" attributes="0"/>
                               <Component id="Hover8" alignment="3" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="Hover6" alignment="3" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="Hover6" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="ToolTip6" min="-2" pref="18" max="-2" attributes="0"/>
@@ -407,14 +402,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="klasseExportPreislistActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Fake Preisliste"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="Hover6">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
@@ -471,7 +458,6 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Hover9MouseClicked"/>
                 <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Hover9MouseEntered"/>
                 <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Hover9MouseExited"/>
               </Events>
@@ -2258,7 +2244,11 @@
                               </Group>
                               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="numCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="numCheckBox" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="sumPrice" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jScrollPane17" min="-2" pref="200" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -2296,6 +2286,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="superSelectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="numCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sumPrice" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -2378,13 +2369,7 @@
                 <Component class="javax.swing.JList" name="pdfExportAuswahlAllesList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -2424,13 +2409,7 @@
                 <Component class="javax.swing.JList" name="pdfExportAuswahlSelectList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -2447,12 +2426,7 @@
             <Component class="javax.swing.JComboBox" name="superSelectComboBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <Events>
@@ -2469,13 +2443,7 @@
                 <Component class="javax.swing.JList" name="pdfExportOpAllesList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -2515,13 +2483,7 @@
                 <Component class="javax.swing.JList" name="pdfExportOpSelectList2">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -2556,6 +2518,7 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="exportFilesGroup"/>
                 </Property>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="zusammen"/>
               </Properties>
             </Component>
@@ -2570,6 +2533,13 @@
                 <Property name="maximum" type="int" value="10"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="stringPainted" type="boolean" value="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="sumPrice">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gesammtkosten"/>
+                <Property name="actionCommand" type="java.lang.String" value=""/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
