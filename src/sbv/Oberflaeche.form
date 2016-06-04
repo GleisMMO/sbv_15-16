@@ -292,9 +292,9 @@
                               <Component id="neuKlasseBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="Hover9" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="klasseExportBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="klasseExportPreislist" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="klasseExportBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="Hover7" alignment="3" max="32767" attributes="0"/>
                               <Component id="Hover8" alignment="3" max="32767" attributes="0"/>
                           </Group>

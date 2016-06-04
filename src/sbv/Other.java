@@ -21,20 +21,6 @@ public class Other {
     }
 
     public static void errorWin(String text) {
-//        JDialog meinJDialog = new JDialog();
-//        meinJDialog.setTitle("Fehler");     
-//        meinJDialog.setBounds(300, 250, 0, 0);
-//        meinJDialog.setSize(750, 100);
-//        meinJDialog.setModal(true);
-//        JLabel textoben = new JLabel(text);
-//
-//        textoben.setForeground(Color.red);
-//        meinJDialog.add(textoben);
-//
-//        Container contentpane = meinJDialog.getContentPane();
-//        contentpane.setBackground(Color.black);
-//
-//        meinJDialog.setVisible(true);
         JOptionPane.showMessageDialog(new JFrame(), text, "Fehler", JOptionPane.ERROR_MESSAGE);
     }
 

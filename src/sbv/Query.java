@@ -85,7 +85,6 @@ public class Query {
         StringBuilder raw = new StringBuilder(" ");                                    // SELECT and FROM gets cut out from Statement Stringbuffer 
         String tableLong = rawMatcher.group();                                       //and splited to an array of words (the collum names)
         raw.insert(0, tableLong);
-        //System.out.println(raw);                                                  //testing purpuse
         raw.delete(fromStart, fromEnd);
         raw.delete(selectStart, selectEnd);
         tableLong = raw.toString();

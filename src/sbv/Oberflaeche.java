@@ -210,9 +210,6 @@ public class Oberflaeche extends javax.swing.JFrame {
 
                         final Document document = new Document(PageSize.A4);
 
-                        System.out.println(pdfExportAuswahlSelectListModel.getElementAt(i));
-                        System.out.println(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i).toString().replace(" ", "-") + ".pdf");
-
                         writer = PdfWriter.getInstance(document, new FileOutputStream(pathName2 + "\\" + pdfExportAuswahlSelectListModel.getElementAt(i).toString().replace(" ", "-") + ".pdf"));
 
                         document.addAuthor(System.getProperty("user.name"));
@@ -859,9 +856,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addComponent(neuKlasseFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(neuKlasseBtn)
                         .addComponent(Hover9))
+                    .addComponent(klasseExportBtn)
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(klasseExportPreislist)
-                        .addComponent(klasseExportBtn)
                         .addComponent(Hover7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -2701,7 +2698,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
         einsammelnPic.setVisible(true);
-        System.out.println(this.getSize());//get Size of Window
     }//GEN-LAST:event_einsammelnTabelleMouseClicked
 
     private void einsammelnTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_einsammelnTabComponentAdded
@@ -2743,7 +2739,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 String n1 = data.get(i);
                 String n2 = data.get(i + 1);
                 pdfExportAuswahlAllesListModel.addElement(data.get(i).concat(" ").concat(data.get(i + 1)));
-                System.out.println(pdfExportAuswahlAllesListModel.get(pdfExportAuswahlAllesListModel.getSize() - 1));
             }
 
         } else if (klasseRadioButton.isSelected()) {
@@ -3277,16 +3272,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[1])) {  //buy
-//                    if (buecher.get(i * 5 + 1).equals("1")) {
-//                        try {
-//                            table.addCell(new PdfPCell(Image.getInstance("C:\\Users\\Falko\\Desktop"), true));
-//                            //PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
-//                        } catch (BadElementException | IOException e) {
-//                            System.out.println(e + " => schuelerEx - Pic ok1");
-//                        }
-//                    } else {
                     table.addCell(new PdfPCell(new Phrase((String) source.get(i * pdfExportSchuelerOpList.length + 1), format)));
-//                    }
                     continue;
                 }
                 if (item.equals(pdfExportSchuelerOpList[2])) {  //distributed
@@ -3303,13 +3289,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 }
 
                 Other.errorWin("Fatal Error");
-
-//                for (int k = 0; k < pdfExportOpAllesModel.size(); k++) {
-//                    if (pdfExportOpSelectModel.getElementAt(j).equals(pdfExportSchuelerOpList[k])) {
-//                        table.addCell(new PdfPCell(new Phrase((String) buecher.get(i * 5 + j), format)));
-//                        break;
-//                    }
-//                }
             }
         }
 
@@ -3318,7 +3297,6 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private PdfPTable classEx(String classID) {
         ArrayList<String> source = Classes.classList(classID); //forename, surname, birth, student_ID
-        System.out.println(source);
 
         int width = pdfExportOpSelectModel.size();
         int heigth = source.size() / 4;

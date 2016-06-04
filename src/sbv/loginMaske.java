@@ -26,6 +26,7 @@ public class loginMaske extends javax.swing.JFrame {
         passwordText = new javax.swing.JLabel();
         login = new javax.swing.JButton();
         password = new javax.swing.JPasswordField();
+        registerBut = new javax.swing.JButton();
 
         jPasswordField1.setText("jPasswordField1");
 
@@ -51,17 +52,25 @@ public class loginMaske extends javax.swing.JFrame {
             }
         });
 
+        registerBut.setText("Account Registrieren");
+        registerBut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerButActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(registerBut)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(login))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -83,7 +92,9 @@ public class loginMaske extends javax.swing.JFrame {
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(login)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(login)
+                    .addComponent(registerBut))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -120,8 +131,12 @@ public class loginMaske extends javax.swing.JFrame {
         loginActionPerformed(evt);
     }//GEN-LAST:event_passwordActionPerformed
 
+    private void registerButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButActionPerformed
+        register.main(args);
+    }//GEN-LAST:event_registerButActionPerformed
+
     public static void main(String args[]) {
-        if (true) {
+        if (false) {
             Oberflaeche.main(args, "Admin", "0");
         } else {
             loginMaske.args = args;
@@ -139,6 +154,7 @@ public class loginMaske extends javax.swing.JFrame {
     private javax.swing.JButton login;
     private javax.swing.JPasswordField password;
     private javax.swing.JLabel passwordText;
+    private javax.swing.JButton registerBut;
     private javax.swing.JTextField username;
     private javax.swing.JLabel usernameText;
     // End of variables declaration//GEN-END:variables

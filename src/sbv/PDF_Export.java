@@ -207,8 +207,6 @@ public class PDF_Export {
 
         ArrayList<String> bookArray;
         bookArray = Students.BookList(studentID);
-        
-        System.out.println(bookArray);
 
         PdfPTable table = new PdfPTable(5);//Tabelle mit 5 Spalten erstellen
 
