@@ -1127,6 +1127,11 @@
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="buchAb" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -1168,7 +1173,9 @@
                           <Component id="einBuchPreisFeld" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="Hover18" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="buchAb" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       <Component id="ToolTip10" min="-2" pref="18" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ToolTip11" min="-2" pref="18" max="-2" attributes="0"/>
@@ -1285,6 +1292,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Buch l&#xf6;schen"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buchL&#xf6;schenActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="einBuchISBNFeld">
               <Properties>
@@ -1438,6 +1448,15 @@
                   </Border>
                 </Property>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="buchAb">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Abbrechen"/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buchAbActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

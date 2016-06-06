@@ -19,12 +19,12 @@ public class Books {
     //edits book
     public static void editBook(String ID, String label, String isbn, String price, String buy) {
         try {
-            Query.anyUpdate("INSERT INTO `sbm_books` "
+            Query.anyUpdate("UPDATE `sbm_books` "
                     + "SET label ='" + label + "', "
                     + "isbn = " + isbn + ", "
                     + "price = " + price + ", "
                     + "buy = " + buy + " "
-                    + "WHERE ID LIKE " + ID);
+                    + "WHERE ID = " + ID + ";");
         } catch (Exception e) {
             System.out.println(e + " => editBook");
         }
@@ -62,6 +62,15 @@ public class Books {
             }
         }
         return null;
+    }
+    //deletes book
+    public static void delBook(String label) {
+        try {
+            Query.anyUpdate("DELETE FROM sbm_books"
+                    + " WHERE label LIKE '" + label + "';");
+        } catch (Exception e) {
+            System.out.println(e + " => delBook");
+        }
     }
 }
 

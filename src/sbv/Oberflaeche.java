@@ -394,8 +394,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         lizenzName.setText(lizenzenNamen[lizenz]);
-
         welcome.setText("Willkommen " + user);
+
+        buchAb.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -490,6 +491,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip10 = new javax.swing.JLabel();
         ToolTip11 = new javax.swing.JLabel();
         ToolTip12 = new javax.swing.JLabel();
+        buchAb = new javax.swing.JButton();
         einKopieTab = new javax.swing.JPanel();
         eineKopieSuchen = new javax.swing.JTextField();
         kopieLabel = new javax.swing.JLabel();
@@ -1244,6 +1246,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         });
 
         buchLöschen.setText("Buch löschen");
+        buchLöschen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buchLöschenActionPerformed(evt);
+            }
+        });
 
         einBuchISBNFeld.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         einBuchISBNFeld.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
@@ -1339,6 +1346,14 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ToolTip12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        buchAb.setText("Abbrechen");
+        buchAb.setEnabled(false);
+        buchAb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buchAbActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout einBuchTabLayout = new javax.swing.GroupLayout(einBuchTab);
         einBuchTab.setLayout(einBuchTabLayout);
         einBuchTabLayout.setHorizontalGroup(
@@ -1411,6 +1426,10 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(ToolTip11, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ToolTip10, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buchAb)
+                .addContainerGap())
         );
         einBuchTabLayout.setVerticalGroup(
             einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1446,7 +1465,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(buchLöschen)
                     .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Hover18))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buchAb)
+                .addGap(4, 4, 4)
                 .addComponent(ToolTip10, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ToolTip11, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3228,6 +3249,36 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip12.setText("");
     }//GEN-LAST:event_Hover18MouseExited
 
+    private void buchLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchLöschenActionPerformed
+        if (speichern == 0) {
+            buchLöschen.setText("Bestätigen");
+            buchNeu.setEnabled(false);
+            buchBearbeiten.setEnabled(false);
+            buchAb.setVisible(true);
+            buchAb.setEnabled(true);
+            speichern = 1;
+        } else {
+            Books.delBook(einBuchLabelFeld.getText());
+            buchLöschen.setText("Buch löschen");
+            buchNeu.setEnabled(true);
+            buchBearbeiten.setEnabled(true);
+            buchAb.setVisible(false);
+            buchAb.setEnabled(false);
+            speichern = 0;
+        }
+    }//GEN-LAST:event_buchLöschenActionPerformed
+
+    private void buchAbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchAbActionPerformed
+        if (speichern == 1) {
+            buchLöschen.setText("Buch löschen");
+            buchNeu.setEnabled(true);
+            buchBearbeiten.setEnabled(true);
+            buchAb.setVisible(false);
+            buchAb.setEnabled(false);
+            speichern = 0;
+        }
+    }//GEN-LAST:event_buchAbActionPerformed
+
     private PdfPTable schuelerEx(String studentID) {
         ArrayList<String> source = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
         ArrayList<String> prices = Copies.copyBill(studentID);
@@ -3623,7 +3674,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             System.out.println(e + " => main");
         }
         //</editor-fold>
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -3670,6 +3721,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JTextField ausgebenIDFeld;
     private javax.swing.JTextField ausgebenKaufenFeld;
     public javax.swing.JTabbedPane basePanel;
+    private javax.swing.JButton buchAb;
     private javax.swing.JButton buchBearbeiten;
     public static javax.swing.JList buchKlassenList;
     public static javax.swing.JList buchKlassenList1;
