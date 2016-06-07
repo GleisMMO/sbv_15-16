@@ -1,6 +1,8 @@
 package sbv;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
 
 public class Classes {
 
@@ -87,7 +89,8 @@ public class Classes {
     public static void newClass(String name) {
         try {
             Query.anyUpdate("INSERT INTO `sbm_classes` "
-                    + "SET name ='" + name + "'");
+                    + "SET name = '" + name + "'");
+            logger.log(Level.INFO, "created new class ''{0}''", name);
         } catch (Exception e) {
             System.out.println(e + " => newClass");
         }

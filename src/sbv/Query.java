@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static sbv.Sbv.logger;
 
 public class Query {
 
@@ -56,6 +58,7 @@ public class Query {
             PreparedStatement statement = con.prepareStatement(input);//SQL Query
             statement.executeUpdate(input);                         //updates DB gets results 
             //con.close();
+            logger.log(Level.INFO, "updated Database with command ''{0}''", new Object[]{input});
         } catch (Exception e) {
             System.out.println(e + " => anyUpdate");
         }

@@ -1,6 +1,8 @@
 package sbv;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
 //import java.sql.Date;
 
 public class Students {
@@ -104,6 +106,7 @@ public class Students {
             Query.anyUpdate("INSERT INTO `sbm_students-classes` "
                     + "SET class_id =" + class_id + ", "
                     + "student_id = " + student_id);
+            logger.log(Level.INFO, "added student {0} to class {1}", new Object[]{student_id, class_id});
         } catch (Exception e) {
             System.out.println(e + " => newStudent");
         }

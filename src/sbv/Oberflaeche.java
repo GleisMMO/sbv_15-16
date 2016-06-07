@@ -97,7 +97,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String momentaneKlasse = null;
     static private int currentPanel = 1;
     static private int speichern = 0;
-    static private int skBearbeiten = 0;
+    static private int studentClassEdit = 0;
     static private double pay;
 
     static private String user;
@@ -2441,10 +2441,12 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_neuKopieBtnMouseClicked
 
     private void schuelerKlassenListNeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerKlassenListNeuMouseClicked
-        int index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
-        ListModel dlm = schuelerKlassenListNeu.getModel();
-        schuelerKlassenListNeu.ensureIndexIsVisible(index);
-        Students.addToClass(schuelerId, dlm.getElementAt(index).toString());
+        if (studentClassEdit == 1) {
+            int index = schuelerKlassenListNeu.locationToIndex(evt.getPoint());
+            schuelerKlassenListNeu.ensureIndexIsVisible(index);
+            Students.addToClass(schuelerId, schuelerKlassenListNeu.getModel().getElementAt(index).toString());
+        }
+        schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
     }//GEN-LAST:event_schuelerKlassenListNeuMouseClicked
 
     private void buchNeuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchNeuActionPerformed
@@ -2474,7 +2476,12 @@ public class Oberflaeche extends javax.swing.JFrame {
             speichern = 1;
         } else {
 
-            Books.editBook(Books.singleBook(einBuchISBNFeld.getText(), 0).get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
+            ArrayList<String> book = Books.singleBook(einBuchISBNFeld.getText(), 0);
+            if (book.isEmpty()) {
+                book = Books.singleBook(einBuchLabelFeld.getText(), 1);
+            }
+            
+            Books.editBook(book.get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
             buchBearbeiten.setText("Buch bearbeiten");
             buchNeu.setEnabled(true);
             buchLöschen.setEnabled(true);
@@ -2483,14 +2490,14 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buchBearbeitenActionPerformed
 
     private void schuelerKlassenBearbeitenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerKlassenBearbeitenActionPerformed
-        if (skBearbeiten == 0) {
+        if (studentClassEdit == 0) {
             schuelerKlassenListNeu.setEnabled(true);
-            schuelerKlassenBearbeiten.setText("Speichern");
-            skBearbeiten = 1;
+            schuelerKlassenBearbeiten.setText("beende bearbeiten");
+            studentClassEdit = 1;
         } else {
             schuelerKlassenListNeu.setEnabled(false);
             schuelerKlassenBearbeiten.setText("Bearbeiten");
-            skBearbeiten = 0;
+            studentClassEdit = 0;
         }
     }//GEN-LAST:event_schuelerKlassenBearbeitenActionPerformed
 

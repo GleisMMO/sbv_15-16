@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static sbv.Sbv.logger;
 
 public class Other {
 
@@ -37,6 +39,7 @@ public class Other {
                 Class.forName(driver);
                 Connection con = DriverManager.getConnection(url, username, password); //Connecting
                 System.out.println("Connected");                                     //conectian establischt notification
+            logger.log(Level.INFO, "connected to Server {0}", new Object[]{url});
                 return con;
             } catch (ClassNotFoundException | SQLException e) {
                 System.out.println(e + " => getConnection");

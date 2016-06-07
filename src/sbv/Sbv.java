@@ -75,6 +75,7 @@ public class Sbv {
         DateFormat dateForm = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date date = new Date();
         fh = new FileHandler("C:/Users/Falko/Desktop/test/Sbv-Verlauf-" + dateForm.format(date) + ".log");
+        //                    URL------------------------|Dateiname--------------------------------|Dateiendung
 
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
@@ -82,10 +83,14 @@ public class Sbv {
         fh.setFormatter(formatter);
 
         logger.log(Level.SEVERE, "created Log");
-//        logger.log(Level.INFO, "test");
-//        logger.log(Level.OFF, "test");
-//        logger.log(Level.SEVERE, "test");
-//        logger.log(Level.WARNING, "test");
+
+        /**
+         * Logging Commands:
+         * logger.log(Level.INFO, "test");
+         * logger.log(Level.OFF, "test");
+         * logger.log(Level.SEVERE, "test");
+         * logger.log(Level.WARNING, "test");
+         */
         
         //UpdateDb.massAddClasses(328, 350, 14);
         //Students.newStudent("max", "mustermann", "1999-10-05");

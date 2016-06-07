@@ -2,6 +2,8 @@ package sbv;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
 
 public class Copies {
 
@@ -137,6 +139,7 @@ public class Copies {
                         + "collected = '', "
                         + "student_id = " + student_id + ", "
                         + "copy_id = " + copy_id);
+            logger.log(Level.INFO, "distributed copy {0} to {1}", new Object[]{copy_id, student_id});
             } else {
                 Other.errorWin("Das Buch\n"
                         + "          " + check.get(0) + "\n"
@@ -168,7 +171,7 @@ public class Copies {
                 Query.anyUpdate("DELETE FROM sbm_copieshistory "
                         + "WHERE copy_id "
                         + "LIKE " + copy_id);
-                System.out.println("SQL: collected Copy" + copy_id);
+            logger.log(Level.INFO, "collected copy {0} from {1}", new Object[]{copy_id, check.get(1)});
             }
 
         } catch (Exception e) {
@@ -182,6 +185,7 @@ public class Copies {
             Query.anyUpdate("INSERT INTO sbm_copies "
                     + "SET book_id = " + book_id + ", "
                     + "ID = " + ID);
+            logger.log(Level.INFO, "created new copy {0} from Book {1}", new Object[]{ID, book_id});
         } catch (Exception e) {
             System.out.println(e + " => addCopy");
         }
@@ -192,6 +196,7 @@ public class Copies {
         try {
             Query.anyUpdate("DELETE FROM sbm_copies "
                     + "WHERE ID = " + ID);
+            logger.log(Level.INFO, "deleted copy {0}", new Object[]{ID});
         } catch (Exception e) {
             System.out.println(e + " => addCopy");
         }

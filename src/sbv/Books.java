@@ -1,6 +1,8 @@
 package sbv;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
 
 public class Books {
 
@@ -19,12 +21,17 @@ public class Books {
     //edits book
     public static void editBook(String ID, String label, String isbn, String price, String buy) {
         try {
+            ArrayList<String> oldLabel = Query.anyQuery("SELECT label, isbn, price, buy "
+                    + "FROM `sbm_books` "
+                    + "WHERE ID = " + ID);
             Query.anyUpdate("UPDATE `sbm_books` "
                     + "SET label ='" + label + "', "
                     + "isbn = " + isbn + ", "
                     + "price = " + price + ", "
                     + "buy = " + buy + " "
                     + "WHERE ID = " + ID + ";");
+            logger.log(Level.INFO, "edit book with ID {0} label: {1} to {2} isbn: {3} to {4} price: {5} to {6} buy: {7} to {8}",
+                    new Object[]{ID, oldLabel.get(0), label, oldLabel.get(1), isbn, oldLabel.get(2), price, oldLabel.get(3), buy});
         } catch (Exception e) {
             System.out.println(e + " => editBook");
         }
@@ -38,10 +45,12 @@ public class Books {
                     + "isbn = " + isbn + ", "
                     + "price = " + price + ", "
                     + "buy = " + buy);
+            logger.log(Level.INFO, "created new book ''{0}''", label);
         } catch (Exception e) {
             System.out.println(e + " => newBook");
         }
     }
+
     //gives information on one book
     public static ArrayList<String> singleBook(String sterm, int i) {
         if (i == 0) {
@@ -63,17 +72,18 @@ public class Books {
         }
         return null;
     }
+
     //deletes book
     public static void delBook(String label) {
         try {
             Query.anyUpdate("DELETE FROM sbm_books"
                     + " WHERE label LIKE '" + label + "';");
+            logger.log(Level.INFO, "deleted book ''{0}''", label);
         } catch (Exception e) {
             System.out.println(e + " => delBook");
         }
     }
 }
-
 
 //    public static ArrayList<String> BookIDList() {
 //        try {
