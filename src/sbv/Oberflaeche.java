@@ -364,26 +364,43 @@ public class Oberflaeche extends javax.swing.JFrame {
                 neuKlasseBtn.setEnabled(false);                 //neue Klasse anlegen
                 neuKlasseBtn.setVisible(false);
                 neuKlasseFeld.setVisible(false);
+                Hover9.setEnabled(false);                       //Hover neue Klasse
+                Hover9.setVisible(false);
                 jScrollPane5.setVisible(false);                 //Klassenzugehörigkeit eines Schülers bearbeiten
                 jScrollPane8.setVisible(false);
                 schuelerKlassenBearbeiten.setEnabled(false);
                 schuelerKlassenBearbeiten.setVisible(false);
+                Hover10.setVisible(false);                      //Hover Klassenzugehoerigkeit bearbeiten
+                Hover10.setEnabled(false);
                 neuKopieBtn.setEnabled(false);                  //neue Kopien eines Buches erstellen
                 neuKopieBtn.setVisible(false);
+                Hover15.setEnabled(false);                      //Hover neue Kopie erstellen
+                Hover15.setVisible(false);
                 jLabel18.setVisible(false);
                 neuKopieAnzahl.setVisible(false);
                 buchNeu.setEnabled(false);                      //neue Bücher erstellen
                 buchNeu.setVisible(false);
+                Hover16.setEnabled(false);                      // Hover neues Buch
+                Hover16.setVisible(false);
                 kopieBarcodeErneut.setEnabled(false);           //Barcode erneut ausdrucken
                 kopieBarcodeErneut.setVisible(false);
-
+                Hover4.setEnabled(false);                       // Hover Barcode erneut ausdrucken
+                Hover4.setVisible(false);
+                
+                
             case 2:
                 buchLöschen.setEnabled(false);                  //Bücher löschen
                 buchLöschen.setVisible(false);
+                Hover18.setEnabled(false);                      //Hover Buch löschen
+                Hover18.setVisible(false);
                 buchBearbeiten.setEnabled(false);               //Bücher bearbeiten
                 buchBearbeiten.setVisible(false);
+                Hover17.setEnabled(false);                      //Hover Buch bearbeiten
+                Hover17.setVisible(false);
                 kopieLöschen.setEnabled(false);                 //Kopien löschen
                 kopieLöschen.setVisible(false);
+                Hover3.setEnabled(false);                       //Hover Kopie löschen
+                Hover3.setVisible(false);
 
             case 1:
 
@@ -426,7 +443,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         neuKlasseFeld = new javax.swing.JTextField();
         neuKlasseBtn = new javax.swing.JButton();
         klasseExportPreislist = new javax.swing.JButton();
-        Hover6 = new javax.swing.JLabel();
         Hover7 = new javax.swing.JLabel();
         Hover8 = new javax.swing.JLabel();
         Hover9 = new javax.swing.JLabel();
@@ -737,18 +753,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        Hover6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover6.setText("?");
-        Hover6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover6MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover6MouseExited(evt);
-            }
-        });
-
         Hover7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Hover7.setText("?");
         Hover7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -805,9 +809,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addComponent(neuKlasseBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Hover9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(299, 299, 299)
-                                .addComponent(Hover6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(140, 140, 140)
+                                .addGap(457, 457, 457)
                                 .addComponent(Hover7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(klasseExportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -838,8 +840,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(klasseExportPreislist)
                         .addComponent(Hover7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(Hover6))
+                        .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(2, 2, 2)
                 .addComponent(ToolTip6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -3068,19 +3069,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip5.setText("");
     }//GEN-LAST:event_Hover5MouseExited
 
-    private void Hover6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover6MouseEntered
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            System.out.println(e + " => Hover");
-        }
-        ToolTip6.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover6MouseEntered
-
-    private void Hover6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover6MouseExited
-        ToolTip6.setText("");
-    }//GEN-LAST:event_Hover6MouseExited
-
     private void Hover7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseEntered
         try {
             Thread.sleep(1000);
@@ -3707,7 +3695,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel Hover3;
     private javax.swing.JLabel Hover4;
     private javax.swing.JLabel Hover5;
-    private javax.swing.JLabel Hover6;
     private javax.swing.JLabel Hover7;
     private javax.swing.JLabel Hover8;
     private javax.swing.JLabel Hover9;

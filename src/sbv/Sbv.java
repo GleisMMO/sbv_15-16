@@ -74,7 +74,7 @@ public class Sbv {
 
         DateFormat dateForm = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date date = new Date();
-        fh = new FileHandler("C:/Users/Falko/Desktop/test/Sbv-Verlauf-" + dateForm.format(date) + ".log");
+        fh = new FileHandler("C:/Users/TimKe/Desktop/test/Sbv-Verlauf-" + dateForm.format(date) + ".log");
         //                    URL------------------------|Dateiname--------------------------------|Dateiendung
 
         logger.addHandler(fh);

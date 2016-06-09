@@ -21,14 +21,14 @@ public class register extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         newAcc = new javax.swing.JTextField();
         newPass = new javax.swing.JPasswordField();
         newPass2 = new javax.swing.JPasswordField();
         adminName = new javax.swing.JTextField();
         adminPass = new javax.swing.JPasswordField();
         reg = new javax.swing.JButton();
-        lizenz = new javax.swing.JComboBox<String>();
+        lizenz = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -38,10 +38,11 @@ public class register extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("neuen Benutzer registrieren");
+        setLocation(new java.awt.Point(600, 300));
 
         adminPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,7 +57,7 @@ public class register extends javax.swing.JFrame {
             }
         });
 
-        lizenz.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sekretatriat", "Lehrer" }));
+        lizenz.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sekretatriat", "Lehrer" }));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Administrator");

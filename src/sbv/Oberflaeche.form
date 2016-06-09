@@ -251,9 +251,7 @@
                                       <Component id="neuKlasseBtn" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Hover9" min="-2" pref="18" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="299" max="-2" attributes="0"/>
-                                      <Component id="Hover6" min="-2" pref="18" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="457" max="-2" attributes="0"/>
                                       <Component id="Hover7" min="-2" pref="18" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="klasseExportBtn" min="-2" pref="200" max="-2" attributes="0"/>
@@ -296,7 +294,6 @@
                               <Component id="Hover7" alignment="3" max="32767" attributes="0"/>
                               <Component id="Hover8" alignment="3" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="Hover6" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="ToolTip6" min="-2" pref="18" max="-2" attributes="0"/>
@@ -400,21 +397,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="klasseExportPreislistActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="Hover6">
-              <Properties>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="?"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Hover6MouseEntered"/>
-                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Hover6MouseExited"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="Hover7">
