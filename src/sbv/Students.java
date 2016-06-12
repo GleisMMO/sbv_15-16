@@ -108,7 +108,22 @@ public class Students {
                     + "student_id = " + student_id);
             logger.log(Level.INFO, "added student {0} to class {1}", new Object[]{student_id, class_id});
         } catch (Exception e) {
-            System.out.println(e + " => newStudent");
+            System.out.println(e + " => addToClass");
+        }
+    }
+    
+    public static void removeFromClass(String student_id, String className) {
+        try {
+            String class_id = Query.getString("SELECT ID "
+                    + "FROM sbm_classes "
+                    + "WHERE name LIKE '" + className + "'"
+                    , "ID");
+            Query.anyUpdate("DELETE FROM `sbm_students-classes` "
+                    + "WHERE class_id = " + class_id + " "
+                    + "AND student_id = " + student_id);
+            logger.log(Level.INFO, "remove student {0} from class {1}", new Object[]{student_id, class_id});
+        } catch (Exception e) {
+            System.out.println(e + " => removeFromClass");
         }
     }
     

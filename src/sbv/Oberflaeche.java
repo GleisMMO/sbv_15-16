@@ -19,7 +19,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import java.io.File;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,7 +58,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     };
     static private final int buecherColSize[] = {409, 80, 55, 55};
     static private boolean buecherColSizeSet = true;
-    static private boolean buecherFColSizeSet = true;
 
     private static final String buecherKlasseCol[] = {"Label", "ISBN"};
     DefaultTableModel buecherKlasseModel = new DefaultTableModel(buecherKlasseCol, 0) {
@@ -67,8 +66,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             return false;
         }
     };
-    static private final int buecherKlasseColSize[] = {409, 80};
-    static private boolean buecherKlasseColSizeSet = true;
 
     private static final String schuelerBuecherCol[] = {"N", "Label", "Gekauft", "Ausgegeben", "Bezahlt", "Barcode"};
     DefaultTableModel schuelerBuecherModel = new DefaultTableModel(schuelerBuecherCol, 0) {
@@ -120,8 +117,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
                     chooser.showSaveDialog(basePanel);
 
-                    File savefile = chooser.getSelectedFile();
-                    String pathName2 = savefile.getPath();
+                    String pathName2 = chooser.getSelectedFile().getPath();
                     if (!pathName2.contains(".pdf")) {
                         pathName2 = pathName2.concat(".pdf");
                     }
@@ -179,8 +175,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
                     chooser.showOpenDialog(basePanel);
 
-                    File savefile = chooser.getSelectedFile();
-                    final String pathName2 = savefile.getPath();
+                    final String pathName2 = chooser.getSelectedFile().getPath();
 
                     PdfWriter writer;
 
@@ -287,69 +282,6 @@ public class Oberflaeche extends javax.swing.JFrame {
                 buecherTbl.setAutoResizeMode(1);
             }
         }
-
-        if (currentPanel == 4) {
-            while (buecherKlasseModel.getRowCount() != 0) {
-                buecherKlasseModel.removeRow(0);
-            }
-
-            for (int c = 0; c <= data.size() - 2; c = c + 2) {
-                Object[] obj = {data.get(c), data.get(c + 1)};
-                buecherKlasseModel.addRow(obj);
-            }
-            buecherKlassenTbl.setModel(buecherKlasseModel);
-
-            if (buecherKlasseColSizeSet) {
-                buecherKlasseColSizeSet = false;
-                for (int i = 0; i < buecherKlasseColSize.length; i++) {
-                    col = buecherKlassenTbl.getColumnModel().getColumn(i);
-                    col.setPreferredWidth(buecherKlasseColSize[i]);
-                }
-                buecherKlassenTbl.setAutoResizeMode(1);
-            }
-        }
-
-        if (currentPanel == 5) {
-            while (buecherKlasseModel.getRowCount() != 0) {
-                buecherKlasseModel.removeRow(0);
-            }
-
-            for (int d = 0; d <= data.size() - 2; d = d + 2) {
-                Object[] obj = {data.get(d), data.get(d + 1)};
-                buecherKlasseModel.addRow(obj);
-            }
-            buecherInKlasseTbl.setModel(buecherKlasseModel);
-
-            if (buecherKlasseColSizeSet) {
-                buecherKlasseColSizeSet = false;
-                for (int i = 0; i < buecherKlasseColSize.length; i++) {
-                    col = buecherKlassenTbl.getColumnModel().getColumn(i);
-                    col.setPreferredWidth(buecherKlasseColSize[i]);
-                }
-                buecherKlassenTbl.setAutoResizeMode(1);
-            }
-        }
-
-        if (currentPanel == 6) {
-            while (buecherModel.getRowCount() != 0) {
-                buecherModel.removeRow(0);
-            }
-
-            for (int d = 0; d <= data.size() - 4; d = d + 4) {
-                Object[] obj = {data.get(d), data.get(d + 1), data.get(d + 2), data.get(d + 3)};
-                buecherModel.addRow(obj);
-            }
-            buecherFKlassenTbl.setModel(buecherModel);
-
-            if (buecherFColSizeSet) {
-                buecherFColSizeSet = false;
-                for (int i = 0; i < buecherColSize.length; i++) {
-                    col = buecherFKlassenTbl.getColumnModel().getColumn(i);
-                    col.setPreferredWidth(buecherColSize[i]);
-                }
-                buecherFKlassenTbl.setAutoResizeMode(1);
-            }
-        }
     }
 
     public Oberflaeche() {
@@ -360,49 +292,50 @@ public class Oberflaeche extends javax.swing.JFrame {
         freieBuecher.setText(Home.CauchtCopyCount());
 
         switch (lizenz) {
-            case 3:
+            case 3://Lehrkraft
                 neuKlasseBtn.setEnabled(false);                 //neue Klasse anlegen
                 neuKlasseBtn.setVisible(false);
                 neuKlasseFeld.setVisible(false);
-                Hover9.setEnabled(false);                       //Hover neue Klasse
-                Hover9.setVisible(false);
+                HoverSchuelerHinzufuegen.setEnabled(false);                       //Hover neue Klasse
+                HoverSchuelerHinzufuegen.setVisible(false);
                 jScrollPane5.setVisible(false);                 //Klassenzugehörigkeit eines Schülers bearbeiten
                 jScrollPane8.setVisible(false);
                 schuelerKlassenBearbeiten.setEnabled(false);
                 schuelerKlassenBearbeiten.setVisible(false);
-                Hover10.setVisible(false);                      //Hover Klassenzugehoerigkeit bearbeiten
-                Hover10.setEnabled(false);
+                HoverSingleSchuelerEdit.setVisible(false);                      //Hover Klassenzugehoerigkeit bearbeiten
+                HoverSingleSchuelerEdit.setEnabled(false);
                 neuKopieBtn.setEnabled(false);                  //neue Kopien eines Buches erstellen
                 neuKopieBtn.setVisible(false);
-                Hover15.setEnabled(false);                      //Hover neue Kopie erstellen
-                Hover15.setVisible(false);
+                HoverSingleBookKopien.setEnabled(false);                      //Hover neue Kopie erstellen
+                HoverSingleBookKopien.setVisible(false);
                 jLabel18.setVisible(false);
                 neuKopieAnzahl.setVisible(false);
                 buchNeu.setEnabled(false);                      //neue Bücher erstellen
                 buchNeu.setVisible(false);
-                Hover16.setEnabled(false);                      // Hover neues Buch
-                Hover16.setVisible(false);
+                HoverSingleBookNeu.setEnabled(false);                      // Hover neues Buch
+                HoverSingleBookNeu.setVisible(false);
                 kopieBarcodeErneut.setEnabled(false);           //Barcode erneut ausdrucken
                 kopieBarcodeErneut.setVisible(false);
-                Hover4.setEnabled(false);                       // Hover Barcode erneut ausdrucken
-                Hover4.setVisible(false);
-                
-                
-            case 2:
+                HoverSingleCopieBarcode.setEnabled(false);                       // Hover Barcode erneut ausdrucken
+                HoverSingleCopieBarcode.setVisible(false);
+
+            case 2://Sekretär
                 buchLöschen.setEnabled(false);                  //Bücher löschen
                 buchLöschen.setVisible(false);
-                Hover18.setEnabled(false);                      //Hover Buch löschen
-                Hover18.setVisible(false);
+                HoverSingleBookLoeschen.setEnabled(false);                      //Hover Buch löschen
+                HoverSingleBookLoeschen.setVisible(false);
                 buchBearbeiten.setEnabled(false);               //Bücher bearbeiten
                 buchBearbeiten.setVisible(false);
-                Hover17.setEnabled(false);                      //Hover Buch bearbeiten
-                Hover17.setVisible(false);
+                HoverSingleBookBearbeiten.setEnabled(false);                      //Hover Buch bearbeiten
+                HoverSingleBookBearbeiten.setVisible(false);
                 kopieLöschen.setEnabled(false);                 //Kopien löschen
                 kopieLöschen.setVisible(false);
-                Hover3.setEnabled(false);                       //Hover Kopie löschen
-                Hover3.setVisible(false);
+                HoverSingleCopieLoeschen.setEnabled(false);                       //Hover Kopie löschen
+                HoverSingleCopieLoeschen.setVisible(false);
 
-            case 1:
+            case 1://Admin
+
+            case 0://lokaler Admin    
 
                 break;
 
@@ -431,7 +364,7 @@ public class Oberflaeche extends javax.swing.JFrame {
         freieBuecher = new javax.swing.JLabel();
         welcome = new javax.swing.JLabel();
         lizenzName = new javax.swing.JLabel();
-        Hover5 = new javax.swing.JLabel();
+        HoverHomeLizenz = new javax.swing.JLabel();
         ToolTip5 = new javax.swing.JLabel();
         schuelerTab = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -443,9 +376,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         neuKlasseFeld = new javax.swing.JTextField();
         neuKlasseBtn = new javax.swing.JButton();
         klasseExportPreislist = new javax.swing.JButton();
-        Hover7 = new javax.swing.JLabel();
-        Hover8 = new javax.swing.JLabel();
-        Hover9 = new javax.swing.JLabel();
+        HoverSchuelerExport = new javax.swing.JLabel();
+        HoverSchuelerPreisExport = new javax.swing.JLabel();
+        HoverSchuelerHinzufuegen = new javax.swing.JLabel();
         ToolTip6 = new javax.swing.JLabel();
         einSchuelerTab = new javax.swing.JPanel();
         schuelerName = new javax.swing.JLabel();
@@ -473,9 +406,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         ToolTip7 = new javax.swing.JLabel();
         ToolTip8 = new javax.swing.JLabel();
         ToolTip9 = new javax.swing.JLabel();
-        Hover11 = new javax.swing.JLabel();
-        Hover12 = new javax.swing.JLabel();
-        Hover10 = new javax.swing.JLabel();
+        HoverSingleSchuelerBezahlt = new javax.swing.JLabel();
+        HoverSingleSchuelerAusgeben = new javax.swing.JLabel();
+        HoverSingleSchuelerEdit = new javax.swing.JLabel();
+        HoverSingleSchuelerVor = new javax.swing.JLabel();
+        HoverSingleSchuelerZurueck = new javax.swing.JLabel();
         buecherTab = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         buecherTbl = new javax.swing.JTable();
@@ -498,16 +433,19 @@ public class Oberflaeche extends javax.swing.JFrame {
         einBuchKaufFeld = new javax.swing.JTextField();
         einBuchPreisFeld = new javax.swing.JTextField();
         einBuchLabelFeld = new javax.swing.JTextField();
-        Hover13 = new javax.swing.JLabel();
-        Hover14 = new javax.swing.JLabel();
-        Hover15 = new javax.swing.JLabel();
-        Hover16 = new javax.swing.JLabel();
-        Hover17 = new javax.swing.JLabel();
-        Hover18 = new javax.swing.JLabel();
+        HoverSingleBookSucheISBN = new javax.swing.JLabel();
+        HoverSingleBookSucheLabel = new javax.swing.JLabel();
+        HoverSingleBookKopien = new javax.swing.JLabel();
+        HoverSingleBookNeu = new javax.swing.JLabel();
+        HoverSingleBookBearbeiten = new javax.swing.JLabel();
+        HoverSingleBookLoeschen = new javax.swing.JLabel();
         ToolTip10 = new javax.swing.JLabel();
         ToolTip11 = new javax.swing.JLabel();
         ToolTip12 = new javax.swing.JLabel();
         buchAb = new javax.swing.JButton();
+        HoverSingleBookISBN = new javax.swing.JLabel();
+        HoverSingleBookKauf = new javax.swing.JLabel();
+        HoverSingleBookPreis = new javax.swing.JLabel();
         einKopieTab = new javax.swing.JPanel();
         eineKopieSuchen = new javax.swing.JTextField();
         kopieLabel = new javax.swing.JLabel();
@@ -528,10 +466,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         kopieClass = new javax.swing.JLabel();
         kopieLöschen = new javax.swing.JButton();
         ToolTip1 = new javax.swing.JLabel();
-        Hover1 = new javax.swing.JLabel();
-        Hover2 = new javax.swing.JLabel();
-        Hover3 = new javax.swing.JLabel();
-        Hover4 = new javax.swing.JLabel();
+        HoverSingleCopieSuche = new javax.swing.JLabel();
+        HoverSingleCopieEinsammeln = new javax.swing.JLabel();
+        HoverSingleCopieLoeschen = new javax.swing.JLabel();
+        HoverSingleCopieBarcode = new javax.swing.JLabel();
         ToolTip2 = new javax.swing.JLabel();
         ToolTip3 = new javax.swing.JLabel();
         ToolTip4 = new javax.swing.JLabel();
@@ -542,18 +480,11 @@ public class Oberflaeche extends javax.swing.JFrame {
         jScrollPane13 = new javax.swing.JScrollPane();
         einsammelnTabelle = new javax.swing.JTable();
         einsammelnPic = new javax.swing.JLabel();
-        klassenTab = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        buchKlassenList = new javax.swing.JList();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        buecherKlassenTbl = new javax.swing.JTable();
-        klassenBearbeitenTab = new javax.swing.JPanel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        buchKlassenList1 = new javax.swing.JList();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        buecherInKlasseTbl = new javax.swing.JTable();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        buecherFKlassenTbl = new javax.swing.JTable();
+        HoverCollectCode = new javax.swing.JLabel();
+        HoverCollectLoeschen = new javax.swing.JLabel();
+        HoverCollectEinsammeln = new javax.swing.JLabel();
+        ToolTip13 = new javax.swing.JLabel();
+        ToolTip14 = new javax.swing.JLabel();
         exportTab = new javax.swing.JPanel();
         klasseRadioButton = new javax.swing.JRadioButton();
         schuelerRadioButton = new javax.swing.JRadioButton();
@@ -614,20 +545,20 @@ public class Oberflaeche extends javax.swing.JFrame {
         lizenzName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lizenzName.setText("---");
 
-        Hover5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover5.setText("?");
-        Hover5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover5.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverHomeLizenz.setForeground(new java.awt.Color(0, 0, 255));
+        HoverHomeLizenz.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverHomeLizenz.setText("?");
+        HoverHomeLizenz.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover5MouseEntered(evt);
+                HoverHomeLizenzMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover5MouseExited(evt);
+                HoverHomeLizenzMouseExited(evt);
             }
         });
 
+        ToolTip5.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout homeTabLayout = new javax.swing.GroupLayout(homeTab);
         homeTab.setLayout(homeTabLayout);
@@ -652,9 +583,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(homeTabLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Hover5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(HoverHomeLizenz, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ToolTip5, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ToolTip5, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(homeTabLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -673,12 +604,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(schuelerCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(freieBuecher, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                 .addComponent(lizenzName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addGroup(homeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(ToolTip5, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
-                    .addComponent(Hover5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(HoverHomeLizenz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -753,43 +684,44 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
-        Hover7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover7.setText("?");
-        Hover7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover7.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSchuelerExport.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSchuelerExport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSchuelerExport.setText("?");
+        HoverSchuelerExport.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover7MouseEntered(evt);
+                HoverSchuelerExportMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover7MouseExited(evt);
+                HoverSchuelerExportMouseExited(evt);
             }
         });
 
-        Hover8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover8.setText("?");
-        Hover8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover8.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSchuelerPreisExport.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSchuelerPreisExport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSchuelerPreisExport.setText("?");
+        HoverSchuelerPreisExport.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover8MouseEntered(evt);
+                HoverSchuelerPreisExportMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover8MouseExited(evt);
+                HoverSchuelerPreisExportMouseExited(evt);
             }
         });
 
-        Hover9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover9.setText("?");
-        Hover9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover9.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSchuelerHinzufuegen.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSchuelerHinzufuegen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSchuelerHinzufuegen.setText("?");
+        HoverSchuelerHinzufuegen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover9MouseEntered(evt);
+                HoverSchuelerHinzufuegenMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover9MouseExited(evt);
+                HoverSchuelerHinzufuegenMouseExited(evt);
             }
         });
 
-        ToolTip6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        ToolTip6.setForeground(new java.awt.Color(0, 0, 255));
+        ToolTip6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout schuelerTabLayout = new javax.swing.GroupLayout(schuelerTab);
         schuelerTab.setLayout(schuelerTabLayout);
@@ -808,13 +740,13 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(schuelerTabLayout.createSequentialGroup()
                                 .addComponent(neuKlasseBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(HoverSchuelerHinzufuegen, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(457, 457, 457)
-                                .addComponent(Hover7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(HoverSchuelerExport, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(klasseExportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(Hover8, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(HoverSchuelerPreisExport, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(klasseExportPreislist, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(schuelerTabLayout.createSequentialGroup()
@@ -835,12 +767,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(neuKlasseFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(neuKlasseBtn)
-                        .addComponent(Hover9))
+                        .addComponent(HoverSchuelerHinzufuegen))
                     .addComponent(klasseExportBtn)
                     .addGroup(schuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(klasseExportPreislist)
-                        .addComponent(Hover7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Hover8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(HoverSchuelerExport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(HoverSchuelerPreisExport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(2, 2, 2)
                 .addComponent(ToolTip6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -891,6 +823,11 @@ public class Oberflaeche extends javax.swing.JFrame {
             String[] strings = { "-----" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        schuelerKlassenList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                schuelerKlassenListMouseClicked(evt);
+            }
         });
         jScrollPane5.setViewportView(schuelerKlassenList);
 
@@ -967,40 +904,72 @@ public class Oberflaeche extends javax.swing.JFrame {
         schuelerID.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         schuelerID.setText("ID");
 
+        ToolTip7.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip8.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip9.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        Hover11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover11.setText("?");
-        Hover11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        Hover12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover12.setText("?");
-        Hover12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover12.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleSchuelerBezahlt.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleSchuelerBezahlt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleSchuelerBezahlt.setText("?");
+        HoverSingleSchuelerBezahlt.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover12MouseEntered(evt);
+                HoverSingleSchuelerBezahltMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover12MouseExited(evt);
+                HoverSingleSchuelerBezahltMouseExited(evt);
             }
         });
 
-        Hover10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover10.setText("?");
-        Hover10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover10.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleSchuelerAusgeben.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleSchuelerAusgeben.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleSchuelerAusgeben.setText("?");
+        HoverSingleSchuelerAusgeben.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover10MouseEntered(evt);
+                HoverSingleSchuelerAusgebenMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover10MouseExited(evt);
+                HoverSingleSchuelerAusgebenMouseExited(evt);
+            }
+        });
+
+        HoverSingleSchuelerEdit.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleSchuelerEdit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleSchuelerEdit.setText("?");
+        HoverSingleSchuelerEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerEditMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerEditMouseExited(evt);
+            }
+        });
+
+        HoverSingleSchuelerVor.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleSchuelerVor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleSchuelerVor.setText("?");
+        HoverSingleSchuelerVor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerVorMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerVorMouseExited(evt);
+            }
+        });
+
+        HoverSingleSchuelerZurueck.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleSchuelerZurueck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleSchuelerZurueck.setText("?");
+        HoverSingleSchuelerZurueck.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerZurueckMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleSchuelerZurueckMouseExited(evt);
             }
         });
 
@@ -1009,7 +978,9 @@ public class Oberflaeche extends javax.swing.JFrame {
         einSchuelerTabLayout.setHorizontalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addGap(76, 76, 76)
+                .addComponent(HoverSingleSchuelerZurueck, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einSchuelerTabLayout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -1024,16 +995,19 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(schuelerGeburt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                                    .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(schuelerZurueck, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(einSchuelerTabLayout.createSequentialGroup()
                                             .addComponent(jLabel7)
                                             .addGap(81, 81, 81)
-                                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                                            .addComponent(schuelerZurueck, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(HoverSingleSchuelerVor, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(einSchuelerTabLayout.createSequentialGroup()
                                             .addGap(14, 14, 14)
-                                            .addComponent(Hover10, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(HoverSingleSchuelerEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(schuelerKlassenBearbeiten, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1046,40 +1020,40 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 814, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                .addGap(500, 500, 500)
-                .addComponent(schuelerExport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(schuelerExportPreisliste, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Hover12, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ausgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
             .addGroup(einSchuelerTabLayout.createSequentialGroup()
                 .addGap(108, 108, 108)
                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                        .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(ToolTip7, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(einSchuelerTabLayout.createSequentialGroup()
                         .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ToolTip7, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buecherSchuelerTblAkt)
-                        .addGap(344, 344, 344))))
-            .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Hover11)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(102, 102, 102)
+                        .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                                .addComponent(schuelerExport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(schuelerExportPreisliste, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(HoverSingleSchuelerAusgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ausgeben, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16))
+                            .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                                        .addComponent(buecherSchuelerTblAkt)
+                                        .addGap(344, 344, 344))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                                        .addComponent(HoverSingleSchuelerBezahlt, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(46, 46, 46))))))))
         );
         einSchuelerTabLayout.setVerticalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1108,36 +1082,37 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(schuelerKlassenBearbeiten)
-                                    .addComponent(Hover10))
-                                .addGap(74, 74, 74)
+                                    .addComponent(HoverSingleSchuelerEdit))
+                                .addGap(118, 118, 118)
                                 .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(schuelerZurueck)
-                                    .addComponent(schuelerWeiter)))
+                                    .addComponent(schuelerWeiter)
+                                    .addComponent(HoverSingleSchuelerVor)
+                                    .addComponent(HoverSingleSchuelerZurueck)))
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(buecherSchuelerTblAkt)
+                .addComponent(buecherSchuelerTblAkt)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(einSchuelerTabLayout.createSequentialGroup()
+                        .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(schuelerExport)
+                            .addComponent(ausgeben)
+                            .addComponent(schuelerExportPreisliste)
+                            .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HoverSingleSchuelerAusgeben))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HoverSingleSchuelerBezahlt))
+                        .addGap(39, 39, 39))
                     .addGroup(einSchuelerTabLayout.createSequentialGroup()
                         .addComponent(ToolTip7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(schuelerExport)
-                    .addComponent(ausgeben)
-                    .addComponent(schuelerExportPreisliste)
-                    .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
-            .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(Hover11)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ToolTip8, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ToolTip9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53))))
         );
 
         basePanel.addTab("Einzelner Schueler", einSchuelerTab);
@@ -1266,92 +1241,128 @@ public class Oberflaeche extends javax.swing.JFrame {
         einBuchLabelFeld.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         einBuchLabelFeld.setText("- - -");
 
-        Hover13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover13.setText("?");
-        Hover13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover13.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookSucheISBN.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookSucheISBN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookSucheISBN.setText("?");
+        HoverSingleBookSucheISBN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover13MouseEntered(evt);
+                HoverSingleBookSucheISBNMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover13MouseExited(evt);
+                HoverSingleBookSucheISBNMouseExited(evt);
             }
         });
 
-        Hover14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover14.setText("?");
-        Hover14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover14.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookSucheLabel.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookSucheLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookSucheLabel.setText("?");
+        HoverSingleBookSucheLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover14MouseEntered(evt);
+                HoverSingleBookSucheLabelMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover14MouseExited(evt);
+                HoverSingleBookSucheLabelMouseExited(evt);
             }
         });
 
-        Hover15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover15.setText("?");
-        Hover15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover15.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookKopien.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookKopien.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookKopien.setText("?");
+        HoverSingleBookKopien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover15MouseEntered(evt);
+                HoverSingleBookKopienMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover15MouseExited(evt);
+                HoverSingleBookKopienMouseExited(evt);
             }
         });
 
-        Hover16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover16.setText("?");
-        Hover16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover16.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookNeu.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookNeu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookNeu.setText("?");
+        HoverSingleBookNeu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover16MouseEntered(evt);
+                HoverSingleBookNeuMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover16MouseExited(evt);
+                HoverSingleBookNeuMouseExited(evt);
             }
         });
 
-        Hover17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover17.setText("?");
-        Hover17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover17.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookBearbeiten.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookBearbeiten.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookBearbeiten.setText("?");
+        HoverSingleBookBearbeiten.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover17MouseEntered(evt);
+                HoverSingleBookBearbeitenMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover17MouseExited(evt);
+                HoverSingleBookBearbeitenMouseExited(evt);
             }
         });
 
-        Hover18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover18.setText("?");
-        Hover18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover18.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleBookLoeschen.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookLoeschen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookLoeschen.setText("?");
+        HoverSingleBookLoeschen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover18MouseEntered(evt);
+                HoverSingleBookLoeschenMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover18MouseExited(evt);
+                HoverSingleBookLoeschenMouseExited(evt);
             }
         });
 
+        ToolTip10.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip11.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip12.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         buchAb.setText("Abbrechen");
         buchAb.setEnabled(false);
         buchAb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buchAbActionPerformed(evt);
+            }
+        });
+
+        HoverSingleBookISBN.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookISBN.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookISBN.setText("?");
+        HoverSingleBookISBN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleBookISBNMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleBookISBNMouseExited(evt);
+            }
+        });
+
+        HoverSingleBookKauf.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookKauf.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookKauf.setText("?");
+        HoverSingleBookKauf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleBookKaufMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleBookKaufMouseExited(evt);
+            }
+        });
+
+        HoverSingleBookPreis.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleBookPreis.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleBookPreis.setText("?");
+        HoverSingleBookPreis.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverSingleBookPreisMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverSingleBookPreisMouseExited(evt);
             }
         });
 
@@ -1368,7 +1379,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(einBuchTabLayout.createSequentialGroup()
                                 .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover13, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(HoverSingleBookSucheISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel17))
                         .addGap(457, 1141, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
@@ -1376,7 +1387,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, einBuchTabLayout.createSequentialGroup()
                                 .addComponent(labelSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover14, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(HoverSingleBookSucheLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(238, 238, 238)
                                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(einBuchTabLayout.createSequentialGroup()
@@ -1394,31 +1405,37 @@ public class Oberflaeche extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(neuKopieAnzahl, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(neuKopieBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(einBuchKaufFeld, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))))
+                                    .addGroup(einBuchTabLayout.createSequentialGroup()
+                                        .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(HoverSingleBookISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(HoverSingleBookKauf, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(HoverSingleBookPreis, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(einBuchKaufFeld, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))))
                         .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(einBuchTabLayout.createSequentialGroup()
                                         .addGap(343, 343, 343)
-                                        .addComponent(Hover17, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(HoverSingleBookBearbeiten, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(buchBearbeiten))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Hover18, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(HoverSingleBookLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(buchLöschen, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einBuchTabLayout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(Hover16, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(HoverSingleBookNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(buchNeu, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(einBuchTabLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover15, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(HoverSingleBookKopien, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())))
             .addGroup(einBuchTabLayout.createSequentialGroup()
                 .addGap(71, 71, 71)
@@ -1438,14 +1455,14 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(isbnSuche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover13))
+                    .addComponent(HoverSingleBookSucheISBN))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16)
                 .addGap(12, 12, 12)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelSuche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(einBuchLabelFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover14))
+                    .addComponent(HoverSingleBookSucheLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
                 .addGap(41, 41, 41)
@@ -1453,31 +1470,34 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(einBuchISBNL)
                     .addComponent(buchNeu)
                     .addComponent(einBuchISBNFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover16))
+                    .addComponent(HoverSingleBookNeu)
+                    .addComponent(HoverSingleBookISBN))
                 .addGap(41, 41, 41)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(buchBearbeiten)
                     .addComponent(einBuchKaufFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover17))
+                    .addComponent(HoverSingleBookBearbeiten)
+                    .addComponent(HoverSingleBookKauf))
                 .addGap(41, 41, 41)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(buchLöschen)
                     .addComponent(einBuchPreisFeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover18))
+                    .addComponent(HoverSingleBookLoeschen)
+                    .addComponent(HoverSingleBookPreis))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buchAb)
-                .addGap(4, 4, 4)
+                .addGap(78, 78, 78)
                 .addComponent(ToolTip10, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ToolTip11, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ToolTip12, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(142, 142, 142)
+                .addGap(68, 68, 68)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(neuKopieBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover15))
+                    .addComponent(HoverSingleBookKopien))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(einBuchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(neuKopieAnzahl, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1554,65 +1574,65 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         });
 
+        ToolTip1.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        Hover1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover1.setText("?");
-        Hover1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover1.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleCopieSuche.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleCopieSuche.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleCopieSuche.setText("?");
+        HoverSingleCopieSuche.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover1MouseEntered(evt);
+                HoverSingleCopieSucheMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover1MouseExited(evt);
+                HoverSingleCopieSucheMouseExited(evt);
             }
         });
 
-        Hover2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover2.setText("?");
-        Hover2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover2.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleCopieEinsammeln.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleCopieEinsammeln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleCopieEinsammeln.setText("?");
+        HoverSingleCopieEinsammeln.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover2MouseEntered(evt);
+                HoverSingleCopieEinsammelnMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover2MouseExited(evt);
+                HoverSingleCopieEinsammelnMouseExited(evt);
             }
         });
 
-        Hover3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover3.setText("?");
-        Hover3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover3.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleCopieLoeschen.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleCopieLoeschen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleCopieLoeschen.setText("?");
+        HoverSingleCopieLoeschen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover3MouseEntered(evt);
+                HoverSingleCopieLoeschenMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover3MouseExited(evt);
+                HoverSingleCopieLoeschenMouseExited(evt);
             }
         });
 
-        Hover4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Hover4.setText("?");
-        Hover4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        Hover4.addMouseListener(new java.awt.event.MouseAdapter() {
+        HoverSingleCopieBarcode.setForeground(new java.awt.Color(0, 0, 255));
+        HoverSingleCopieBarcode.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverSingleCopieBarcode.setText("?");
+        HoverSingleCopieBarcode.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                Hover4MouseEntered(evt);
+                HoverSingleCopieBarcodeMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                Hover4MouseExited(evt);
+                HoverSingleCopieBarcodeMouseExited(evt);
             }
         });
 
+        ToolTip2.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip3.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        ToolTip4.setForeground(new java.awt.Color(0, 0, 255));
         ToolTip4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ToolTip4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout einKopieTabLayout = new javax.swing.GroupLayout(einKopieTab);
         einKopieTab.setLayout(einKopieTabLayout);
@@ -1627,7 +1647,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(einKopieTabLayout.createSequentialGroup()
                                 .addComponent(eineKopieSuchen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Hover1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(HoverSingleCopieSuche, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(einKopieTabLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1636,11 +1656,12 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addGroup(einKopieTabLayout.createSequentialGroup()
                                         .addGap(453, 453, 453)
                                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(Hover2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Hover3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(HoverSingleCopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(HoverSingleCopieLoeschen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(ToolTip2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(ToolTip3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(kopieLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1650,7 +1671,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                             .addGroup(einKopieTabLayout.createSequentialGroup()
                                                 .addComponent(kopieLöschen)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(Hover4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(HoverSingleCopieBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(kopieBarcodeErneut))
                                             .addGroup(einKopieTabLayout.createSequentialGroup()
@@ -1663,8 +1684,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(PicEinzelneKopie))))
                             .addGroup(einKopieTabLayout.createSequentialGroup()
-                                .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(69, 69, 69)
+                                .addGap(359, 359, 359)
                                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1689,7 +1709,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(eineKopieSuchen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Hover1))
+                    .addComponent(HoverSingleCopieSuche))
                 .addGap(3, 3, 3)
                 .addComponent(jLabel15)
                 .addGap(1, 1, 1)
@@ -1702,13 +1722,13 @@ public class Oberflaeche extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(kopieEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Hover2))
+                            .addComponent(HoverSingleCopieEinsammeln))
                         .addGap(18, 18, 18)
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(kopieLöschen)
                             .addComponent(kopieBarcodeErneut)
-                            .addComponent(Hover3)
-                            .addComponent(Hover4))
+                            .addComponent(HoverSingleCopieLoeschen)
+                            .addComponent(HoverSingleCopieBarcode))
                         .addGap(179, 179, 179))
                     .addGroup(einKopieTabLayout.createSequentialGroup()
                         .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1731,24 +1751,19 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addGap(30, 30, 30)
                                 .addGroup(einKopieTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12)
-                                    .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(4, 4, 4)
-                                .addComponent(ToolTip2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ToolTip3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(103, Short.MAX_VALUE))))
+                                    .addComponent(kopiePaid, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(45, 45, 45)
+                                .addComponent(ToolTip1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ToolTip2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ToolTip3, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ToolTip4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(92, Short.MAX_VALUE))))
         );
 
         basePanel.addTab("Einzelne Kopie", einKopieTab);
-
-        einsammelnTab.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                einsammelnTabComponentAdded(evt);
-            }
-        });
 
         einsammelnEingabe.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         einsammelnEingabe.addActionListener(new java.awt.event.ActionListener() {
@@ -1791,6 +1806,48 @@ public class Oberflaeche extends javax.swing.JFrame {
 
         einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png"))); // NOI18N
 
+        HoverCollectCode.setForeground(new java.awt.Color(0, 0, 255));
+        HoverCollectCode.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverCollectCode.setText("?");
+        HoverCollectCode.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverCollectCodeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverCollectCodeMouseExited(evt);
+            }
+        });
+
+        HoverCollectLoeschen.setForeground(new java.awt.Color(0, 0, 255));
+        HoverCollectLoeschen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverCollectLoeschen.setText("?");
+        HoverCollectLoeschen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverCollectLoeschenMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverCollectLoeschenMouseExited(evt);
+            }
+        });
+
+        HoverCollectEinsammeln.setForeground(new java.awt.Color(0, 0, 255));
+        HoverCollectEinsammeln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HoverCollectEinsammeln.setText("?");
+        HoverCollectEinsammeln.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                HoverCollectEinsammelnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                HoverCollectEinsammelnMouseExited(evt);
+            }
+        });
+
+        ToolTip13.setForeground(new java.awt.Color(0, 0, 255));
+        ToolTip13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        ToolTip14.setForeground(new java.awt.Color(0, 0, 255));
+        ToolTip14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout einsammelnTabLayout = new javax.swing.GroupLayout(einsammelnTab);
         einsammelnTab.setLayout(einsammelnTabLayout);
         einsammelnTabLayout.setHorizontalGroup(
@@ -1799,16 +1856,28 @@ public class Oberflaeche extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(einsammelnPic))
-                    .addGroup(einsammelnTabLayout.createSequentialGroup()
-                        .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(einsammelnTabLayout.createSequentialGroup()
                         .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(HoverCollectCode, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(HoverCollectLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(einsammelnTabLayout.createSequentialGroup()
+                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(einsammelnTabLayout.createSequentialGroup()
+                                .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(HoverCollectEinsammeln, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(einsammelnPic, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
+                                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ToolTip14, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ToolTip13, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(52, 52, 52)))))
                 .addContainerGap())
         );
         einsammelnTabLayout.setVerticalGroup(
@@ -1816,143 +1885,30 @@ public class Oberflaeche extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einsammelnTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(einsammelnEingabe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(HoverCollectCode))
+                    .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(einsammelnEintragLoeschen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(HoverCollectLoeschen)))
                 .addGap(18, 18, 18)
-                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(einsammelnPic))
-                .addGap(18, 18, 18)
-                .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(einsammelnTabLayout.createSequentialGroup()
+                        .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(einsammelnTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(einsammelnAlles, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HoverCollectEinsammeln)))
+                    .addGroup(einsammelnTabLayout.createSequentialGroup()
+                        .addComponent(einsammelnPic)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ToolTip13, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ToolTip14, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         basePanel.addTab("Einsammeln", einsammelnTab);
-
-        klassenTab.setPreferredSize(new java.awt.Dimension(1373, 672));
-        klassenTab.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                klassenTabComponentAdded(evt);
-            }
-        });
-
-        buchKlassenList.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
-        buchKlassenList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buchKlassenListMouseClicked(evt);
-            }
-        });
-        jScrollPane6.setViewportView(buchKlassenList);
-
-        buecherKlassenTbl.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        buecherKlassenTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        buecherKlassenTbl.setDragEnabled(true);
-        jScrollPane7.setViewportView(buecherKlassenTbl);
-
-        javax.swing.GroupLayout klassenTabLayout = new javax.swing.GroupLayout(klassenTab);
-        klassenTab.setLayout(klassenTabLayout);
-        klassenTabLayout.setHorizontalGroup(
-            klassenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(klassenTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        klassenTabLayout.setVerticalGroup(
-            klassenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, klassenTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(klassenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, klassenTabLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6))
-                .addGap(72, 72, 72))
-        );
-
-        basePanel.addTab("Klassen", klassenTab);
-
-        klassenBearbeitenTab.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentAdded(java.awt.event.ContainerEvent evt) {
-                klassenBearbeitenTabComponentAdded(evt);
-            }
-        });
-
-        buchKlassenList1.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
-        buchKlassenList1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buchKlassenList1MouseClicked(evt);
-            }
-        });
-        jScrollPane9.setViewportView(buchKlassenList1);
-
-        buecherInKlasseTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane10.setViewportView(buecherInKlasseTbl);
-
-        buecherFKlassenTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane11.setViewportView(buecherFKlassenTbl);
-
-        javax.swing.GroupLayout klassenBearbeitenTabLayout = new javax.swing.GroupLayout(klassenBearbeitenTab);
-        klassenBearbeitenTab.setLayout(klassenBearbeitenTabLayout);
-        klassenBearbeitenTabLayout.setHorizontalGroup(
-            klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        klassenBearbeitenTabLayout.setVerticalGroup(
-            klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(klassenBearbeitenTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(klassenBearbeitenTabLayout.createSequentialGroup()
-                        .addComponent(jScrollPane9)
-                        .addGap(61, 61, 61))))
-        );
-
-        basePanel.addTab("Klassen Bearbeiten", klassenBearbeitenTab);
 
         pdfExportButtonGroup.add(klasseRadioButton);
         klasseRadioButton.setText("Klasse");
@@ -2110,7 +2066,9 @@ public class Oberflaeche extends javax.swing.JFrame {
                             .addGroup(exportTabLayout.createSequentialGroup()
                                 .addComponent(numCheckBox)
                                 .addGap(18, 18, 18)
-                                .addComponent(sumPrice))
+                                .addComponent(sumPrice)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 484, Short.MAX_VALUE)
+                                .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(exportTabLayout.createSequentialGroup()
                                 .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2120,9 +2078,8 @@ public class Oberflaeche extends javax.swing.JFrame {
                                     .addComponent(pdfExportOpAddSelectButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(pdfExportOpDelSelectButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 237, Short.MAX_VALUE)
-                        .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         exportTabLayout.setVerticalGroup(
@@ -2142,32 +2099,33 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(numCheckBox)
                     .addComponent(sumPrice))
                 .addGap(18, 18, 18)
-                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(exportTabLayout.createSequentialGroup()
-                            .addComponent(pdfExportAddAllesButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportAddSelectButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportDelSelectButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportDelAllButton)
-                            .addGap(230, 230, 230))
-                        .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
-                        .addComponent(jScrollPane12))
-                    .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(exportTabLayout.createSequentialGroup()
-                            .addComponent(pdfExportOpAddAllesButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportOpAddSelectButton2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportOpDelSelectButton2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(pdfExportOpDelAllButton2)
-                            .addGap(230, 230, 230))
-                        .addComponent(jScrollPane18)
-                        .addComponent(jScrollPane17, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane14, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane18, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
+                        .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
+                                .addComponent(pdfExportAddAllesButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportAddSelectButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportDelSelectButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportDelAllButton))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
+                                .addComponent(pdfExportOpAddAllesButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportOpAddSelectButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportOpDelSelectButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pdfExportOpDelAllButton2)))
+                        .addGap(230, 230, 230)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2190,7 +2148,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void schuelerTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_schuelerTabComponentAdded
         ArrayList<String> names = Classes.getClassNameList();
         klassenList.setListData(names.toArray());
-        buchKlassenList1.setListData(names.toArray());
         schuelerKlassenListNeu.setListData(names.toArray());
         schuelerKlassenListNeu.setEnabled(false);
     }//GEN-LAST:event_schuelerTabComponentAdded
@@ -2343,22 +2300,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         UpdateTable(Books.BookList());
     }//GEN-LAST:event_buecherTabComponentAdded
 
-    private void buchKlassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenListMouseClicked
-        currentPanel = 4;
-        int index = buchKlassenList.locationToIndex(evt.getPoint());
-        ListModel dlm = buchKlassenList.getModel();
-        buchKlassenList1.ensureIndexIsVisible(index);
-        UpdateTable(BookGroups.BooksList(dlm.getElementAt(index).toString()));
-    }//GEN-LAST:event_buchKlassenListMouseClicked
-
-    private void klassenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenTabComponentAdded
-        ArrayList<String> names = new ArrayList<>();
-        for (String s : Classes.getClassIDs()) {
-            names.add(Classes.getClassName(s));
-        }
-        buchKlassenList.setListData(names.toArray());
-    }//GEN-LAST:event_klassenTabComponentAdded
-
     private void klasseExportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klasseExportBtnActionPerformed
         basePanel.setSelectedIndex(9);
 
@@ -2383,17 +2324,17 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_klasseExportBtnActionPerformed
 
     private void isbnSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isbnSucheActionPerformed
-        String buchISBN = isbnSuche.getText();
-        if (Books.singleBook(buchISBN, 0).isEmpty() == true) {
+        ArrayList<String> buch = Books.singleBook("%" + isbnSuche.getText() + "%", 0);
+        if (buch.isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mit dieser ISBN");
             einBuchISBNFeld.setText("");
             einBuchKaufFeld.setText("");
             einBuchPreisFeld.setText("");
         } else {
-            einBuchLabelFeld.setText(Books.singleBook(buchISBN, 0).get(0));
-            einBuchISBNFeld.setText(Books.singleBook(buchISBN, 0).get(1));
-            einBuchKaufFeld.setText(Books.singleBook(buchISBN, 0).get(3));
-            einBuchPreisFeld.setText(Books.singleBook(buchISBN, 0).get(2));
+            einBuchLabelFeld.setText(buch.get(0));
+            einBuchISBNFeld.setText(buch.get(1));
+            einBuchKaufFeld.setText(buch.get(3));
+            einBuchPreisFeld.setText(buch.get(2));
         }
     }//GEN-LAST:event_isbnSucheActionPerformed
 
@@ -2410,17 +2351,17 @@ public class Oberflaeche extends javax.swing.JFrame {
     }//GEN-LAST:event_buecherTblMouseClicked
 
     private void labelSucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelSucheActionPerformed
-        String buchLabel = isbnSuche.getText();
-        if (Books.singleBook(buchLabel, 1).isEmpty() == true) {
+        ArrayList<String> buch = Books.singleBook("%" + labelSuche.getText() + "%", 1);
+        if (buch.isEmpty() == true) {
             einBuchLabelFeld.setText("Kein Buch mir diesem Label");
             einBuchISBNFeld.setText("");
             einBuchKaufFeld.setText("");
             einBuchPreisFeld.setText("");
         } else {
-            einBuchLabelFeld.setText(Books.singleBook(buchLabel, 1).get(0));
-            einBuchISBNFeld.setText(Books.singleBook(buchLabel, 1).get(1));
-            einBuchKaufFeld.setText(Books.singleBook(buchLabel, 1).get(3));
-            einBuchPreisFeld.setText(Books.singleBook(buchLabel, 1).get(2));
+            einBuchLabelFeld.setText(buch.get(0));
+            einBuchISBNFeld.setText(buch.get(1));
+            einBuchKaufFeld.setText(buch.get(3));
+            einBuchPreisFeld.setText(buch.get(2));
         }
     }//GEN-LAST:event_labelSucheActionPerformed
 
@@ -2461,7 +2402,18 @@ public class Oberflaeche extends javax.swing.JFrame {
             buchLöschen.setEnabled(false);
             speichern = 1;
         } else {
-            Books.newBook(einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
+            Double preis = 0.0;
+            String preisI = einBuchPreisFeld.getText();
+            try {
+                if (!preisI.isEmpty()) {
+                    preis = Double.parseDouble(preisI);
+                }
+                Books.newBook(einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), String.valueOf(preis), einBuchKaufFeld.getText());
+            } catch (Exception e) {
+                System.out.println(e + " => buchNeuActionPerformed");
+                Other.errorWin("der eingegebene Preis enthällt unbekannte Zeichen");
+            }
+
             buchNeu.setText("Neues Buch");
             buchBearbeiten.setEnabled(true);
             buchLöschen.setEnabled(true);
@@ -2481,12 +2433,24 @@ public class Oberflaeche extends javax.swing.JFrame {
             if (book.isEmpty()) {
                 book = Books.singleBook(einBuchLabelFeld.getText(), 1);
             }
-            
-            Books.editBook(book.get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), einBuchPreisFeld.getText(), einBuchKaufFeld.getText());
+
+            Double preis = 0.0;
+            String preisI = einBuchPreisFeld.getText();
+            try {
+                if (!preisI.isEmpty()) {
+                    preis = Double.parseDouble(preisI);
+                }
+                Books.editBook(book.get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), String.valueOf(preis), einBuchKaufFeld.getText());
+            } catch (Exception e) {
+                System.out.println(e + " => buchBearbeitenActionPerformed");
+                Other.errorWin("der eingegebene Preis enthällt unbekannte Zeichen");
+            }
+
             buchBearbeiten.setText("Buch bearbeiten");
             buchNeu.setEnabled(true);
             buchLöschen.setEnabled(true);
             speichern = 0;
+
         }
     }//GEN-LAST:event_buchBearbeitenActionPerformed
 
@@ -2501,19 +2465,6 @@ public class Oberflaeche extends javax.swing.JFrame {
             studentClassEdit = 0;
         }
     }//GEN-LAST:event_schuelerKlassenBearbeitenActionPerformed
-
-    private void buchKlassenList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buchKlassenList1MouseClicked
-        currentPanel = 5;
-        int index = buchKlassenList1.locationToIndex(evt.getPoint());
-        ListModel dlm = buchKlassenList1.getModel();
-        buchKlassenList1.ensureIndexIsVisible(index);
-        UpdateTable(BookGroups.BooksList(dlm.getElementAt(index).toString()));
-    }//GEN-LAST:event_buchKlassenList1MouseClicked
-
-    private void klassenBearbeitenTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_klassenBearbeitenTabComponentAdded
-        currentPanel = 6;
-        UpdateTable(Books.BookList());
-    }//GEN-LAST:event_klassenBearbeitenTabComponentAdded
 
     private void ausgebenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ausgebenActionPerformed
         Copies.distributeCopy(ausgebenIDFeld.getText(), schuelerId, ausgebenKaufenFeld.getText());
@@ -2755,11 +2706,6 @@ public class Oberflaeche extends javax.swing.JFrame {
         einsammelnPic.setVisible(true);
     }//GEN-LAST:event_einsammelnTabelleMouseClicked
 
-    private void einsammelnTabComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_einsammelnTabComponentAdded
-        currentPanel = 8;
-        UpdateTable(null);
-    }//GEN-LAST:event_einsammelnTabComponentAdded
-
     private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
         pdfExportAuswahlSelectListModel.clear();
         pdfExportAuswahlAllesListModel.clear();
@@ -2980,273 +2926,274 @@ public class Oberflaeche extends javax.swing.JFrame {
         groupExport.setSelected(true);
     }//GEN-LAST:event_buchRadioButtonActionPerformed
 
-    private void Hover1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover1MouseEntered
+    private void HoverSingleCopieSucheMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieSucheMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip1.setText("Hier Text einfügen");
-        ToolTip2.setText("Hier Text einfügen");
-        ToolTip3.setText("Hier Text einfügen");
-        ToolTip4.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover1MouseEntered
+        ToolTip1.setText("wählt die Kopie mit dem");
+        ToolTip2.setText("entsprechenden Barcode");
+        ToolTip3.setText("aus und zeigt die");
+        ToolTip4.setText("entsprechenden Daten an");
+    }//GEN-LAST:event_HoverSingleCopieSucheMouseEntered
 
-    private void Hover1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover1MouseExited
+    private void HoverSingleCopieSucheMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieSucheMouseExited
         ToolTip1.setText("");
         ToolTip2.setText("");
         ToolTip3.setText("");
         ToolTip4.setText("");
-    }//GEN-LAST:event_Hover1MouseExited
+    }//GEN-LAST:event_HoverSingleCopieSucheMouseExited
 
-    private void Hover2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover2MouseEntered
+    private void HoverSingleCopieEinsammelnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieEinsammelnMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip1.setText("Hier Text einfügen");
-        ToolTip2.setText("Hier Text einfügen");
-        ToolTip3.setText("Hier Text einfügen");
-        ToolTip4.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover2MouseEntered
+        ToolTip1.setText("sammelt die gewählte");
+        ToolTip2.setText("Kopie ein und");
+        ToolTip3.setText("aktualisiert die Anzeige");
+        ToolTip4.setText("");
+    }//GEN-LAST:event_HoverSingleCopieEinsammelnMouseEntered
 
-    private void Hover2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover2MouseExited
+    private void HoverSingleCopieEinsammelnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieEinsammelnMouseExited
         ToolTip1.setText("");
         ToolTip2.setText("");
         ToolTip3.setText("");
         ToolTip4.setText("");
-    }//GEN-LAST:event_Hover2MouseExited
+    }//GEN-LAST:event_HoverSingleCopieEinsammelnMouseExited
 
-    private void Hover3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover3MouseEntered
+    private void HoverSingleCopieLoeschenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieLoeschenMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip1.setText("Hier Text einfügen");
-        ToolTip2.setText("Hier Text einfügen");
-        ToolTip3.setText("Hier Text einfügen");
-        ToolTip4.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover3MouseEntered
+        ToolTip1.setText("LÖSCHT die gewählte");
+        ToolTip2.setText("Kopie für immer!");
+        ToolTip3.setText("");
+        ToolTip4.setText("(eine sehr lange Zeit)");
+    }//GEN-LAST:event_HoverSingleCopieLoeschenMouseEntered
 
-    private void Hover3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover3MouseExited
+    private void HoverSingleCopieLoeschenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieLoeschenMouseExited
         ToolTip1.setText("");
         ToolTip2.setText("");
         ToolTip3.setText("");
         ToolTip4.setText("");
-    }//GEN-LAST:event_Hover3MouseExited
+    }//GEN-LAST:event_HoverSingleCopieLoeschenMouseExited
 
-    private void Hover4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover4MouseEntered
+    private void HoverSingleCopieBarcodeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieBarcodeMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip1.setText("Hier Text einfügen");
-        ToolTip2.setText("Hier Text einfügen");
-        ToolTip3.setText("Hier Text einfügen");
-        ToolTip4.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover4MouseEntered
+        ToolTip1.setText("der Barcode der");
+        ToolTip2.setText("gewählten Kopie wird");
+        ToolTip3.setText("erneut erstellt");
+        ToolTip4.setText("(muss manuel gedruckt werden)");
+    }//GEN-LAST:event_HoverSingleCopieBarcodeMouseEntered
 
-    private void Hover4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover4MouseExited
+    private void HoverSingleCopieBarcodeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleCopieBarcodeMouseExited
         ToolTip1.setText("");
         ToolTip2.setText("");
         ToolTip3.setText("");
         ToolTip4.setText("");
-    }//GEN-LAST:event_Hover4MouseExited
+    }//GEN-LAST:event_HoverSingleCopieBarcodeMouseExited
 
-    private void Hover5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover5MouseEntered
+    private void HoverHomeLizenzMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverHomeLizenzMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip5.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover5MouseEntered
+        ToolTip5.setText("eine Auflistung der jeweiligen Berechtigungen befindet sich in der Bedinungsanleitung");
+    }//GEN-LAST:event_HoverHomeLizenzMouseEntered
 
-    private void Hover5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover5MouseExited
+    private void HoverHomeLizenzMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverHomeLizenzMouseExited
         ToolTip5.setText("");
-    }//GEN-LAST:event_Hover5MouseExited
+    }//GEN-LAST:event_HoverHomeLizenzMouseExited
 
-    private void Hover7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseEntered
+    private void HoverSchuelerExportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerExportMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip6.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover7MouseEntered
+        ToolTip6.setText("läd Voreinstellungen für einen PDF-Export der gewählten Klasse");
+    }//GEN-LAST:event_HoverSchuelerExportMouseEntered
 
-    private void Hover7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover7MouseExited
+    private void HoverSchuelerExportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerExportMouseExited
         ToolTip6.setText("");
-    }//GEN-LAST:event_Hover7MouseExited
+    }//GEN-LAST:event_HoverSchuelerExportMouseExited
 
-    private void Hover8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover8MouseEntered
+    private void HoverSchuelerPreisExportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerPreisExportMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip6.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover8MouseEntered
+        ToolTip6.setText("läd Voreinstellungen für einen PDF-Export von Preislisten der gewählten Klasse");
+    }//GEN-LAST:event_HoverSchuelerPreisExportMouseEntered
 
-    private void Hover8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover8MouseExited
+    private void HoverSchuelerPreisExportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerPreisExportMouseExited
         ToolTip6.setText("");
-    }//GEN-LAST:event_Hover8MouseExited
+    }//GEN-LAST:event_HoverSchuelerPreisExportMouseExited
 
-    private void Hover9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseEntered
+    private void HoverSchuelerHinzufuegenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerHinzufuegenMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip6.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover9MouseEntered
+        ToolTip6.setText("erstellt eine neue Klasse mit dem nebenstehenden Namen");
+    }//GEN-LAST:event_HoverSchuelerHinzufuegenMouseEntered
 
-    private void Hover9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover9MouseExited
+    private void HoverSchuelerHinzufuegenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerHinzufuegenMouseExited
         ToolTip6.setText("");
-    }//GEN-LAST:event_Hover9MouseExited
+    }//GEN-LAST:event_HoverSchuelerHinzufuegenMouseExited
 
-    private void Hover10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseEntered
+    private void HoverSingleSchuelerEditMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerEditMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip7.setText("Hier Text einfügen");
-        ToolTip8.setText("Hier Text einfügen");
-        ToolTip9.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover10MouseEntered
+        ToolTip7.setText("startet und beendet die");
+        ToolTip8.setText("Bearbeitung der Klassenzu-");
+        ToolTip9.setText("gehörigkeit des gewählten Schülers");
+    }//GEN-LAST:event_HoverSingleSchuelerEditMouseEntered
 
-    private void Hover10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover10MouseExited
+    private void HoverSingleSchuelerEditMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerEditMouseExited
         ToolTip7.setText("");
         ToolTip8.setText("");
         ToolTip9.setText("");
-    }//GEN-LAST:event_Hover10MouseExited
+    }//GEN-LAST:event_HoverSingleSchuelerEditMouseExited
 
-    private void Hover12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseEntered
+    private void HoverSingleSchuelerAusgebenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerAusgebenMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip7.setText("Hier Text einfügen");
-        ToolTip8.setText("Hier Text einfügen");
-        ToolTip9.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover12MouseEntered
+        ToolTip7.setText("die Kopie des eingegebenen");
+        ToolTip8.setText("Barcodes wird an den");
+        ToolTip9.setText("gewählten Schüler ausgegeben");
+    }//GEN-LAST:event_HoverSingleSchuelerAusgebenMouseEntered
 
-    private void Hover12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover12MouseExited
+    private void HoverSingleSchuelerAusgebenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerAusgebenMouseExited
         ToolTip7.setText("");
         ToolTip8.setText("");
         ToolTip9.setText("");
-    }//GEN-LAST:event_Hover12MouseExited
+    }//GEN-LAST:event_HoverSingleSchuelerAusgebenMouseExited
 
-    private void Hover13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover13MouseEntered
+    private void HoverSingleBookSucheISBNMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookSucheISBNMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover13MouseEntered
+        ToolTip10.setText("wählt das erste Buch aus,");
+        ToolTip11.setText("welches das Eingegebene in");
+        ToolTip12.setText("der ISBN enthält");
+    }//GEN-LAST:event_HoverSingleBookSucheISBNMouseEntered
 
-    private void Hover13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover13MouseExited
+    private void HoverSingleBookSucheISBNMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookSucheISBNMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover13MouseExited
+    }//GEN-LAST:event_HoverSingleBookSucheISBNMouseExited
 
-    private void Hover14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover14MouseEntered
+    private void HoverSingleBookSucheLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookSucheLabelMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover14MouseEntered
+        ToolTip10.setText("wählt das erste Buch aus,");
+        ToolTip11.setText("welches das Eingegebene im");
+        ToolTip12.setText("Namen enthält");
+    }//GEN-LAST:event_HoverSingleBookSucheLabelMouseEntered
 
-    private void Hover14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover14MouseExited
+    private void HoverSingleBookSucheLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookSucheLabelMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover14MouseExited
+    }//GEN-LAST:event_HoverSingleBookSucheLabelMouseExited
 
-    private void Hover15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover15MouseEntered
+    private void HoverSingleBookKopienMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookKopienMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover15MouseEntered
+        ToolTip10.setText("erstellt Kopien in entsprechender");
+        ToolTip11.setText("Anzahl des gewählten Buch");
+        ToolTip12.setText("(Barcode muss manuel gedruckt werden)");
+    }//GEN-LAST:event_HoverSingleBookKopienMouseEntered
 
-    private void Hover15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover15MouseExited
+    private void HoverSingleBookKopienMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookKopienMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover15MouseExited
+    }//GEN-LAST:event_HoverSingleBookKopienMouseExited
 
-    private void Hover16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover16MouseEntered
+    private void HoverSingleBookNeuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookNeuMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover16MouseEntered
+        ToolTip10.setText("startet und beendet die Eingabe");
+        ToolTip11.setText("zur Erstellung eines neuen Buches");
+        ToolTip12.setText("(vorherige Eingaben werden verworfen)");
+    }//GEN-LAST:event_HoverSingleBookNeuMouseEntered
 
-    private void Hover16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover16MouseExited
+    private void HoverSingleBookNeuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookNeuMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover16MouseExited
+    }//GEN-LAST:event_HoverSingleBookNeuMouseExited
 
-    private void Hover17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover17MouseEntered
+    private void HoverSingleBookBearbeitenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookBearbeitenMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover17MouseEntered
+        ToolTip10.setText("startet und beendet das");
+        ToolTip11.setText("editieren des gewählten Buches");
+        ToolTip12.setText("(nur eine Veränderung pro Vorgang)");
+    }//GEN-LAST:event_HoverSingleBookBearbeitenMouseEntered
 
-    private void Hover17MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover17MouseExited
+    private void HoverSingleBookBearbeitenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookBearbeitenMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover17MouseExited
+    }//GEN-LAST:event_HoverSingleBookBearbeitenMouseExited
 
-    private void Hover18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover18MouseEntered
+    private void HoverSingleBookLoeschenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookLoeschenMouseEntered
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
         }
-        ToolTip10.setText("Hier Text einfügen");
-        ToolTip11.setText("Hier Text einfügen");
-        ToolTip12.setText("Hier Text einfügen");
-    }//GEN-LAST:event_Hover18MouseEntered
+        ToolTip10.setText("LÖSCHT das gewählte Buch");
+        ToolTip11.setText("für immer!");
+        ToolTip12.setText("(eine sehr lange Zeit)");
+    }//GEN-LAST:event_HoverSingleBookLoeschenMouseEntered
 
-    private void Hover18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Hover18MouseExited
+    private void HoverSingleBookLoeschenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookLoeschenMouseExited
         ToolTip10.setText("");
         ToolTip11.setText("");
         ToolTip12.setText("");
-    }//GEN-LAST:event_Hover18MouseExited
+    }//GEN-LAST:event_HoverSingleBookLoeschenMouseExited
 
     private void buchLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchLöschenActionPerformed
         if (speichern == 0) {
             buchLöschen.setText("Bestätigen");
+            buchLöschen.setForeground(Color.red);
             buchNeu.setEnabled(false);
             buchBearbeiten.setEnabled(false);
             buchAb.setVisible(true);
@@ -3254,6 +3201,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             speichern = 1;
         } else {
             Books.delBook(einBuchLabelFeld.getText());
+            buchLöschen.setForeground(Color.black);
             buchLöschen.setText("Buch löschen");
             buchNeu.setEnabled(true);
             buchBearbeiten.setEnabled(true);
@@ -3265,6 +3213,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
     private void buchAbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buchAbActionPerformed
         if (speichern == 1) {
+            buchLöschen.setForeground(Color.black);
             buchLöschen.setText("Buch löschen");
             buchNeu.setEnabled(true);
             buchBearbeiten.setEnabled(true);
@@ -3273,6 +3222,161 @@ public class Oberflaeche extends javax.swing.JFrame {
             speichern = 0;
         }
     }//GEN-LAST:event_buchAbActionPerformed
+
+    private void HoverSingleSchuelerVorMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerVorMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip7.setText("wählt den nächsten Schüler");
+        ToolTip8.setText("der unter \"Schüler\" gewählten");
+        ToolTip9.setText("Klasse aus");
+    }//GEN-LAST:event_HoverSingleSchuelerVorMouseEntered
+
+    private void HoverSingleSchuelerVorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerVorMouseExited
+        ToolTip7.setText("");
+        ToolTip8.setText("");
+        ToolTip9.setText("");
+    }//GEN-LAST:event_HoverSingleSchuelerVorMouseExited
+
+    private void HoverSingleSchuelerZurueckMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerZurueckMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip7.setText("wählt den vorherigen Schüler");
+        ToolTip8.setText("der unter \"Schüler\" gewählten");
+        ToolTip9.setText("Klasse aus");
+    }//GEN-LAST:event_HoverSingleSchuelerZurueckMouseEntered
+
+    private void HoverSingleSchuelerZurueckMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerZurueckMouseExited
+        ToolTip7.setText("");
+        ToolTip8.setText("");
+        ToolTip9.setText("");
+    }//GEN-LAST:event_HoverSingleSchuelerZurueckMouseExited
+
+    private void HoverSingleBookISBNMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookISBNMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip10.setText("die ISBN wird ohne Sonder-");
+        ToolTip11.setText("zeichen verwendet");
+        ToolTip12.setText("(auch keine Leerzeichen)");
+    }//GEN-LAST:event_HoverSingleBookISBNMouseEntered
+
+    private void HoverSingleBookISBNMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookISBNMouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_HoverSingleBookISBNMouseExited
+
+    private void HoverSingleBookKaufMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookKaufMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip10.setText("zeigt an, ob das Buch");
+        ToolTip11.setText("gekauft werden muss");
+        ToolTip12.setText("(1 = Kaufbuch | 0 = Leihbuch)");
+    }//GEN-LAST:event_HoverSingleBookKaufMouseEntered
+
+    private void HoverSingleBookKaufMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookKaufMouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_HoverSingleBookKaufMouseExited
+
+    private void HoverSingleBookPreisMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookPreisMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip10.setText("gibt den Preis des");
+        ToolTip11.setText("Buches in Euro an");
+        ToolTip12.setText("(der Punkt entspricht dem Komma)");
+    }//GEN-LAST:event_HoverSingleBookPreisMouseEntered
+
+    private void HoverSingleBookPreisMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleBookPreisMouseExited
+        ToolTip10.setText("");
+        ToolTip11.setText("");
+        ToolTip12.setText("");
+    }//GEN-LAST:event_HoverSingleBookPreisMouseExited
+
+    private void HoverCollectCodeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectCodeMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip13.setText("nach der Bestätigung der Eingabe");
+        ToolTip14.setText("wird das Element der Tabelle hinzugefügt");
+    }//GEN-LAST:event_HoverCollectCodeMouseEntered
+
+    private void HoverCollectCodeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectCodeMouseExited
+        ToolTip13.setText("");
+        ToolTip14.setText("");
+    }//GEN-LAST:event_HoverCollectCodeMouseExited
+
+    private void HoverCollectLoeschenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectLoeschenMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip13.setText("entfernt alle selektierten Elemente");
+        ToolTip14.setText("aus der Tabelle");
+    }//GEN-LAST:event_HoverCollectLoeschenMouseEntered
+
+    private void HoverCollectLoeschenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectLoeschenMouseExited
+        ToolTip13.setText("");
+        ToolTip14.setText("");
+    }//GEN-LAST:event_HoverCollectLoeschenMouseExited
+
+    private void HoverCollectEinsammelnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectEinsammelnMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip13.setText("sammelt alle Element in der Tabelle");
+        ToolTip14.setText("ein und leert die Tabelle");
+    }//GEN-LAST:event_HoverCollectEinsammelnMouseEntered
+
+    private void HoverCollectEinsammelnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverCollectEinsammelnMouseExited
+        ToolTip13.setText("");
+        ToolTip14.setText("");
+    }//GEN-LAST:event_HoverCollectEinsammelnMouseExited
+
+    private void HoverSingleSchuelerBezahltMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerBezahltMouseEntered
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e + " => Hover");
+        }
+        ToolTip7.setText("gibt an, ob das auszugebene");
+        ToolTip8.setText("Buch bereits bezahlt ist (1)");
+        ToolTip9.setText("oder nicht (0)");
+    }//GEN-LAST:event_HoverSingleSchuelerBezahltMouseEntered
+
+    private void HoverSingleSchuelerBezahltMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSingleSchuelerBezahltMouseExited
+        ToolTip7.setText("");
+        ToolTip8.setText("");
+        ToolTip9.setText("");
+    }//GEN-LAST:event_HoverSingleSchuelerBezahltMouseExited
+
+    private void schuelerKlassenListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_schuelerKlassenListMouseClicked
+        if (studentClassEdit == 1) {
+            int index = schuelerKlassenList.locationToIndex(evt.getPoint());
+            Students.removeFromClass(schuelerId, schuelerKlassenList.getModel().getElementAt(index).toString());
+        }
+        schuelerKlassenList.setListData(Students.SingelStudentClasses(schuelerId).toArray());
+    }//GEN-LAST:event_schuelerKlassenListMouseClicked
 
     private PdfPTable schuelerEx(String studentID) {
         ArrayList<String> source = Students.BookList(studentID); //label, buy, distributed, paid, sbm_copies.ID
@@ -3681,28 +3785,38 @@ public class Oberflaeche extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Hover1;
-    private javax.swing.JLabel Hover10;
-    private javax.swing.JLabel Hover11;
-    private javax.swing.JLabel Hover12;
-    private javax.swing.JLabel Hover13;
-    private javax.swing.JLabel Hover14;
-    private javax.swing.JLabel Hover15;
-    private javax.swing.JLabel Hover16;
-    private javax.swing.JLabel Hover17;
-    private javax.swing.JLabel Hover18;
-    private javax.swing.JLabel Hover2;
-    private javax.swing.JLabel Hover3;
-    private javax.swing.JLabel Hover4;
-    private javax.swing.JLabel Hover5;
-    private javax.swing.JLabel Hover7;
-    private javax.swing.JLabel Hover8;
-    private javax.swing.JLabel Hover9;
+    private javax.swing.JLabel HoverCollectCode;
+    private javax.swing.JLabel HoverCollectEinsammeln;
+    private javax.swing.JLabel HoverCollectLoeschen;
+    private javax.swing.JLabel HoverHomeLizenz;
+    private javax.swing.JLabel HoverSchuelerExport;
+    private javax.swing.JLabel HoverSchuelerHinzufuegen;
+    private javax.swing.JLabel HoverSchuelerPreisExport;
+    private javax.swing.JLabel HoverSingleBookBearbeiten;
+    private javax.swing.JLabel HoverSingleBookISBN;
+    private javax.swing.JLabel HoverSingleBookKauf;
+    private javax.swing.JLabel HoverSingleBookKopien;
+    private javax.swing.JLabel HoverSingleBookLoeschen;
+    private javax.swing.JLabel HoverSingleBookNeu;
+    private javax.swing.JLabel HoverSingleBookPreis;
+    private javax.swing.JLabel HoverSingleBookSucheISBN;
+    private javax.swing.JLabel HoverSingleBookSucheLabel;
+    private javax.swing.JLabel HoverSingleCopieBarcode;
+    private javax.swing.JLabel HoverSingleCopieEinsammeln;
+    private javax.swing.JLabel HoverSingleCopieLoeschen;
+    private javax.swing.JLabel HoverSingleCopieSuche;
+    private javax.swing.JLabel HoverSingleSchuelerAusgeben;
+    private javax.swing.JLabel HoverSingleSchuelerBezahlt;
+    private javax.swing.JLabel HoverSingleSchuelerEdit;
+    private javax.swing.JLabel HoverSingleSchuelerVor;
+    private javax.swing.JLabel HoverSingleSchuelerZurueck;
     private javax.swing.JLabel PicEinzelneKopie;
     private javax.swing.JLabel ToolTip1;
     private javax.swing.JLabel ToolTip10;
     private javax.swing.JLabel ToolTip11;
     private javax.swing.JLabel ToolTip12;
+    private javax.swing.JLabel ToolTip13;
+    private javax.swing.JLabel ToolTip14;
     private javax.swing.JLabel ToolTip2;
     private javax.swing.JLabel ToolTip3;
     private javax.swing.JLabel ToolTip4;
@@ -3717,14 +3831,9 @@ public class Oberflaeche extends javax.swing.JFrame {
     public javax.swing.JTabbedPane basePanel;
     private javax.swing.JButton buchAb;
     private javax.swing.JButton buchBearbeiten;
-    public static javax.swing.JList buchKlassenList;
-    public static javax.swing.JList buchKlassenList1;
     private javax.swing.JButton buchLöschen;
     private javax.swing.JButton buchNeu;
     private javax.swing.JRadioButton buchRadioButton;
-    private javax.swing.JTable buecherFKlassenTbl;
-    private javax.swing.JTable buecherInKlasseTbl;
-    private javax.swing.JTable buecherKlassenTbl;
     private javax.swing.JButton buecherSchuelerTblAkt;
     private javax.swing.JPanel buecherTab;
     private javax.swing.JTable buecherTbl;
@@ -3768,8 +3877,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
@@ -3779,16 +3886,11 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JButton klasseExportBtn;
     private javax.swing.JButton klasseExportPreislist;
     private javax.swing.JRadioButton klasseRadioButton;
-    private javax.swing.JPanel klassenBearbeitenTab;
     public static javax.swing.JList klassenList;
-    private javax.swing.JPanel klassenTab;
     private javax.swing.JButton kopieBarcodeErneut;
     private javax.swing.JLabel kopieBought;
     private javax.swing.JLabel kopieClass;

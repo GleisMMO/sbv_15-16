@@ -96,18 +96,18 @@ public class Classes {
         }
     }
     
-    public static String classSearch(String classe) {
-        try {
-            return Query.anyQuery("SELECT ID "
-                    + "FROM `sbm_classes` "
-                    + "WHERE name LIKE '" + classe + "'").get(0);
-        } catch (Exception e) {
-            System.out.println(e + " => classSearch");
-        }
-        return null;
-    }
 }
-
+//
+//    public static String classSearch(String classe) {
+//        try {
+//            return Query.anyQuery("SELECT ID "
+//                    + "FROM `sbm_classes` "
+//                    + "WHERE name LIKE '" + classe + "'").get(0);
+//        } catch (Exception e) {
+//            System.out.println(e + " => classSearch");
+//        }
+//        return null;
+//    }
 
     //arrayList of all classes with student count
 //    public static ArrayList<String> classesList() {
