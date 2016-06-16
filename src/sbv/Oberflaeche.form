@@ -540,19 +540,16 @@
                                       <Component id="ausgebenIDFeld" min="-2" pref="100" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="buecherSchuelerTblAkt" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="344" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="HoverSingleSchuelerBezahlt" min="-2" pref="18" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="ausgebenKaufenFeld" min="-2" pref="27" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                                          </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="buecherSchuelerTblAkt" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="344" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="HoverSingleSchuelerBezahlt" min="-2" pref="18" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="ausgebenKaufenFeld" min="-2" pref="27" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -2208,10 +2205,7 @@
                           <Component id="jScrollPane12" alignment="1" max="32767" attributes="0"/>
                           <Component id="jScrollPane18" alignment="1" max="32767" attributes="0"/>
                           <Component id="jScrollPane17" alignment="1" min="-2" pref="567" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
-                              <Component id="pdfExportProgressBar" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="pdfExportProgressBar" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">

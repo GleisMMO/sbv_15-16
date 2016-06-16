@@ -1,8 +1,5 @@
 package sbv;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import javax.swing.JFrame;
@@ -21,30 +18,33 @@ public class Other {
             return s;
         } catch (Exception e) {
             System.out.println(e + " => date");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, timestamp});
         }
         return timestamp;
     }
 
     public static void errorWin(String text) {
         JOptionPane.showMessageDialog(new JFrame(), text, "Fehler", JOptionPane.ERROR_MESSAGE);
+        logger.log(Level.OFF, "printed Error: {0}", new Object[]{text});
     }
 
-    public static Connection getConnection() {
-        while (true) {
-            try {
-                final String driver = "com.mysql.jdbc.Driver";                //chosing driver
-                final String url = "jdbc:mysql://localhost:3307/sbv_aes_2013";//choosing mySQL server
-                final String username = "root";                               //DB ussername and password
-                final String password = "usbw";
-                Class.forName(driver);
-                Connection con = DriverManager.getConnection(url, username, password); //Connecting
-                System.out.println("Connected");                                     //conectian establischt notification
-            logger.log(Level.INFO, "connected to Server {0}", new Object[]{url});
-                return con;
-            } catch (ClassNotFoundException | SQLException e) {
-                System.out.println(e + " => getConnection");
-                Other.errorWin("Verbindung zum Server fehlgeschlagen");
-            }
+    public static void connectionErrorWin() {
+        final Object[] ops = {"erneut Versuchen", "Programm schließen"};
+        int ret = JOptionPane.showOptionDialog(new JFrame(),
+                "Es konnte keine Verbindung zur Datenbank hergestellt werden.\n"
+                + "Für die Benutzung des Programmes muss eine Verbindung mit dem Datenbankserver aufgebaut werden können.\n"
+                + "Bei weiteren Problemen wenden Sie sich bitte an Hr. Würz oder Hr. Hirzler.\n"
+                + "",
+                "Verbindungsfehler",
+                JOptionPane.WARNING_MESSAGE,
+                JOptionPane.YES_NO_OPTION,
+                null,
+                ops, ops[0]);
+        logger.log(Level.OFF, "Error while trying to connect to DB");
+        if (ret == 1) {
+            logger.log(Level.INFO, "Closed programm by exit(0), cause of Error while trying to connect to DB");
+            System.exit(0);
         }
     }
+
 }

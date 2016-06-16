@@ -15,6 +15,7 @@ public class Classes {
                     + "AND name lIKE '" + ID + "'");
         } catch (Exception e) {
             System.out.println(e + " => studentIDList");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, ID});
         }
         return null;
     }
@@ -28,6 +29,7 @@ public class Classes {
                     "name");
         } catch (Exception e) {
             System.out.println(e + " => getClassName");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, ID});
         }
         return null;
     }
@@ -40,6 +42,7 @@ public class Classes {
                     + "ORDER BY name");
         } catch (Exception e) {
             System.out.println(e + " => getClassNameList");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
     }
@@ -50,6 +53,7 @@ public class Classes {
                     + "FROM sbm_classes");
         } catch (Exception e) {
             System.out.println(e + " => getClassIDs");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
 
@@ -66,6 +70,7 @@ public class Classes {
                     + "ORDER BY surname");
         } catch (Exception e) {
             System.out.println(e + " => classList");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, name});
         }
         return null;
     }
@@ -81,6 +86,7 @@ public class Classes {
                     + "ORDER BY surname");
         } catch (Exception e) {
             System.out.println(e + " => classListNames");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, name});
         }
         return null;
     }
@@ -93,6 +99,7 @@ public class Classes {
             logger.log(Level.INFO, "created new class ''{0}''", name);
         } catch (Exception e) {
             System.out.println(e + " => newClass");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, name});
         }
     }
     

@@ -1,5 +1,8 @@
 package sbv;
 
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
+
 public class Home {
 
     //Cureent Students count
@@ -10,6 +13,7 @@ public class Home {
                     "COUNT(ID)");
         } catch (Exception e) {
             System.out.println(e + " => StudentsCount");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
     }
@@ -32,6 +36,7 @@ public class Home {
             return Integer.toString(result);
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
     }
@@ -43,6 +48,7 @@ public class Home {
                     "COUNT(ID)");
         } catch (Exception e) {
             System.out.println(e + " => WildCopyCount");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
     }

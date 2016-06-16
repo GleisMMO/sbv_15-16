@@ -1,6 +1,8 @@
 package sbv;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import static sbv.Sbv.logger;
 
 public class BookGroups {
 
@@ -12,7 +14,8 @@ public class BookGroups {
                     + "WHERE sbm_books.ID LIKE book_id "
                     + "AND class_id LIKE '" + class_id + "'");
         } catch (Exception e) {
-            System.out.println(e + " => AddRecord");
+            System.out.println(e + " => BooksList");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, class_id});
         }
         return null;
     }

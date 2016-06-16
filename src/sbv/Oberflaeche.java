@@ -23,7 +23,9 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
+import static sbv.Sbv.logger;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
@@ -233,6 +235,7 @@ public class Oberflaeche extends javax.swing.JFrame {
 
             } catch (DocumentException | FileNotFoundException e) {
                 System.out.println(e + " => GroupExport");
+                logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
                 pdfExportPrint.setEnabled(true);
             }
         }
@@ -2375,6 +2378,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 PDF_Export.barcodePDF(id, anz);
             } catch (IOException | DocumentException e) {
                 System.out.println(e + " => barcodePDF");
+                logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             }
             for (int i = 0; i < anz; i++) {
                 Copies.addCopy(Books.singleBook(einBuchISBNFeld.getText(), 0).get(4), id + i);
@@ -2412,6 +2416,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println(e + " => buchNeuActionPerformed");
                 Other.errorWin("der eingegebene Preis enthällt unbekannte Zeichen");
+                logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             }
 
             buchNeu.setText("Neues Buch");
@@ -2443,6 +2448,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                 Books.editBook(book.get(4), einBuchLabelFeld.getText(), einBuchISBNFeld.getText(), String.valueOf(preis), einBuchKaufFeld.getText());
             } catch (Exception e) {
                 System.out.println(e + " => buchBearbeitenActionPerformed");
+                logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
                 Other.errorWin("der eingegebene Preis enthällt unbekannte Zeichen");
             }
 
@@ -2551,8 +2557,13 @@ public class Oberflaeche extends javax.swing.JFrame {
     private void kopieBarcodeErneutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieBarcodeErneutActionPerformed
         try {
             PDF_Export.barcodePDF(Integer.parseInt(momentaneKopie), 1);
+
+            eineKopieSuchen.requestFocus();
+            eineKopieSuchen.setCaretPosition(0);
+            eineKopieSuchen.selectAll();
         } catch (IOException | DocumentException e) {
             System.out.println(e + " => Cant print Barcode of Copie");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
     }//GEN-LAST:event_kopieBarcodeErneutActionPerformed
 
@@ -2576,7 +2587,8 @@ public class Oberflaeche extends javax.swing.JFrame {
             int testInteger = Integer.parseInt(eineKopieSuchen.getText());
         } catch (Exception e) {
             System.out.println(e + " => Cant convert Input to Integer");
-            System.out.println(" => Input is not a number!");
+            Other.errorWin("Die Eingabe darf nur aus einer Zahl bestehen");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             return;
         }
 
@@ -2595,6 +2607,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             kopieClass.setText((Students.SingelStudentClasses(kopie.get(1))).get(0));
         } catch (Exception e) {
             System.out.println(e + " => Cant show Class of Student of Copy");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             kopieClass.setText("");
         }
 
@@ -2604,6 +2617,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     + ".jpg")));
         } catch (Exception e) {
             System.out.println(e + " => Cant show BookPic");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             PicEinzelneKopie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
     }//GEN-LAST:event_eineKopieSuchenActionPerformed
@@ -2617,6 +2631,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             classe = (Students.SingelStudentClasses(kopie.get(1)).get(0));
         } catch (Exception e) {
             System.out.println(e + " => Cant show Class of Student of Copy");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             classe = "none";
         }
 
@@ -2648,6 +2663,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     + ".jpg")));
         } catch (Exception e) {
             System.out.println(e + " => Cant show BookPic Einsammeln");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
         einsammelnPic.setVisible(true);
@@ -2670,6 +2686,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
 
         einsammelnEintragLoeschen.setEnabled(false);
+
+        einsammelnEingabe.requestFocus();
+        einsammelnEingabe.setCaretPosition(0);
+        einsammelnEingabe.selectAll();
     }//GEN-LAST:event_einsammelnEintragLoeschenActionPerformed
 
     private void einsammelnAllesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_einsammelnAllesActionPerformed
@@ -2679,6 +2699,10 @@ public class Oberflaeche extends javax.swing.JFrame {
         }
         einsammelnAlles.setEnabled(false);
         einsammelnPic.setVisible(false);
+
+        einsammelnEingabe.requestFocus();
+        einsammelnEingabe.setCaretPosition(0);
+        einsammelnEingabe.selectAll();
     }//GEN-LAST:event_einsammelnAllesActionPerformed
 
     private void kopieLöschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kopieLöschenActionPerformed
@@ -2701,9 +2725,14 @@ public class Oberflaeche extends javax.swing.JFrame {
                     + ".jpg")));
         } catch (Exception e) {
             System.out.println(e + " => Cant show BookPic Einsammeln");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
             einsammelnPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sbv/pictures/missingPicture.png")));
         }
         einsammelnPic.setVisible(true);
+
+        einsammelnEingabe.requestFocus();
+        einsammelnEingabe.setCaretPosition(0);
+        einsammelnEingabe.selectAll();
     }//GEN-LAST:event_einsammelnTabelleMouseClicked
 
     private void schuelerRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_schuelerRadioButtonActionPerformed
@@ -2931,6 +2960,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip1.setText("wählt die Kopie mit dem");
         ToolTip2.setText("entsprechenden Barcode");
@@ -2950,6 +2980,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip1.setText("sammelt die gewählte");
         ToolTip2.setText("Kopie ein und");
@@ -2969,6 +3000,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip1.setText("LÖSCHT die gewählte");
         ToolTip2.setText("Kopie für immer!");
@@ -2988,6 +3020,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip1.setText("der Barcode der");
         ToolTip2.setText("gewählten Kopie wird");
@@ -3007,6 +3040,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip5.setText("eine Auflistung der jeweiligen Berechtigungen befindet sich in der Bedinungsanleitung");
     }//GEN-LAST:event_HoverHomeLizenzMouseEntered
@@ -3020,6 +3054,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip6.setText("läd Voreinstellungen für einen PDF-Export der gewählten Klasse");
     }//GEN-LAST:event_HoverSchuelerExportMouseEntered
@@ -3033,6 +3068,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip6.setText("läd Voreinstellungen für einen PDF-Export von Preislisten der gewählten Klasse");
     }//GEN-LAST:event_HoverSchuelerPreisExportMouseEntered
@@ -3046,6 +3082,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip6.setText("erstellt eine neue Klasse mit dem nebenstehenden Namen");
     }//GEN-LAST:event_HoverSchuelerHinzufuegenMouseEntered
@@ -3059,6 +3096,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip7.setText("startet und beendet die");
         ToolTip8.setText("Bearbeitung der Klassenzu-");
@@ -3076,6 +3114,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip7.setText("die Kopie des eingegebenen");
         ToolTip8.setText("Barcodes wird an den");
@@ -3093,6 +3132,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("wählt das erste Buch aus,");
         ToolTip11.setText("welches das Eingegebene in");
@@ -3110,6 +3150,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("wählt das erste Buch aus,");
         ToolTip11.setText("welches das Eingegebene im");
@@ -3127,6 +3168,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("erstellt Kopien in entsprechender");
         ToolTip11.setText("Anzahl des gewählten Buch");
@@ -3144,6 +3186,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("startet und beendet die Eingabe");
         ToolTip11.setText("zur Erstellung eines neuen Buches");
@@ -3161,6 +3204,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("startet und beendet das");
         ToolTip11.setText("editieren des gewählten Buches");
@@ -3178,6 +3222,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("LÖSCHT das gewählte Buch");
         ToolTip11.setText("für immer!");
@@ -3228,6 +3273,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip7.setText("wählt den nächsten Schüler");
         ToolTip8.setText("der unter \"Schüler\" gewählten");
@@ -3245,6 +3291,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip7.setText("wählt den vorherigen Schüler");
         ToolTip8.setText("der unter \"Schüler\" gewählten");
@@ -3262,6 +3309,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("die ISBN wird ohne Sonder-");
         ToolTip11.setText("zeichen verwendet");
@@ -3279,6 +3327,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("zeigt an, ob das Buch");
         ToolTip11.setText("gekauft werden muss");
@@ -3296,6 +3345,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip10.setText("gibt den Preis des");
         ToolTip11.setText("Buches in Euro an");
@@ -3313,6 +3363,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip13.setText("nach der Bestätigung der Eingabe");
         ToolTip14.setText("wird das Element der Tabelle hinzugefügt");
@@ -3328,6 +3379,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip13.setText("entfernt alle selektierten Elemente");
         ToolTip14.setText("aus der Tabelle");
@@ -3343,6 +3395,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip13.setText("sammelt alle Element in der Tabelle");
         ToolTip14.setText("ein und leert die Tabelle");
@@ -3358,6 +3411,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e + " => Hover");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         ToolTip7.setText("gibt an, ob das auszugebene");
         ToolTip8.setText("Buch bereits bezahlt ist (1)");
@@ -3771,6 +3825,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e) {
             System.out.println(e + " => main");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         //</editor-fold>
 

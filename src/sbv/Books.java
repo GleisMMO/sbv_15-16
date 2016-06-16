@@ -14,6 +14,7 @@ public class Books {
                     + "ORDER BY label");
         } catch (Exception e) {
             System.out.println(e + " => BookList");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return null;
     }
@@ -34,6 +35,7 @@ public class Books {
                     new Object[]{ID, oldLabel.get(0), label, oldLabel.get(1), isbn, oldLabel.get(2), price, oldLabel.get(3), buy});
         } catch (Exception e) {
             System.out.println(e + " => editBook");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}'' and ''{3}'' and {4}'' and {5}''", new Object[]{e, ID, label, isbn, price, buy});
         }
     }
 
@@ -48,6 +50,7 @@ public class Books {
             logger.log(Level.INFO, "created new book ''{0}''", label);
         } catch (Exception e) {
             System.out.println(e + " => newBook");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}'' and ''{3}'' and {4}''", new Object[]{e, label, isbn, price, buy});
         }
     }
 
@@ -60,6 +63,7 @@ public class Books {
                         + "WHERE isbn Like '" + sterm + "'");
             } catch (Exception e) {
                 System.out.println(e + " => singleBook");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}''", new Object[]{e, sterm, i});
             }
         } else {
             try {
@@ -68,6 +72,7 @@ public class Books {
                         + "WHERE label Like '" + sterm + "'");
             } catch (Exception e) {
                 System.out.println(e + " => singleBook");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}''", new Object[]{e, sterm, i});
             }
         }
         return null;
@@ -81,6 +86,7 @@ public class Books {
             logger.log(Level.INFO, "deleted book ''{0}''", label);
         } catch (Exception e) {
             System.out.println(e + " => delBook");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, label});
         }
     }
 }

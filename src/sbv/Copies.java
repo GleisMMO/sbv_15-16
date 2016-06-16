@@ -14,7 +14,8 @@ public class Copies {
                     + "WHERE book_id LIKE " + BookID,
                     "COUNT(ID)");
         } catch (Exception e) {
-            System.out.println(e + " => CopyCount");
+            System.out.println(e + " => SingleCopyCountTotal");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, BookID});
         }
         return null;
     }
@@ -30,6 +31,7 @@ public class Copies {
                     "COUNT(sbm_copies.ID)");
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, book_id});
         }
         return null;
     }
@@ -50,7 +52,8 @@ public class Copies {
                     "COUNT(sbm_copieshistory.ID)"));
             return Integer.toString(caughthistory + (all - history));
         } catch (Exception e) {
-            System.out.println(e + " => CauchtCopyCount");
+            System.out.println(e + " => copiesInStock");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, book_id});
         }
         return null;
     }
@@ -66,7 +69,8 @@ public class Copies {
                     + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copies.ID)");
         } catch (Exception e) {
-            System.out.println(e + " => CauchtCopyCount");
+            System.out.println(e + " => borrowedCopyCount");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, book_id});
         }
         return null;
     }
@@ -80,6 +84,7 @@ public class Copies {
                     + "AND student_id LIKE '" + student_id + "'");
         } catch (Exception e) {
             System.out.println(e + " => copyBill");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, student_id});
         }
         return null;
     }
@@ -121,6 +126,7 @@ public class Copies {
             }
         } catch (Exception e) {
             System.out.println(e + " => Singlecopy");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, copyId});
         }
         return null;
     }
@@ -149,6 +155,7 @@ public class Copies {
             }
         } catch (Exception e) {
             System.out.println(e + " => distributeCopy");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}'' and ''{3}''", new Object[]{e, copy_id, student_id, buy});
         }
     }
 
@@ -176,6 +183,7 @@ public class Copies {
 
         } catch (Exception e) {
             System.out.println(e + " => collectCopy");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, copy_id});
         }
     }
 
@@ -188,6 +196,7 @@ public class Copies {
             logger.log(Level.INFO, "created new copy {0} from Book {1}", new Object[]{ID, book_id});
         } catch (Exception e) {
             System.out.println(e + " => addCopy");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, book_id, ID});
         }
     }
 
@@ -199,6 +208,7 @@ public class Copies {
             logger.log(Level.INFO, "deleted copy {0}", new Object[]{ID});
         } catch (Exception e) {
             System.out.println(e + " => addCopy");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, ID});
         }
     }
 
@@ -210,6 +220,7 @@ public class Copies {
                     + "Order BY ID DESC").get(0)) + 1;
         } catch (Exception e) {
             System.out.println(e + " => newID");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
         return 0;
     }

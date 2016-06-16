@@ -156,6 +156,7 @@ public class register extends javax.swing.JFrame {
 
     private void regActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regActionPerformed
         try {
+            Query.getConnection();
             if ((!Query.anyQuery("SELECT ID_Ben "
                     + "FROM sbm_benutzerverwaltung "
                     + "WHERE Benutzer LIKE '" + adminName.getText() + "' "
@@ -170,17 +171,21 @@ public class register extends javax.swing.JFrame {
                         logger.log(Level.SEVERE, "created new User ''{0}'' ({1}) with the AdminAcc ''{2}''", new Object[]{newAcc.getText(), lizenz.getSelectedIndex() + 2, adminName.getText()});
                         setVisible(false);
                     } else {
+                        Query.disconnect();
                         Other.errorWin("Passwort muss mindestens 8 Zeichen lang sein");
                     }
                 } else {
+                    Query.disconnect();
                     Other.errorWin("neues Passwort ist nicht identisch");
                 }
             } else {
+                Query.disconnect();
                 Other.errorWin("Admin-Anmeldung fehlgeschlagen");
                 logger.log(Level.SEVERE, "false AdminLogin while creating new User ''{0}'' ({1}) with the AdminAcc ''{2}''", new Object[]{newAcc.getText(), lizenz.getSelectedIndex() + 2, adminName.getText()});
             }
         } catch (Exception e) {
             System.out.println(e + " => Registrierung");
+            logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
     }//GEN-LAST:event_regActionPerformed
 

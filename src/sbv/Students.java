@@ -16,6 +16,7 @@ public class Students {
             return result.get(index);
         } catch (Exception e) {
             System.out.println(e + " => SingelStudent");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}''", new Object[]{e, StudentId, index});
         }
         return null;
     }
@@ -30,6 +31,7 @@ public class Students {
                     + "AND student_ID LIKE " + student_id);
         } catch (Exception e) {
             System.out.println(e + " => BookList");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, student_id});
         }
         return null;
     }
@@ -50,6 +52,7 @@ public class Students {
             return result;
         } catch (Exception e) {
             System.out.println(e + " => CopiesToReturn");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, StudentId});
         }
         return "0";
     }
@@ -80,6 +83,7 @@ public class Students {
             //
         } catch (Exception e) {
             System.out.println(e + " => CopiesToReturn");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, StudentId});
         }
         return "0";
     }
@@ -93,6 +97,7 @@ public class Students {
             return result;
         } catch (Exception e) {
             System.out.println(e + " => SingelStudentClasses");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, StudentId});
         }
         return null;
     }
@@ -109,6 +114,7 @@ public class Students {
             logger.log(Level.INFO, "added student {0} to class {1}", new Object[]{student_id, class_id});
         } catch (Exception e) {
             System.out.println(e + " => addToClass");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}''", new Object[]{e, student_id, className});
         }
     }
     
@@ -124,6 +130,7 @@ public class Students {
             logger.log(Level.INFO, "remove student {0} from class {1}", new Object[]{student_id, class_id});
         } catch (Exception e) {
             System.out.println(e + " => removeFromClass");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}'' and ''{2}''", new Object[]{e, student_id, className});
         }
     }
     
@@ -136,6 +143,7 @@ public class Students {
                     + "AND surname LIKE '%" + names[names.length-1] + "'").get(0);
         } catch (Exception e) {
             System.out.println(e + " => StudentSearch");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, Student});
         }
         return null;
     }

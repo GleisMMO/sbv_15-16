@@ -1,8 +1,10 @@
 package sbv;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -11,9 +13,34 @@ import static sbv.Sbv.logger;
 
 public class Query {
 
-    final static Connection con = Other.getConnection(); //connect   
+    private static Connection con;
 
-    //example get method just copy paste and modifie it :3 (must have been drunk when wrote that...
+    public static void getConnection() {
+        if (con == null) {
+            final String driver = "com.mysql.jdbc.Driver";                  //chosing driver
+            final String url = "jdbc:mysql://localhost:3307/sbv_aes_2013";  //choosing mySQL server
+            boolean loop = true;
+            while (loop) {
+                try {
+                    final String username = "root";     //buchscanner
+                    final String password = "usbw";     //^      ^
+                    Class.forName(driver);
+                    con = DriverManager.getConnection(url, username, password);     //Connecting
+                    loop = false;
+                } catch (ClassNotFoundException | SQLException e) {
+                    System.out.println(e + " => getConnection");
+                    Other.connectionErrorWin();
+                }
+            }
+            logger.log(Level.INFO, "connected to Server {0}", new Object[]{url});
+        }
+    }
+
+    public static void disconnect() {
+        con = null;
+        logger.log(Level.INFO, "disconnected from Server");
+    }
+
     public static String getString(String Statement, String label) {
         try {
 
@@ -25,11 +52,11 @@ public class Query {
             return returnString;
         } catch (Exception e) {
             System.out.println(e + " => getString");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, Statement});
         }
         return null;
     }
 
-    //executes any SQL query 
     public static ArrayList<String> anyQuery(String input) throws Exception {
         try {
             PreparedStatement statement = con.prepareStatement(input);//SQL Query
@@ -47,11 +74,11 @@ public class Query {
             return array;
         } catch (Exception e) {
             System.out.println(e + " => anyQuery");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, input});
         }
         return null;
     }
 
-    //Executes anny modificational SQL statement
     public static void anyUpdate(String input) throws Exception {
         try {
 
@@ -61,10 +88,10 @@ public class Query {
             logger.log(Level.INFO, "updated Database with command ''{0}''", new Object[]{input});
         } catch (Exception e) {
             System.out.println(e + " => anyUpdate");
+            logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, input});
         }
     }
 
-    //Input is SQL statement Return is an Array of collum Names
     public static String[] TableNames(String statement) {
 
         Pattern rawPattern = Pattern.compile("SELECT.*FROM"); // catches hole SELECT ... FROM
@@ -113,7 +140,7 @@ public class Query {
 //        }
 //
 //    }
-    //SQL Console
+//SQL Console
 //    public static void Console() throws Exception {
 //        InputStreamReader Input = new InputStreamReader(System.in);
 //        BufferedReader DataIn = new BufferedReader(Input);
