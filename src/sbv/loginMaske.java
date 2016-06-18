@@ -147,18 +147,13 @@ public class loginMaske extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameActionPerformed
 
     public static void main(String args[]) {
-        if (false) {
-            Query.getConnection();
-            Oberflaeche.main(args, "Admin", "0");
-        } else {
-            loginMaske.args = args;
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new loginMaske().setVisible(true);
-                }
-            });
-        }
+        loginMaske.args = args;
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new loginMaske().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

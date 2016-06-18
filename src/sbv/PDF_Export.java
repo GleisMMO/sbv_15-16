@@ -1,6 +1,5 @@
 package sbv;
 
-import java.util.*;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;

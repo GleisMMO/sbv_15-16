@@ -29,7 +29,7 @@ import static sbv.Sbv.logger;
 
 public class Oberflaeche extends javax.swing.JFrame {
 
-    public final Font format = new Font(FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
+    private final Font format = new Font(FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
 
     private static final String einsammelnCol[] = {"N", "Label", "Code", "Name", "Klasse", "Ausgegeben", "Gekauft", "Bezahlt"};
     DefaultTableModel einsammelTabelleModel = new DefaultTableModel(einsammelnCol, 0) {
@@ -102,8 +102,6 @@ public class Oberflaeche extends javax.swing.JFrame {
     static private String user;
     static private int lizenz;
     static private final String[] lizenzenNamen = {"lokaler Admin", "Admin", "Sekretär", "Lehrkraft"};
-
-    Connection conn = null;
 
     private Thread exp;
     Runnable exportRunnable = new Runnable() {
@@ -1046,17 +1044,15 @@ public class Oberflaeche extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(ausgebenIDFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(16, 16, 16))
-                            .addGroup(einSchuelerTabLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                                        .addComponent(buecherSchuelerTblAkt)
-                                        .addGap(344, 344, 344))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
-                                        .addComponent(HoverSingleSchuelerBezahlt, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(46, 46, 46))))))))
+                            .addGroup(einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                                    .addComponent(buecherSchuelerTblAkt)
+                                    .addGap(344, 344, 344))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, einSchuelerTabLayout.createSequentialGroup()
+                                    .addComponent(HoverSingleSchuelerBezahlt, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ausgebenKaufenFeld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(46, 46, 46)))))))
         );
         einSchuelerTabLayout.setVerticalGroup(
             einSchuelerTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2107,9 +2103,7 @@ public class Oberflaeche extends javax.swing.JFrame {
                     .addComponent(jScrollPane12, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane18, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pdfExportProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
                         .addGroup(exportTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, exportTabLayout.createSequentialGroup()
@@ -3054,7 +3048,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             System.out.println(e + " => Hover");
             logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
-        ToolTip6.setText("läd Voreinstellungen für einen PDF-Export der gewählten Klasse");
+        ToolTip6.setText("lädt Voreinstellungen für einen PDF-Export der gewählten Klasse");
     }//GEN-LAST:event_HoverSchuelerExportMouseEntered
 
     private void HoverSchuelerExportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerExportMouseExited
@@ -3068,7 +3062,7 @@ public class Oberflaeche extends javax.swing.JFrame {
             System.out.println(e + " => Hover");
             logger.log(Level.WARNING, "Exception ''{0}''", new Object[]{e});
         }
-        ToolTip6.setText("läd Voreinstellungen für einen PDF-Export von Preislisten der gewählten Klasse");
+        ToolTip6.setText("lädt Voreinstellungen für einen PDF-Export von Preislisten der gewählten Klasse");
     }//GEN-LAST:event_HoverSchuelerPreisExportMouseEntered
 
     private void HoverSchuelerPreisExportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HoverSchuelerPreisExportMouseExited
@@ -3876,7 +3870,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JButton ausgeben;
     private javax.swing.JTextField ausgebenIDFeld;
     private javax.swing.JTextField ausgebenKaufenFeld;
-    public javax.swing.JTabbedPane basePanel;
+    private javax.swing.JTabbedPane basePanel;
     private javax.swing.JButton buchAb;
     private javax.swing.JButton buchBearbeiten;
     private javax.swing.JButton buchLöschen;
@@ -3938,7 +3932,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JButton klasseExportBtn;
     private javax.swing.JButton klasseExportPreislist;
     private javax.swing.JRadioButton klasseRadioButton;
-    public static javax.swing.JList klassenList;
+    private static javax.swing.JList klassenList;
     private javax.swing.JButton kopieBarcodeErneut;
     private javax.swing.JLabel kopieBought;
     private javax.swing.JLabel kopieClass;
@@ -3982,7 +3976,7 @@ public class Oberflaeche extends javax.swing.JFrame {
     private javax.swing.JList schuelerKlassenListNeu;
     private javax.swing.JLabel schuelerName;
     private javax.swing.JRadioButton schuelerRadioButton;
-    public javax.swing.JPanel schuelerTab;
+    private javax.swing.JPanel schuelerTab;
     private javax.swing.JTable schuelerTbl;
     private javax.swing.JPanel schuelerTblPanel;
     private javax.swing.JButton schuelerWeiter;

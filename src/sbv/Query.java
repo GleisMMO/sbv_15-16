@@ -99,7 +99,7 @@ public class Query {
         }
     }
 
-    public static String[] TableNames(String statement) {
+    private static String[] TableNames(String statement) {
 
         Matcher rawMatcher = Pattern.compile("SELECT.*FROM").matcher(statement);
         rawMatcher.find();

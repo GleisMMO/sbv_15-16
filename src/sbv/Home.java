@@ -41,7 +41,7 @@ public class Home {
         return null;
     }
 
-    public static String AllCopyCount() {
+    private static String AllCopyCount() {
         try {
             return Query.getString("SELECT COUNT(ID) "
                     + "FROM sbm_copies", 
