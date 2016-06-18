@@ -10,11 +10,10 @@ public class Other {
 
     public static String dateToNormal(String timestamp) {
         try {
-            String s;
-            long stuff = Long.parseLong(timestamp);
-            java.util.Date time = new java.util.Date((long) stuff * 1000);
+            final long stuff = Long.parseLong(timestamp);
+            final java.util.Date time = new java.util.Date((long) stuff * 1000);
 //            s = new SimpleDateFormat("MM/dd/yyyy").format(time);
-            s = new SimpleDateFormat("dd.MM.yyyy").format(time);
+            final String s = new SimpleDateFormat("dd.MM.yyyy").format(time);
             return s;
         } catch (Exception e) {
             System.out.println(e + " => date");
@@ -30,7 +29,8 @@ public class Other {
 
     public static void connectionErrorWin() {
         final Object[] ops = {"erneut Versuchen", "Programm schließen"};
-        int ret = JOptionPane.showOptionDialog(new JFrame(),
+        logger.log(Level.OFF, "Error while trying to connect to DB");
+        if (1 == JOptionPane.showOptionDialog(new JFrame(),
                 "Es konnte keine Verbindung zur Datenbank hergestellt werden.\n"
                 + "Für die Benutzung des Programmes muss eine Verbindung mit dem Datenbankserver aufgebaut werden können.\n"
                 + "Bei weiteren Problemen wenden Sie sich bitte an Hr. Würz oder Hr. Hirzler.\n"
@@ -39,9 +39,7 @@ public class Other {
                 JOptionPane.WARNING_MESSAGE,
                 JOptionPane.YES_NO_OPTION,
                 null,
-                ops, ops[0]);
-        logger.log(Level.OFF, "Error while trying to connect to DB");
-        if (ret == 1) {
+                ops, ops[0])) {
             logger.log(Level.INFO, "Closed programm by exit(0), cause of Error while trying to connect to DB");
             System.exit(0);
         }

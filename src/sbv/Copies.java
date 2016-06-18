@@ -38,13 +38,13 @@ public class Copies {
 
     public static String copiesInStock(String book_id) {
         try {
-            int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+            final int history = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM sbm_copieshistory , sbm_copies "
                     + "WHERE copy_id LIKE sbm_copies.ID "
                     + "AND book_id LIKE " + book_id,
                     "COUNT(sbm_copieshistory.ID)"));
-            int all = Integer.parseInt(SingleCopyCountTotal(book_id));
-            int caughthistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+            final int all = Integer.parseInt(SingleCopyCountTotal(book_id));
+            final int caughthistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM sbm_copieshistory , sbm_copies "
                     + "WHERE collected LIKE '1%' "
                     + "AND copy_id LIKE sbm_copies.ID "
@@ -133,10 +133,10 @@ public class Copies {
 
     // eine buch ausleihen (mit copy id)
     public static void distributeCopy(String copy_id, String student_id, String buy) {
-        Date now = new Date();
+        final Date now = new Date();
         Long longTime = now.getTime() / 1000;
         longTime.intValue();
-        ArrayList<String> check = Singlecopy(copy_id);
+        final ArrayList<String> check = Singlecopy(copy_id);
         try {
             if ("".equals(check.get(1))) {
                 Query.anyUpdate("INSERT INTO sbm_copieshistory "
@@ -161,12 +161,11 @@ public class Copies {
 
     //buch einsammeln (mit copy id)
     public static void collectCopy(String copy_id) {
-
-        Date now = new Date();
+        final Date now = new Date();
         Long longTime = now.getTime() / 1000;
         longTime.intValue();
 
-        ArrayList<String> check = Singlecopy(copy_id);
+        final ArrayList<String> check = Singlecopy(copy_id);
         try {
             if ("".equals(check.get(1))) {
                 Other.errorWin("Das Buch\n"

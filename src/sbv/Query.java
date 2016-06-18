@@ -2,7 +2,6 @@ package sbv;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,14 +15,30 @@ public class Query {
     private static Connection con;
 
     public static void getConnection() {
+        final boolean server = true;
         if (con == null) {
-            final String driver = "com.mysql.jdbc.Driver";                  //chosing driver
-            final String url = "jdbc:mysql://localhost:3307/sbv_aes_2013";  //choosing mySQL server
+            final String driver;
+            final String url;
+            if (server) {
+                driver = "org.mariadb.jdbc.Driver";                  //chosing driver
+                url = "jdbc:mariadb://db-server:3306/sbv_aes_2013";  //choosing mySQL server  alt:jdbc:mysql://localhost:3307/sbv_aes_2013
+            } else {
+                driver = "com.mysql.jdbc.Driver";                  //chosing driver
+                url = "jdbc:mysql://localhost:3307/sbv_aes_2013";  //choosing mySQL server
+            }
             boolean loop = true;
             while (loop) {
                 try {
-                    final String username = "root";     //buchscanner
-                    final String password = "usbw";     //^      ^
+                    final String username;
+                    final String password;
+                    if (server) {
+                        username = "buchscanner"; 
+                        password = "Buchscaner"; 
+                    } else {
+                        username = "root"; 
+                        password = "usbw";
+                    }
+
                     Class.forName(driver);
                     con = DriverManager.getConnection(url, username, password);     //Connecting
                     loop = false;
@@ -43,13 +58,9 @@ public class Query {
 
     public static String getString(String Statement, String label) {
         try {
-
-            PreparedStatement statement = con.prepareStatement(Statement);
-            ResultSet result = statement.executeQuery();
+            ResultSet result = con.prepareStatement(Statement).executeQuery();
             result.next();
-            String returnString = result.getString(label);
-
-            return returnString;
+            return result.getString(label);
         } catch (Exception e) {
             System.out.println(e + " => getString");
             logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, Statement});
@@ -59,14 +70,12 @@ public class Query {
 
     public static ArrayList<String> anyQuery(String input) throws Exception {
         try {
-            PreparedStatement statement = con.prepareStatement(input);//SQL Query
-            ResultSet result = statement.executeQuery();        // gets results
+            ResultSet result = con.prepareStatement(input).executeQuery();        // gets results
             ArrayList<String> array = new ArrayList();          //Arraylist for Results
-            String[] collum = TableNames(input);                //gets collum names
-            int collum_nr = collum.length;                      //gets number ov collums 
+            final String[] collum = TableNames(input);                //gets collum names
             //42 <3
             while (result.next()) {                              //Saves results
-                for (int i = 0; i < collum_nr; i++) {
+                for (int i = 0; i < collum.length; i++) {
                     array.add(result.getString(collum[i]));
                 }
             }
@@ -81,9 +90,7 @@ public class Query {
 
     public static void anyUpdate(String input) throws Exception {
         try {
-
-            PreparedStatement statement = con.prepareStatement(input);//SQL Query
-            statement.executeUpdate(input);                         //updates DB gets results 
+            con.prepareStatement(input).executeUpdate(input);                         //updates DB gets results 
             //con.close();
             logger.log(Level.INFO, "updated Database with command ''{0}''", new Object[]{input});
         } catch (Exception e) {
@@ -94,34 +101,23 @@ public class Query {
 
     public static String[] TableNames(String statement) {
 
-        Pattern rawPattern = Pattern.compile("SELECT.*FROM"); // catches hole SELECT ... FROM
-        Matcher rawMatcher = rawPattern.matcher(statement);
+        Matcher rawMatcher = Pattern.compile("SELECT.*FROM").matcher(statement);
         rawMatcher.find();
 
-        Pattern selectPattern = Pattern.compile("SELECT ");      //prepares to remove SELCT from the sql statement
-        Matcher selectMatcher = selectPattern.matcher(statement);
+        Matcher selectMatcher = Pattern.compile("SELECT ").matcher(statement);
         selectMatcher.find();
-        int selectStart = selectMatcher.start();
-        int selectEnd = selectMatcher.end();
 
-        Pattern fromPattern = Pattern.compile("FROM");          //prepares to remove FROM from the sql statement
-        Matcher fromMatcher = fromPattern.matcher(statement);
-        fromMatcher.find();
-        int fromStart = fromMatcher.start();
-        int fromEnd = fromMatcher.end();
-
-        String kommaPattern = ",";                                                  //for removing the "," of the SQL statement
+        Matcher fromMatcher = Pattern.compile("FROM").matcher(statement);
+        fromMatcher.find();                                               //for removing the "," of the SQL statement
 
         StringBuilder raw = new StringBuilder(" ");                                    // SELECT and FROM gets cut out from Statement Stringbuffer 
         String tableLong = rawMatcher.group();                                       //and splited to an array of words (the collum names)
         raw.insert(0, tableLong);
-        raw.delete(fromStart, fromEnd);
-        raw.delete(selectStart, selectEnd);
+        raw.delete(fromMatcher.start(), fromMatcher.end());
+        raw.delete(selectMatcher.start(), selectMatcher.end());
         tableLong = raw.toString();
-        tableLong = tableLong.replaceAll(kommaPattern, "");
-        String[] table = tableLong.split(" ");
-
-        return table;
+        tableLong = tableLong.replaceAll(",", "");
+        return tableLong.split(" ");
     }
 }
 

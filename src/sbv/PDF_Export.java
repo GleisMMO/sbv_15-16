@@ -43,19 +43,17 @@ public class PDF_Export {
 
     public static Chapter pdfChapterStudent(String studentID) {
 
-        Paragraph titel1 = new Paragraph("Schüler: " + Students.SingelStudent(studentID, 1) + " " + Students.SingelStudent(studentID, 2),
+        final Paragraph titel1 = new Paragraph("Schüler: " + Students.SingelStudent(studentID, 1) + " " + Students.SingelStudent(studentID, 2),
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
-        Paragraph titel2 = new Paragraph("Geburtsdatum: " + Students.SingelStudent(studentID, 3),
+        final Paragraph titel2 = new Paragraph("Geburtsdatum: " + Students.SingelStudent(studentID, 3),
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
 
-        ArrayList<String> a0 = new ArrayList();
-        a0 = Students.SingelStudentClasses(studentID);
         String classes = "";
 
         for (String s : Students.SingelStudentClasses(studentID)) {
             classes += s + ", ";
         }
-        Paragraph titel5 = new Paragraph("Klassen: " + classes,
+        final Paragraph titel5 = new Paragraph("Klassen: " + classes,
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLD));
         Chapter chapter1 = new Chapter(titel1, 1);
         chapter1.setNumberDepth(0);
@@ -65,7 +63,7 @@ public class PDF_Export {
     }
 
     public static Chapter pdfChapterClass(String className) {
-        Paragraph titel1 = new Paragraph("Klasse: " + className,
+        final Paragraph titel1 = new Paragraph("Klasse: " + className,
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
         
         Chapter chapter1 = new Chapter(titel1, 1);
@@ -74,7 +72,7 @@ public class PDF_Export {
     }
 
     public static Chapter pdfChapterBook() {
-        Paragraph titel1 = new Paragraph("Bücher",
+        final Paragraph titel1 = new Paragraph("Bücher",
                 FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC));
         
         Chapter chapter1 = new Chapter(titel1, 1);

@@ -10,7 +10,7 @@ public class Students {
     //Schüler informationen abhängig vom der schülerID und einem index 
     public static String SingelStudent(String StudentId, int index) {
         try {
-            ArrayList<String> result = Query.anyQuery("SELECT ID, forename, surname, birth "
+            final ArrayList<String> result = Query.anyQuery("SELECT ID, forename, surname, birth "
                     + "FROM `sbm_students` "
                     + "WHERE ID = '" + StudentId + "'");
             return result.get(index);
@@ -39,7 +39,7 @@ public class Students {
     //copies total
     public static String copiesCount(String StudentId) {
         try {
-            String result = Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+            final String result = Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM `sbm_copieshistory`, `sbm_copies`, `sbm_books` "
                     + "WHERE student_id LIKE '" + StudentId + "' "
                     + "AND sbm_copies.book_id LIKE sbm_books.ID "
@@ -60,7 +60,7 @@ public class Students {
     //copies to return
     public static String CopiesToReturn(String StudentId) {
         try {
-            String result = Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
+            final String result = Query.getString("SELECT COUNT(sbm_copieshistory.ID) "
                     + "FROM `sbm_copieshistory`, `sbm_copies`, `sbm_books` "
                     + "WHERE buy LIKE '0' "
                     + "AND student_id LIKE '" + StudentId + "' "
@@ -90,11 +90,10 @@ public class Students {
 
     public static ArrayList<String> SingelStudentClasses(String StudentId) {
         try {
-            ArrayList<String> result = Query.anyQuery("SELECT sbm_classes.name "
+            return Query.anyQuery("SELECT sbm_classes.name "
                     + "FROM sbm_classes, `sbm_students-classes` "
                     + "WHERE `sbm_students-classes`.student_ID = " + StudentId + " "
                     + "AND class_ID LIKE sbm_classes.ID");
-            return result;
         } catch (Exception e) {
             System.out.println(e + " => SingelStudentClasses");
             logger.log(Level.WARNING, "Exception ''{0}'' from ''{1}''", new Object[]{e, StudentId});
@@ -135,7 +134,7 @@ public class Students {
     }
     
     public static String StudentSearch(String Student) {
-        String names[] = Student.split(" ");
+        final String names[] = Student.split(" ");
         try {
             return Query.anyQuery("SELECT ID "
                     + "FROM `sbm_students` "

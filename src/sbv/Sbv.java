@@ -69,14 +69,18 @@ public class Sbv {
      *     
 *  * Ende Methoden
      */
-    
     public static void main(String[] args) throws Exception {
         FileHandler fh;
 
         DateFormat dateForm = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date date = new Date();
-        fh = new FileHandler("C:/Users/Falko/Desktop/test/Sbv-Verlauf-" + dateForm.format(date) + ".log");
-        //                    URL------------------------|Dateiname--------------------------------|Dateiendung
+
+        boolean server = true;
+        if (server) {
+            fh = new FileHandler("P://15-16_SEM_SBV_Wz/Sbv-Verlauf-" + dateForm.format(date) + ".log");
+        } else {
+            fh = new FileHandler("C:/Users/Falko/Desktop/test/Sbv-Verlauf-" + dateForm.format(date) + ".log");
+        }
 
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
@@ -86,10 +90,8 @@ public class Sbv {
         logger.log(Level.SEVERE, "created Log");
 
         /**
-         * Logging Commands:
-         * logger.log(Level.INFO, "test");
-         * logger.log(Level.OFF, "test");
-         * logger.log(Level.SEVERE, "test");
+         * Logging Commands: logger.log(Level.INFO, "test");
+         * logger.log(Level.OFF, "test"); logger.log(Level.SEVERE, "test");
          * logger.log(Level.WARNING, "test");
          */
         

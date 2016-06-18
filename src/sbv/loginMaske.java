@@ -103,8 +103,8 @@ public class loginMaske extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        String user = username.getText();
-        String pw = password.getText();
+        final String user = username.getText();
+        final String pw = password.getText();
         Query.getConnection();
         try {
             if (!Query.anyQuery("SELECT ID_Ben "

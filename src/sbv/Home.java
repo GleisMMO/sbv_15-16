@@ -21,18 +21,18 @@ public class Home {
     //returns number of copies in Stock
     public static String CauchtCopyCount() {
         try {
-            int history = Integer.parseInt(Query.getString("SELECT COUNT(ID) "
+            final int history = Integer.parseInt(Query.getString("SELECT COUNT(ID) "
                     + "FROM sbm_copieshistory", 
                     "COUNT(ID)"));
-            int all = Integer.parseInt(Home.AllCopyCount());
-            int catchedhistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copies.ID) "
+            final int all = Integer.parseInt(Home.AllCopyCount());
+            final int catchedhistory = Integer.parseInt(Query.getString("SELECT COUNT(sbm_copies.ID) "
                     + "FROM sbm_copieshistory , sbm_copies, sbm_books "
                     + "WHERE sbm_copies.ID = sbm_copieshistory.copy_id "
                     + "AND sbm_copies.book_id = sbm_books.ID "
                     + "AND buy = 0 AND collected LIKE '%' "
                     + "AND copy_id LIKE sbm_copies.ID", 
                     "COUNT(sbm_copies.ID)"));
-            int result = catchedhistory + (all - history);
+            final int result = catchedhistory + (all - history);
             return Integer.toString(result);
         } catch (Exception e) {
             System.out.println(e + " => CauchtCopyCount");

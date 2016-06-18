@@ -22,7 +22,7 @@ public class Books {
     //edits book
     public static void editBook(String ID, String label, String isbn, String price, String buy) {
         try {
-            ArrayList<String> oldLabel = Query.anyQuery("SELECT label, isbn, price, buy "
+            final ArrayList<String> oldLabel = Query.anyQuery("SELECT label, isbn, price, buy "
                     + "FROM `sbm_books` "
                     + "WHERE ID = " + ID);
             Query.anyUpdate("UPDATE `sbm_books` "
